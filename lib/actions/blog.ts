@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
 import type { PostFormValues } from "@/lib/types/Posts"
-import { createClient } from "../supabase/server"
 import { Post } from "../types/Posts"
 
 
@@ -154,14 +153,14 @@ export const getAdminPosts = async () => {
   return { data }
 }
 
-export const getPublicPosts = async () => {
-  const supabase = await createClient()
+export const getPublicPosts = async (): Promise<Post[]> => {
+  const supabase = createAdminClient()
 
   const { data: blogs, error } = await supabase
     .from("posts")
     .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
     .order("created_at", { ascending: false })
 
-  if (error) return { error: error.message }
+  if (error) throw new Error(error.message)
   return blogs as Post[]
 }

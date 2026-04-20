@@ -6,13 +6,13 @@ import BlogsPageTemplate from '@/components/blogs/blogs-page-template'
 import { Post } from '@/lib/types/Posts'
 
 export default function BlogsClient() {
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['blogs'], // misma key que el prefetch
+    const { data = [], isLoading, error } = useQuery({
+        queryKey: ['blogs'],
         queryFn: getPublicPosts,
     })
 
     if (isLoading) return <div>Loading...</div>
-    if (error) return <div>Error: {error.message}</div>
+    if (error) return <p className="p-10 text-destructive">{error.message}</p>
 
     return <BlogsPageTemplate posts={data as Post[]} />
 }
