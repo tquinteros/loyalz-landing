@@ -93,10 +93,6 @@ export default function BlogsTemplate({ posts, error }: BlogsTemplateProps) {
           <h1 className="text-2xl font-semibold tracking-tight">
             Blogs
           </h1>
-          <p className="text-sm text-muted-foreground">
-            Gestiona los blogs guardados en la tabla{" "}
-            <code className="text-xs">posts</code>.
-          </p>
         </div>
         <Button onClick={openCreate} size="sm" className="shrink-0">
           <Plus className="size-4" />

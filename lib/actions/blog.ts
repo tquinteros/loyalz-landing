@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
 import type { PostFormValues } from "@/lib/types/Posts"
+import { createClient } from "../supabase/server"
+import { Post } from "../types/Posts"
+
 
 const BUCKET = "loyalz-landing"
 
@@ -149,4 +152,16 @@ export const getAdminPosts = async () => {
 
   if (error) return { error: error.message }
   return { data }
+}
+
+export const getPublicPosts = async () => {
+  const supabase = await createClient()
+
+  const { data: blogs, error } = await supabase
+    .from("posts")
+    .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
+    .order("created_at", { ascending: false })
+
+  if (error) return { error: error.message }
+  return blogs as Post[]
 }

@@ -2,11 +2,13 @@ import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import BlogsPageTemplate from '@/components/blogs/blogs-page-template'
 import { Post } from '@/lib/types/Posts'
+import { getPublicPosts } from '@/lib/actions/blog'
+import { error } from 'console'
 
 export default function BlogsPage() {
     return (
         <Suspense
-            fallback={<div className="container mx-auto">Loading...</div>}
+            fallback={<div className="container mx-auto py-10">Loading...</div>}
         >
             <BlogsContent />
         </Suspense>
@@ -14,12 +16,6 @@ export default function BlogsPage() {
 }
 
 async function BlogsContent() {
-    const supabase = await createClient()
-    const { data, error } = await supabase.from('posts').select('*')
-
-    if (error) {
-        return <div className="container mx-auto">Error: {error.message}</div>
-    }
-
-    return <BlogsPageTemplate posts={data as Post[]} />
+    const blogs = await getPublicPosts()
+    return <BlogsPageTemplate posts={blogs as Post[]} />
 }
