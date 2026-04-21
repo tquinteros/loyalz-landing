@@ -14,7 +14,6 @@ const BlogsPageTemplate = ({ posts }: BlogsPageTemplateProps) => {
         <p className="mt-2 text-muted-foreground">
           Blogs y actualizaciones del equipo.
         </p>
-        <Link href="/">Home</Link>
       </div>    
 
       {posts.length === 0 ? (
