@@ -1,14 +1,13 @@
-import { getPublicPosts } from '@/lib/actions/blog'
-import BlogsPageTemplate from '@/components/blogs/blogs-page-template'
-import { Post } from '@/lib/types/Posts'
-import { Suspense } from 'react'
+import { Suspense } from "react"
+import { fetchPublicPostsCached } from "@/lib/queries/blog.server"
+import BlogsClient from "@/components/blogs/blogs-client"
 
 export default async function BlogsPage() {
-    const result = await getPublicPosts()
+  const posts = await fetchPublicPostsCached()
 
-    if ('error' in result) {
-        return <p className="p-10 text-destructive">{result.error}</p>
-    }
-
-    return <Suspense fallback={<div>Loading...</div>}><BlogsPageTemplate posts={result as Post[]} /></Suspense>
+  return (
+    <Suspense fallback={null}>
+      <BlogsClient initialData={posts} />
+    </Suspense>
+  )
 }

@@ -1,18 +1,24 @@
 "use client"
 
-import { useQuery } from '@tanstack/react-query'
-import { getPublicPosts } from '@/lib/actions/blog'
-import BlogsPageTemplate from '@/components/blogs/blogs-page-template'
-import { Post } from '@/lib/types/Posts'
+import { useQuery } from "@tanstack/react-query"
+import BlogsPageTemplate from "@/components/blogs/blogs-page-template"
+import {
+  fetchPublicPosts,
+  publicPostsQueryKey,
+} from "@/lib/queries/blog"
+import type { Post } from "@/lib/types/Posts"
 
-export default function BlogsClient() {
-    const { data = [], isLoading, error } = useQuery({
-        queryKey: ['blogs'],
-        queryFn: getPublicPosts,
-    })
+type Props = {
+  initialData: Post[]
+}
 
-    if (isLoading) return <div>Loading...</div>
-    if (error) return <p className="p-10 text-destructive">{error.message}</p>
+export default function BlogsClient({ initialData }: Props) {
+  const { data } = useQuery({
+    queryKey: publicPostsQueryKey,
+    queryFn: fetchPublicPosts,
+    initialData,
+    staleTime: 1000 * 60 * 5,
+  })
 
-    return <BlogsPageTemplate posts={data as Post[]} />
+  return <BlogsPageTemplate posts={data ?? initialData} />
 }
