@@ -6,7 +6,7 @@ export default async function BlogsPage() {
   const posts = await fetchPublicPostsCached()
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div>Loading...</div>}>
       <BlogsClient initialData={posts} />
     </Suspense>
   )
