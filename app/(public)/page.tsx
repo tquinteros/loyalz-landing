@@ -1,46 +1,30 @@
+import { Suspense } from "react"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { fetchPublicPageBySlugCached } from "@/lib/queries/pages.server"
+import PageClient from "@/components/pages/page-client"
+import { PageSkeleton } from "@/components/pages/page-skeleton"
 
-import Link from "next/link";
+const HOME_SLUG = "home"
 
-export default function Home() {
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await fetchPublicPageBySlugCached(HOME_SLUG)
+  if (!page) return {}
+  return {
+    title: page.seo_title ?? page.title,
+    description: page.seo_description ?? undefined,
+  }
+}
+
+export default async function Home() {
+  const page = await fetchPublicPageBySlugCached(HOME_SLUG)
+  if (!page) notFound()
+
   return (
     <main className="min-h-screen">
-      {/* <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? (
-              <EnvVarWarning />
-            ) : (
-              <Suspense>
-                <AuthButton />
-              </Suspense>
-            )}
-          </div>
-        </nav> */}
-      <div className="flex-1 flex gap-20 p-5 container mx-auto">
-        <Link href="/admin">Admin</Link>
-        <Link href="/admin/blogs">Admin Blogs</Link>
-        <Link href="/blogs">Blogs</Link>
-      </div>
-
-      {/* <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer> */}
+      <Suspense fallback={<PageSkeleton />}>
+        <PageClient slug={HOME_SLUG} initialData={page} />
+      </Suspense>
     </main>
-  );
+  )
 }

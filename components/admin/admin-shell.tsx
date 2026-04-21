@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { type ReactNode } from "react"
-import { FileText, LayoutDashboard, Settings, Users } from "lucide-react"
+import { FileText, Layers, LayoutDashboard, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -36,8 +36,8 @@ function isActiveNavItem(pathname: string, href: string) {
 
 const mainNavItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { title: "Pages", href: "/admin/pages", icon: Layers },
   { title: "Blogs", href: "/admin/blogs", icon: FileText },
-  // { title: "Pages", href: "/admin/pages", icon: FileText },
 ] as const
 
 const settingsNavItems = [
