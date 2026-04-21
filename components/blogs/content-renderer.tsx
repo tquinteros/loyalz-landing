@@ -156,17 +156,20 @@ function renderNode(node: ContentNode, index: number): React.ReactNode {
     case "hardBreak":
       return <br key={index} />
 
-    case "image":
+    case "image": {
+      const src = node.attrs?.src
+      if (!src) return null
       return (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           key={index}
-          src={node.attrs.src}
-          alt={node.attrs.alt ?? ""}
-          title={node.attrs.title ?? undefined}
+          src={src}
+          alt={node.attrs?.alt ?? ""}
+          title={node.attrs?.title ?? undefined}
           className="my-6 rounded-lg"
         />
       )
+    }
 
     default:
       return null
