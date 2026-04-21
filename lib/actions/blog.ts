@@ -1,9 +1,10 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath, unstable_cache } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
 import type { PostFormValues } from "@/lib/types/Posts"
 import { Post } from "../types/Posts"
+import { createPublicClient } from "../supabase/public"
 
 
 const BUCKET = "loyalz-landing"
@@ -153,14 +154,20 @@ export const getAdminPosts = async () => {
   return { data }
 }
 
-export const getPublicPosts = async (): Promise<Post[]> => {
-  const supabase = createAdminClient()
+const fetchPublicPosts = async () => {
+  const supabase = createPublicClient()
 
-  const { data: blogs, error } = await supabase
-    .from("posts")
-    .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
-    .order("created_at", { ascending: false })
+  const { data, error } = await supabase
+      .from("posts")
+      .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
+      .order("created_at", { ascending: false })
 
-  if (error) throw new Error(error.message)
-  return blogs as Post[]
+  if (error) return { error: error.message }
+  return data as Post[]
 }
+
+export const getPublicPosts = unstable_cache(
+  fetchPublicPosts,
+  ['public-posts'],
+  { revalidate: 60 }
+)
