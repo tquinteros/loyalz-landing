@@ -1,11 +1,9 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath, updateTag } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
 import type { PostFormValues } from "@/lib/types/Posts"
-import { createClient } from "../supabase/server"
-import { Post } from "../types/Posts"
-
+import { PUBLIC_POSTS_TAG } from "@/lib/queries/blog"
 
 const BUCKET = "loyalz-landing"
 
@@ -65,6 +63,7 @@ export async function createPost(values: PostFormValues) {
 
   if (error) return { error: error.message }
 
+  updateTag(PUBLIC_POSTS_TAG)
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
 
@@ -107,6 +106,7 @@ export async function updatePost(id: string, values: PostFormValues) {
 
   if (error) return { error: error.message }
 
+  updateTag(PUBLIC_POSTS_TAG)
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
   revalidatePath(`/blogs/${slug}`)
@@ -121,6 +121,7 @@ export async function deletePost(id: string) {
 
   if (error) return { error: error.message }
 
+  updateTag(PUBLIC_POSTS_TAG)
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
 
@@ -152,16 +153,4 @@ export const getAdminPosts = async () => {
 
   if (error) return { error: error.message }
   return { data }
-}
-
-export const getPublicPosts = async () => {
-  const supabase = await createClient()
-
-  const { data: blogs, error } = await supabase
-    .from("posts")
-    .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
-    .order("created_at", { ascending: false })
-
-  if (error) return { error: error.message }
-  return blogs as Post[]
 }

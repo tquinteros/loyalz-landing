@@ -1,21 +1,13 @@
-import { Suspense } from 'react'
-import { createClient } from '@/lib/supabase/server'
-import BlogsPageTemplate from '@/components/blogs/blogs-page-template'
-import { Post } from '@/lib/types/Posts'
-import { getPublicPosts } from '@/lib/actions/blog'
-import { error } from 'console'
+import { Suspense } from "react"
+import { fetchPublicPostsCached } from "@/lib/queries/blog.server"
+import BlogsClient from "@/components/blogs/blogs-client"
 
-export default function BlogsPage() {
-    return (
-        <Suspense
-            fallback={<div className="container mx-auto py-10">Loading...</div>}
-        >
-            <BlogsContent />
-        </Suspense>
-    )
-}
+export default async function BlogsPage() {
+  const posts = await fetchPublicPostsCached()
 
-async function BlogsContent() {
-    const blogs = await getPublicPosts()
-    return <BlogsPageTemplate posts={blogs as Post[]} />
+  return (
+    <Suspense fallback={null}>
+      <BlogsClient initialData={posts} />
+    </Suspense>
+  )
 }
