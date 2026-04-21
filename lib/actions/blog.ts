@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
 import type { PostFormValues } from "@/lib/types/Posts"
-import { PUBLIC_POSTS_TAG } from "@/lib/queries/blog"
+import { PUBLIC_POSTS_TAG, publicPostTag } from "@/lib/queries/blog"
 
 const BUCKET = "loyalz-landing"
 
@@ -64,6 +64,7 @@ export async function createPost(values: PostFormValues) {
   if (error) return { error: error.message }
 
   updateTag(PUBLIC_POSTS_TAG)
+  updateTag(publicPostTag(slug))
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
 
@@ -77,7 +78,7 @@ export async function updatePost(id: string, values: PostFormValues) {
 
   const { data: existing } = await supabase
     .from("posts")
-    .select("status, published_at")
+    .select("slug, status, published_at")
     .eq("id", id)
     .single()
 
@@ -107,6 +108,11 @@ export async function updatePost(id: string, values: PostFormValues) {
   if (error) return { error: error.message }
 
   updateTag(PUBLIC_POSTS_TAG)
+  updateTag(publicPostTag(slug))
+  if (existing?.slug && existing.slug !== slug) {
+    updateTag(publicPostTag(existing.slug))
+    revalidatePath(`/blogs/${existing.slug}`)
+  }
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
   revalidatePath(`/blogs/${slug}`)
@@ -117,11 +123,21 @@ export async function updatePost(id: string, values: PostFormValues) {
 export async function deletePost(id: string) {
   const supabase = createAdminClient()
 
+  const { data: existing } = await supabase
+    .from("posts")
+    .select("slug")
+    .eq("id", id)
+    .single()
+
   const { error } = await supabase.from("posts").delete().eq("id", id)
 
   if (error) return { error: error.message }
 
   updateTag(PUBLIC_POSTS_TAG)
+  if (existing?.slug) {
+    updateTag(publicPostTag(existing.slug))
+    revalidatePath(`/blogs/${existing.slug}`)
+  }
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
 
