@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { fetchPublicPostBySlugCached } from "@/lib/queries/blog.server"
 import BlogDetailClient from "@/components/blogs/blog-detail-client"
+import { BlogsDetailSkeleton } from "@/components/blogs/blogs-skeleton"
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -24,7 +25,7 @@ export async function generateMetadata({
 
 export default function BlogPostPage({ params }: PageProps) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<BlogsDetailSkeleton />}>
       <BlogPostContent params={params} />
     </Suspense>
   )

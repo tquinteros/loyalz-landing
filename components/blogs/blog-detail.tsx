@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { ContentRenderer } from "@/components/blogs/content-renderer"
 import type { FullPost } from "@/lib/types/Posts"
+import Image from "next/image"
 
 function formatDate(iso: string | null) {
   if (!iso) return null
@@ -20,7 +21,6 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
 
   return (
     <article className="container mx-auto max-w-3xl px-5 py-10 lg:px-0">
-      {/* Back link */}
       <Link
         href="/blogs"
         className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
@@ -28,19 +28,19 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
         ← Todos los blogs
       </Link>
 
-      {/* Cover image */}
       {post.cover_image ? (
         <div className="mt-8 overflow-hidden rounded-xl">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
+            width={1000}
+            height={1000}
             src={post.cover_image}
+            loading="eager"
             alt={post.title}
-            className="aspect-video w-full object-cover"
+            className="aspect-video w-full bg-accent object-cover"
           />
         </div>
       ) : null}
 
-      {/* Header */}
       <header className="mt-8 space-y-3 border-b pb-8">
         <div className="flex flex-wrap items-center gap-2">
           {post.status === "published" ? (
@@ -66,7 +66,6 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
         ) : null}
       </header>
 
-      {/* Body */}
       {post.content ? (
         <div className="mt-8">
           <ContentRenderer content={post.content} />
@@ -77,7 +76,6 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
         </p>
       )}
 
-      {/* Footer nav */}
       <footer className="mt-16 border-t pt-8">
         <Link
           href="/blogs"
