@@ -40,7 +40,7 @@ export default function FeatureLinksSection({
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={className}>
       {(title || subtitle) && (
-        <div className="mx-auto mb-12 max-w-2xl text-center">
+        <div className="mx-auto mb-12 container text-center">
           {title ? (
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {title}

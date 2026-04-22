@@ -10,36 +10,39 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { deletePost } from "@/lib/actions/blog"
+import { deleteMediaFile } from "@/lib/actions/media"
 import { toast } from "sonner"
 
-type DeletePostDialogProps = {
+type DeleteMediaDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  postId: string
-  postTitle: string
+  path: string
+  name: string
+  onDeleted?: (path: string) => void
 }
 
-export function DeletePostDialog({
+export function DeleteMediaDialog({
   open,
   onOpenChange,
-  postId,
-  postTitle,
-}: DeletePostDialogProps) {
+  path,
+  name,
+  onDeleted,
+}: DeleteMediaDialogProps) {
   const [isPending, startTransition] = useTransition()
 
   function handleDelete() {
     startTransition(async () => {
       try {
-        const result = await deletePost(postId)
+        const result = await deleteMediaFile(path)
         if (result.error) {
           toast.error(result.error)
           return
         }
-        toast.success("Blog eliminado correctamente")
+        toast.success("Imagen eliminada correctamente")
+        onDeleted?.(path)
         onOpenChange(false)
       } catch (err) {
-        console.error("[DeletePostDialog] unexpected error:", err)
+        console.error("[DeleteMediaDialog] unexpected error:", err)
         toast.error("Ocurrió un error inesperado. Intenta de nuevo.")
       }
     })
@@ -49,13 +52,14 @@ export function DeletePostDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Eliminar blog</DialogTitle>
+          <DialogTitle>Eliminar imagen</DialogTitle>
           <DialogDescription>
             ¿Seguro que quieres eliminar{" "}
             <span className="font-medium text-foreground">
-              &ldquo;{postTitle}&rdquo;
+              &ldquo;{name}&rdquo;
             </span>
-            ? Esta acción no se puede deshacer.
+            ? Esta acción no se puede deshacer y la imagen se borrará del
+            almacenamiento.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

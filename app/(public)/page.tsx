@@ -4,8 +4,7 @@ import { notFound } from "next/navigation"
 import { fetchPublicPageBySlugCached } from "@/lib/queries/pages.server"
 import PageClient from "@/components/pages/page-client"
 import { PageSkeleton } from "@/components/pages/page-skeleton"
-
-const HOME_SLUG = "home"
+import { HOME_SLUG } from "@/lib/utils"
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await fetchPublicPageBySlugCached(HOME_SLUG)

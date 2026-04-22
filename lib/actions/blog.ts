@@ -7,6 +7,13 @@ import { PUBLIC_POSTS_TAG, publicPostTag } from "@/lib/queries/blog"
 
 const BUCKET = "loyalz-landing"
 
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function isUuid(value: string): boolean {
+  return UUID_REGEX.test(value)
+}
+
 export async function uploadCoverImage(formData: FormData) {
   const file = formData.get("file") as File | null
   if (!file) return { error: "No se recibió ningún archivo." }
@@ -121,20 +128,36 @@ export async function updatePost(id: string, values: PostFormValues) {
 }
 
 export async function deletePost(id: string) {
+  if (!id || !isUuid(id)) {
+    return { error: "ID de blog inválido." }
+  }
+
   const supabase = createAdminClient()
 
-  const { data: existing } = await supabase
+  const { data: existing, error: fetchError } = await supabase
     .from("posts")
     .select("slug")
     .eq("id", id)
-    .single()
+    .maybeSingle()
+
+  if (fetchError) {
+    console.error("[deletePost] fetch error:", fetchError)
+    return { error: "No se pudo verificar el blog. Intenta de nuevo." }
+  }
+
+  if (!existing) {
+    return { error: "El blog ya no existe o fue eliminado." }
+  }
 
   const { error } = await supabase.from("posts").delete().eq("id", id)
 
-  if (error) return { error: error.message }
+  if (error) {
+    console.error("[deletePost] delete error:", error)
+    return { error: "No se pudo eliminar el blog. Intenta de nuevo." }
+  }
 
   updateTag(PUBLIC_POSTS_TAG)
-  if (existing?.slug) {
+  if (existing.slug) {
     updateTag(publicPostTag(existing.slug))
     revalidatePath(`/blogs/${existing.slug}`)
   }

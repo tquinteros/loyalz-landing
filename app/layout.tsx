@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner"
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -36,6 +38,7 @@ export default function RootLayout({
           >
             {/* <Header /> */}
             {children}
+            <Toaster richColors />
           </ThemeProvider>
         </QueryProvider>
       </body>

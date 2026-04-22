@@ -8,6 +8,31 @@ import type { AnyPageSection, PageFormValues } from "@/lib/types/Pages"
 const PAGE_COLUMNS =
   "id, slug, title, sections, status, seo_title, seo_description, created_at, updated_at"
 
+const STORAGE_BUCKET = "loyalz-landing"
+
+export async function uploadSectionBackground(formData: FormData) {
+  const file = formData.get("file") as File | null
+  if (!file) return { error: "No se recibió ningún archivo." }
+
+  const ext = file.name.split(".").pop() ?? "jpg"
+  const filename = `sections/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+
+  const supabase = createAdminClient()
+
+  const { error: uploadError } = await supabase.storage
+    .from(STORAGE_BUCKET)
+    .upload(filename, file, {
+      contentType: file.type,
+      upsert: false,
+    })
+
+  if (uploadError) return { error: uploadError.message }
+
+  const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(filename)
+
+  return { url: data.publicUrl }
+}
+
 function generateSlug(title: string): string {
   return title
     .toLowerCase()

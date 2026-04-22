@@ -1,13 +1,8 @@
 "use client"
 
-import {
-  ChevronDown,
-  ChevronUp,
-  Eye,
-  EyeOff,
-  Plus,
-  Trash2,
-} from "lucide-react"
+import { Plus } from "lucide-react"
+import { DragDropProvider } from "@dnd-kit/react"
+import { isSortable } from "@dnd-kit/react/sortable"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -18,27 +13,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { cn } from "@/lib/utils"
 import {
   SECTION_REGISTRY,
   SECTION_TYPES,
   type SectionType,
 } from "@/components/sections/component-map"
 import type { AnyPageSection } from "@/lib/types/Pages"
+import { SortableSectionItem } from "@/components/admin/pages/editor/sortable-section-item"
 
 type Props = {
   sections: AnyPageSection[]
   selectedId: string | null
   onSelect: (id: string) => void
   onAdd: (type: SectionType) => void
-  onMove: (id: string, delta: -1 | 1) => void
+  onReorder: (fromIndex: number, toIndex: number) => void
   onRemove: (id: string) => void
   onToggleEnabled: (id: string) => void
-}
-
-function labelFor(type: string): string {
-  const entry = SECTION_REGISTRY[type as SectionType]
-  return entry?.label ?? type
 }
 
 export function SectionList({
@@ -46,7 +36,7 @@ export function SectionList({
   selectedId,
   onSelect,
   onAdd,
-  onMove,
+  onReorder,
   onRemove,
   onToggleEnabled,
 }: Props) {
@@ -91,100 +81,30 @@ export function SectionList({
             Esta página aún no tiene secciones.
           </p>
         ) : (
-          <ul className="divide-y">
-            {sections.map((section, i) => {
-              const isSelected = section.id === selectedId
-              const enabled = section.enabled
-              return (
-                <li
+          <DragDropProvider
+            onDragEnd={(event) => {
+              if (event.canceled) return
+              const { source } = event.operation
+              if (!source || !isSortable(source)) return
+              const { initialIndex, index } = source
+              if (initialIndex === index) return
+              onReorder(initialIndex, index)
+            }}
+          >
+            <ul className="divide-y">
+              {sections.map((section, i) => (
+                <SortableSectionItem
                   key={section.id}
-                  className={cn(
-                    "group relative flex items-center gap-2 px-3 py-2.5 text-sm transition-colors",
-                    isSelected
-                      ? "bg-accent"
-                      : "hover:bg-accent/50",
-                  )}
-                >
-                  <button
-                    type="button"
-                    onClick={() => onSelect(section.id)}
-                    className="flex min-w-0 flex-1 items-center gap-2 text-left"
-                  >
-                    <span
-                      className={cn(
-                        "inline-flex size-6 shrink-0 items-center justify-center rounded-md border text-[10px] font-mono tabular-nums",
-                        isSelected && "border-primary text-primary",
-                      )}
-                    >
-                      {i + 1}
-                    </span>
-                    <div className="min-w-0">
-                      <div
-                        className={cn(
-                          "truncate text-sm font-medium",
-                          !enabled && "text-muted-foreground line-through",
-                        )}
-                      >
-                        {labelFor(section.type)}
-                      </div>
-                      <div className="truncate font-mono text-[10px] text-muted-foreground">
-                        {section.id.slice(0, 8)}
-                      </div>
-                    </div>
-                  </button>
-
-                  <div className="flex shrink-0 items-center opacity-60 group-hover:opacity-100">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="size-7"
-                      title={enabled ? "Ocultar" : "Mostrar"}
-                      onClick={() => onToggleEnabled(section.id)}
-                    >
-                      {enabled ? (
-                        <Eye className="size-3.5" />
-                      ) : (
-                        <EyeOff className="size-3.5" />
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="size-7"
-                      title="Subir"
-                      disabled={i === 0}
-                      onClick={() => onMove(section.id, -1)}
-                    >
-                      <ChevronUp className="size-3.5" />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="size-7"
-                      title="Bajar"
-                      disabled={i === sections.length - 1}
-                      onClick={() => onMove(section.id, 1)}
-                    >
-                      <ChevronDown className="size-3.5" />
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="size-7 text-destructive hover:text-destructive"
-                      title="Eliminar"
-                      onClick={() => onRemove(section.id)}
-                    >
-                      <Trash2 className="size-3.5" />
-                    </Button>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
+                  section={section}
+                  index={i}
+                  isSelected={section.id === selectedId}
+                  onSelect={onSelect}
+                  onRemove={onRemove}
+                  onToggleEnabled={onToggleEnabled}
+                />
+              ))}
+            </ul>
+          </DragDropProvider>
         )}
       </ScrollArea>
     </div>

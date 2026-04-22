@@ -23,6 +23,7 @@ import type {
 import { SectionList } from "@/components/admin/pages/editor/section-list"
 import { SectionForm } from "@/components/admin/pages/editor/section-form"
 import { LivePreview } from "@/components/admin/pages/editor/live-preview"
+import { toast } from "sonner"
 
 type Props = {
   pageId: string
@@ -79,15 +80,20 @@ export function PageEditor({
     [selectedId],
   )
 
-  const moveSection = useCallback((id: string, delta: -1 | 1) => {
+  const reorderSections = useCallback((fromIndex: number, toIndex: number) => {
     setSections((prev) => {
-      const idx = prev.findIndex((s) => s.id === id)
-      if (idx < 0) return prev
-      const target = idx + delta
-      if (target < 0 || target >= prev.length) return prev
+      if (
+        fromIndex === toIndex ||
+        fromIndex < 0 ||
+        toIndex < 0 ||
+        fromIndex >= prev.length ||
+        toIndex >= prev.length
+      ) {
+        return prev
+      }
       const next = prev.slice()
-      const [item] = next.splice(idx, 1)
-      next.splice(target, 0, item)
+      const [item] = next.splice(fromIndex, 1)
+      next.splice(toIndex, 0, item)
       return next
     })
   }, [])
@@ -137,6 +143,7 @@ export function PageEditor({
         return
       }
       setSavedAt(Date.now())
+      toast.success("Secciones guardadas correctamente")
     })
   }
 
@@ -239,7 +246,7 @@ export function PageEditor({
             selectedId={selectedId}
             onSelect={setSelectedId}
             onAdd={addSection}
-            onMove={moveSection}
+            onReorder={reorderSections}
             onRemove={removeSection}
             onToggleEnabled={toggleEnabled}
           />

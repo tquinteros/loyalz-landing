@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { AnyPageSection } from "@/lib/types/Pages"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
 
 type Props = {
   section: AnyPageSection
@@ -17,18 +18,11 @@ export function CommonSectionFields({ section, onPatch }: Props) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="space-y-1.5 sm:col-span-2">
-        <Label htmlFor="sec-bg">Imagen de fondo (URL)</Label>
-        <Input
-          id="sec-bg"
-          value={section.backgroundImage ?? ""}
-          onChange={(e) =>
-            onPatch({ backgroundImage: e.target.value || null })
-          }
-          placeholder="https://…"
+        <Label>Imagen de fondo</Label>
+        <ImagePicker
+          value={section.backgroundImage ?? null}
+          onChange={(url) => onPatch({ backgroundImage: url })}
         />
-        <p className="text-xs text-muted-foreground">
-          Opcional — se superpone con un overlay oscuro.
-        </p>
       </div>
       <div className="space-y-1.5 sm:col-span-2">
         <Label htmlFor="sec-class">Clases CSS extra</Label>

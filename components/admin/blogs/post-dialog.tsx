@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useTransition, useRef } from "react"
+import { useState, useEffect, useTransition } from "react"
 import {
   Dialog,
   DialogContent,
@@ -27,11 +27,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { BlogEditor } from "./blog-editor"
-import { CoverImageUploader } from "./cover-image-uploader"
-import { createPost, updatePost, uploadCoverImage } from "@/lib/actions/blog"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
+import { createPost, updatePost } from "@/lib/actions/blog"
 import type { AdminPostRow } from "./blogs-template"
 import type { TipTapDocument } from "@/lib/types/content"
 import type { PostFormValues } from "@/lib/types/Posts"
+import { toast } from "sonner"
 
 function generateSlug(title: string): string {
   return title
@@ -66,10 +67,7 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
   const [slugEdited, setSlugEdited] = useState(false)
   const [form, setForm] = useState<PostFormValues>(EMPTY_FORM)
 
-  const pendingFileRef = useRef<File | null>(null)
-
   useEffect(() => {
-    pendingFileRef.current = null
     if (!open) {
       setError(null)
       setSlugEdited(false)
@@ -106,11 +104,6 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
     if (!slugEdited) set("slug", generateSlug(title))
   }
 
-  function handleFileChange(file: File | null) {
-    pendingFileRef.current = file
-    if (!file) set("cover_image", "")
-  }
-
   function handleSubmit() {
     if (!form.title.trim()) {
       setError("El título es obligatorio.")
@@ -119,30 +112,18 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
     setError(null)
 
     startTransition(async () => {
-      let coverUrl = form.cover_image
-
-      if (pendingFileRef.current) {
-        const fd = new FormData()
-        fd.append("file", pendingFileRef.current)
-        const upload = await uploadCoverImage(fd)
-        if (upload.error) {
-          setError(`Error al subir imagen: ${upload.error}`)
-          return
-        }
-        coverUrl = upload.url ?? ""
-      }
-
-      const payload: PostFormValues = { ...form, cover_image: coverUrl }
-
       const result = isEditing
-        ? await updatePost(post!.id, payload)
-        : await createPost(payload)
+        ? await updatePost(post!.id, form)
+        : await createPost(form)
 
       if (result.error) {
+        toast.error(result.error)
         setError(result.error)
         return
       }
-
+      toast.success(
+        isEditing ? "Blog guardado correctamente" : "Blog creado correctamente",
+      )
       onOpenChange(false)
     })
   }
@@ -208,9 +189,9 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
 
               <div className="space-y-1.5 sm:col-span-2">
                 <Label>Imagen de portada</Label>
-                <CoverImageUploader
-                  currentUrl={form.cover_image}
-                  onFileChange={handleFileChange}
+                <ImagePicker
+                  value={form.cover_image || null}
+                  onChange={(url) => set("cover_image", url ?? "")}
                 />
               </div>
 

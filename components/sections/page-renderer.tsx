@@ -53,8 +53,6 @@ function SectionSwitch({ section }: { section: PageSection }) {
     case "contact_form":
       return <ContactFormSection {...section.props} {...common} />
     default: {
-      // Exhaustiveness check — adding a new section type to the union
-      // without handling it here will surface as a TS error.
       const _exhaustive: never = section
       return _exhaustive
     }
