@@ -112,7 +112,7 @@ export default function MediaLibraryTemplate({
             Imágenes
           </h1>
           <p className="text-sm text-muted-foreground">
-            Biblioteca de imágenes almacenadas en Supabase.
+            Biblioteca de imágenes almacenadas en la nube.
           </p>
         </div>
         <div className="shrink-0">
@@ -200,7 +200,7 @@ export default function MediaLibraryTemplate({
                       className={cn(
                         "absolute right-2 top-2 rounded-full bg-background/90 p-1 text-foreground shadow-sm transition-opacity",
                         "hover:bg-destructive hover:text-destructive-foreground",
-                        "opacity-0 group-hover:opacity-100 focus:opacity-100",
+                        "opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100",
                       )}
                     >
                       <X className="size-4" />
@@ -214,7 +214,7 @@ export default function MediaLibraryTemplate({
                       className={cn(
                         "absolute left-2 top-2 rounded-full bg-background/90 p-1 text-foreground shadow-sm transition-opacity",
                         "hover:bg-primary hover:text-primary-foreground",
-                        "opacity-0 group-hover:opacity-100 focus:opacity-100",
+                        "opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100",
                       )}
                     >
                       {isCopied ? (
