@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useTransition } from "react"
+import { useCallback, useEffect, useRef, useState, useTransition } from "react"
 import Image from "next/image"
 import { Loader2, Upload, X, ImageIcon, Copy, Check } from "lucide-react"
 import {
@@ -12,13 +12,15 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { uploadMediaFile } from "@/lib/actions/media"
+import { getMediaItemsPage, uploadMediaFile } from "@/lib/actions/media"
 import { toast } from "sonner"
 import type { MediaItem } from "@/lib/actions/media"
 import { DeleteMediaDialog } from "./delete-media-dialog"
 
 type MediaLibraryTemplateProps = {
   items: MediaItem[]
+  initialNextCursor: string | null
+  total: number
   error?: string | null
 }
 
@@ -31,13 +33,68 @@ function formatSize(bytes: number | null): string {
 
 export default function MediaLibraryTemplate({
   items: initialItems,
+  initialNextCursor,
+  total: initialTotal,
   error,
 }: MediaLibraryTemplateProps) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
   const [items, setItems] = useState<MediaItem[]>(initialItems)
+  const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor)
+  const [total, setTotal] = useState<number>(initialTotal)
   const [deleteTarget, setDeleteTarget] = useState<MediaItem | null>(null)
   const [isUploading, startUploadTransition] = useTransition()
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null)
   const [copiedPath, setCopiedPath] = useState<string | null>(null)
+
+  const loadMore = useCallback(async () => {
+    if (!nextCursor || isLoadingMore) return
+    setIsLoadingMore(true)
+    setLoadMoreError(null)
+    try {
+      const result = await getMediaItemsPage({ cursor: nextCursor })
+      if (result.error || !result.data) {
+        setLoadMoreError(result.error ?? "Error al cargar más imágenes.")
+        return
+      }
+      const { items: newItems, nextCursor: newCursor, total: newTotal } =
+        result.data
+      setItems((prev) => {
+        const seen = new Set(prev.map((item) => item.path))
+        const deduped = newItems.filter((item) => !seen.has(item.path))
+        return [...prev, ...deduped]
+      })
+      setNextCursor(newCursor)
+      setTotal(newTotal)
+    } catch (err) {
+      console.error("[MediaLibrary] load more error:", err)
+      setLoadMoreError("Error al cargar más imágenes.")
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }, [nextCursor, isLoadingMore])
+
+  useEffect(() => {
+    const node = sentinelRef.current
+    if (!node) return
+    if (!nextCursor) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            loadMore()
+            break
+          }
+        }
+      },
+      { rootMargin: "400px 0px" },
+    )
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [loadMore, nextCursor])
 
   function handleFileInput(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
@@ -69,7 +126,12 @@ export default function MediaLibraryTemplate({
       }
 
       if (uploaded.length > 0) {
-        setItems((prev) => [...uploaded, ...prev])
+        setItems((prev) => {
+          const seen = new Set(prev.map((item) => item.path))
+          const deduped = uploaded.filter((item) => !seen.has(item.path))
+          return [...deduped, ...prev]
+        })
+        setTotal((prev) => prev + uploaded.length)
         toast.success(
           uploaded.length === 1
             ? "Imagen subida correctamente"
@@ -88,6 +150,7 @@ export default function MediaLibraryTemplate({
 
   function handleDeleted(path: string) {
     setItems((prev) => prev.filter((item) => item.path !== path))
+    setTotal((prev) => Math.max(0, prev - 1))
   }
 
   async function handleCopyUrl(url: string, path: string) {
@@ -146,7 +209,7 @@ export default function MediaLibraryTemplate({
           <CardDescription>
             {error
               ? "No se pudieron cargar las imágenes."
-              : `${items.length} ${items.length === 1 ? "imagen" : "imágenes"}`}
+              : `${items.length} de ${total} ${total === 1 ? "imagen" : "imágenes"}`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -240,6 +303,36 @@ export default function MediaLibraryTemplate({
                 )
               })}
             </div>
+          ) : null}
+
+          {!error && nextCursor ? (
+            <div
+              ref={sentinelRef}
+              className="flex items-center justify-center py-4 text-sm text-muted-foreground"
+            >
+              {isLoadingMore ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="size-4 animate-spin" />
+                  Cargando más imágenes…
+                </span>
+              ) : loadMoreError ? (
+                <button
+                  type="button"
+                  onClick={loadMore}
+                  className="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-1.5 text-xs text-destructive hover:bg-destructive/20"
+                >
+                  {loadMoreError} · Reintentar
+                </button>
+              ) : (
+                <span className="text-xs">Desplázate para cargar más</span>
+              )}
+            </div>
+          ) : null}
+
+          {!error && !nextCursor && items.length > 0 ? (
+            <p className="pt-2 text-center text-xs text-muted-foreground">
+              No hay más imágenes.
+            </p>
           ) : null}
         </CardContent>
       </Card>

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { MEDIA_PAGE_SIZE } from "./media.constants"
 
 const BUCKET = "loyalz-landing"
 const MEDIA_FOLDER = "media"
@@ -88,26 +89,104 @@ async function listRecursive(
   return items.concat(...nested)
 }
 
+function sortMediaItems(items: MediaItem[]) {
+  items.sort((a, b) => {
+    const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0
+    const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0
+    if (bDate !== aDate) return bDate - aDate
+    // Tiebreaker on path (desc) keeps pagination stable when timestamps match.
+    if (a.path === b.path) return 0
+    return a.path < b.path ? 1 : -1
+  })
+}
+
+type MediaCursor = {
+  createdAt: string | null
+  path: string
+}
+
+function encodeCursor(cursor: MediaCursor): string {
+  return Buffer.from(JSON.stringify(cursor), "utf8").toString("base64url")
+}
+
+function decodeCursor(value: string): MediaCursor | null {
+  try {
+    const json = Buffer.from(value, "base64url").toString("utf8")
+    const parsed = JSON.parse(json) as MediaCursor
+    if (typeof parsed?.path !== "string") return null
+    return parsed
+  } catch {
+    return null
+  }
+}
+
+async function listAllMediaItems(
+  supabase: ReturnType<typeof createAdminClient>,
+): Promise<MediaItem[]> {
+  const roots = [MEDIA_FOLDER, ...LEGACY_FOLDERS]
+  const results = await Promise.all(
+    roots.map((root) => listRecursive(supabase, root, 0)),
+  )
+  const flat = results.flat()
+  sortMediaItems(flat)
+  return flat
+}
+
 export async function getMediaItems() {
   const supabase = createAdminClient()
 
   try {
-    const roots = [MEDIA_FOLDER, ...LEGACY_FOLDERS]
-    const results = await Promise.all(
-      roots.map((root) => listRecursive(supabase, root, 0)),
-    )
-
-    const flat = results.flat()
-
-    flat.sort((a, b) => {
-      const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0
-      const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0
-      return bDate - aDate
-    })
-
+    const flat = await listAllMediaItems(supabase)
     return { data: flat }
   } catch (err) {
     console.error("[getMediaItems] error:", err)
+    return { error: "No se pudieron cargar las imágenes." }
+  }
+}
+
+export type MediaItemsPage = {
+  items: MediaItem[]
+  nextCursor: string | null
+  total: number
+}
+
+export async function getMediaItemsPage(params?: {
+  cursor?: string | null
+  limit?: number
+}): Promise<{ data?: MediaItemsPage; error?: string }> {
+  const supabase = createAdminClient()
+  const limit = Math.max(1, Math.min(params?.limit ?? MEDIA_PAGE_SIZE, 100))
+  const cursor = params?.cursor ?? null
+
+  try {
+    const flat = await listAllMediaItems(supabase)
+
+    let startIndex = 0
+    if (cursor) {
+      const decoded = decodeCursor(cursor)
+      if (decoded) {
+        const idx = flat.findIndex((item) => item.path === decoded.path)
+        if (idx >= 0) startIndex = idx + 1
+      }
+    }
+
+    const page = flat.slice(startIndex, startIndex + limit)
+    const hasMore = startIndex + limit < flat.length
+    const last = page[page.length - 1]
+    const nextCursor =
+      hasMore && last
+        ? encodeCursor({ createdAt: last.createdAt, path: last.path })
+        : null
+
+    return {
+      data: {
+        items: page,
+        nextCursor,
+        total: flat.length,
+      },
+    }
+  } catch (err) {
+    console.error("[getMediaItemsPage] error:", err)
     return { error: "No se pudieron cargar las imágenes." }
   }
 }
