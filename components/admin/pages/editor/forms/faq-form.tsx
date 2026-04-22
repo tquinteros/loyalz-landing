@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,10 +16,22 @@ type Props = {
 type FAQItem = FAQSectionProps["items"][number]
 
 export function FAQForm({ value, onChange }: Props) {
+  const [local, setLocal] = useState<FAQSectionProps>(value)
+
+  useEffect(() => {
+    setLocal(value)
+  }, [value])
+
+  const debouncedOnChange = useDebouncedCallback(onChange, 300)
+
   const set = <K extends keyof FAQSectionProps>(
     key: K,
     next: FAQSectionProps[K],
-  ) => onChange({ ...value, [key]: next })
+  ) => {
+    const nextValue = { ...local, [key]: next }
+    setLocal(nextValue)
+    debouncedOnChange(nextValue)
+  }
 
   return (
     <div className="space-y-4">
@@ -25,7 +39,7 @@ export function FAQForm({ value, onChange }: Props) {
         <Label htmlFor="faq-title">Título</Label>
         <Input
           id="faq-title"
-          value={value.title ?? ""}
+          value={local.title ?? ""}
           onChange={(e) => set("title", e.target.value || undefined)}
         />
       </div>
@@ -35,7 +49,7 @@ export function FAQForm({ value, onChange }: Props) {
         <Textarea
           id="faq-subtitle"
           rows={2}
-          value={value.subtitle ?? ""}
+          value={local.subtitle ?? ""}
           onChange={(e) => set("subtitle", e.target.value || undefined)}
         />
       </div>
@@ -43,7 +57,7 @@ export function FAQForm({ value, onChange }: Props) {
       <div className="space-y-2">
         <Label>Preguntas</Label>
         <ItemsField<FAQItem>
-          items={value.items ?? []}
+          items={local.items ?? []}
           onChange={(items) => set("items", items)}
           createItem={() => ({ question: "", answer: "" })}
           addLabel="Añadir pregunta"

@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,10 +16,22 @@ type Props = {
 type StatItem = StatsSectionProps["items"][number]
 
 export function StatsForm({ value, onChange }: Props) {
+  const [local, setLocal] = useState<StatsSectionProps>(value)
+
+  useEffect(() => {
+    setLocal(value)
+  }, [value])
+
+  const debouncedOnChange = useDebouncedCallback(onChange, 300)
+
   const set = <K extends keyof StatsSectionProps>(
     key: K,
     next: StatsSectionProps[K],
-  ) => onChange({ ...value, [key]: next })
+  ) => {
+    const nextValue = { ...local, [key]: next }
+    setLocal(nextValue)
+    debouncedOnChange(nextValue)
+  }
 
   return (
     <div className="space-y-4">
@@ -25,7 +39,7 @@ export function StatsForm({ value, onChange }: Props) {
         <Label htmlFor="stats-title">Título</Label>
         <Input
           id="stats-title"
-          value={value.title ?? ""}
+          value={local.title ?? ""}
           onChange={(e) => set("title", e.target.value || undefined)}
         />
       </div>
@@ -35,7 +49,7 @@ export function StatsForm({ value, onChange }: Props) {
         <Textarea
           id="stats-subtitle"
           rows={2}
-          value={value.subtitle ?? ""}
+          value={local.subtitle ?? ""}
           onChange={(e) => set("subtitle", e.target.value || undefined)}
         />
       </div>
@@ -43,7 +57,7 @@ export function StatsForm({ value, onChange }: Props) {
       <div className="space-y-2">
         <Label>Métricas</Label>
         <ItemsField<StatItem>
-          items={value.items ?? []}
+          items={local.items ?? []}
           onChange={(items) => set("items", items)}
           createItem={() => ({ value: "100+", label: "Clientes" })}
           addLabel="Añadir métrica"

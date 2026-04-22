@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,10 +16,22 @@ type Props = {
 type TestimonialItem = TestimonialsSectionProps["items"][number]
 
 export function TestimonialsForm({ value, onChange }: Props) {
+  const [local, setLocal] = useState<TestimonialsSectionProps>(value)
+
+  useEffect(() => {
+    setLocal(value)
+  }, [value])
+
+  const debouncedOnChange = useDebouncedCallback(onChange, 300)
+
   const set = <K extends keyof TestimonialsSectionProps>(
     key: K,
     next: TestimonialsSectionProps[K],
-  ) => onChange({ ...value, [key]: next })
+  ) => {
+    const nextValue = { ...local, [key]: next }
+    setLocal(nextValue)
+    debouncedOnChange(nextValue)
+  }
 
   return (
     <div className="space-y-4">
@@ -25,7 +39,7 @@ export function TestimonialsForm({ value, onChange }: Props) {
         <Label htmlFor="test-title">Título</Label>
         <Input
           id="test-title"
-          value={value.title ?? ""}
+          value={local.title ?? ""}
           onChange={(e) => set("title", e.target.value || undefined)}
         />
       </div>
@@ -35,7 +49,7 @@ export function TestimonialsForm({ value, onChange }: Props) {
         <Textarea
           id="test-subtitle"
           rows={2}
-          value={value.subtitle ?? ""}
+          value={local.subtitle ?? ""}
           onChange={(e) => set("subtitle", e.target.value || undefined)}
         />
       </div>
@@ -43,7 +57,7 @@ export function TestimonialsForm({ value, onChange }: Props) {
       <div className="space-y-2">
         <Label>Testimonios</Label>
         <ItemsField<TestimonialItem>
-          items={value.items ?? []}
+          items={local.items ?? []}
           onChange={(items) => set("items", items)}
           createItem={() => ({ quote: "", author: "", role: "" })}
           addLabel="Añadir testimonio"

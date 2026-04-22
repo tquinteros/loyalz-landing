@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -33,7 +34,11 @@ type Props = {
  * Unknown section types get a read-only fallback so the editor never crashes
  * on legacy data.
  */
-export function SectionForm({ section, onPatch, onPropsChange }: Props) {
+export const SectionForm = memo(function SectionForm({
+  section,
+  onPatch,
+  onPropsChange,
+}: Props) {
   const entry =
     section.type in SECTION_REGISTRY
       ? SECTION_REGISTRY[section.type as PageSection["type"]]
@@ -99,7 +104,7 @@ export function SectionForm({ section, onPatch, onPropsChange }: Props) {
       </div>
     </ScrollArea>
   )
-}
+})
 
 function TypedSectionBody({
   section,

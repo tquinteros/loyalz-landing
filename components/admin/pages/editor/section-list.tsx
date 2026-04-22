@@ -1,5 +1,6 @@
 "use client"
 
+import { memo } from "react"
 import { Plus } from "lucide-react"
 import { DragDropProvider } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
@@ -31,7 +32,7 @@ type Props = {
   onToggleEnabled: (id: string) => void
 }
 
-export function SectionList({
+export const SectionList = memo(function SectionList({
   sections,
   selectedId,
   onSelect,
@@ -109,4 +110,4 @@ export function SectionList({
       </ScrollArea>
     </div>
   )
-}
+})

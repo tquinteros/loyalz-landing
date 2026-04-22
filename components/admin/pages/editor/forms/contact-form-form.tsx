@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,10 +13,22 @@ type Props = {
 }
 
 export function ContactFormForm({ value, onChange }: Props) {
+  const [local, setLocal] = useState<ContactFormSectionProps>(value)
+
+  useEffect(() => {
+    setLocal(value)
+  }, [value])
+
+  const debouncedOnChange = useDebouncedCallback(onChange, 300)
+
   const set = <K extends keyof ContactFormSectionProps>(
     key: K,
     next: ContactFormSectionProps[K],
-  ) => onChange({ ...value, [key]: next })
+  ) => {
+    const nextValue = { ...local, [key]: next }
+    setLocal(nextValue)
+    debouncedOnChange(nextValue)
+  }
 
   return (
     <div className="space-y-4">
@@ -22,7 +36,7 @@ export function ContactFormForm({ value, onChange }: Props) {
         <Label htmlFor="cf-title">Título</Label>
         <Input
           id="cf-title"
-          value={value.title ?? ""}
+          value={local.title ?? ""}
           onChange={(e) => set("title", e.target.value || undefined)}
         />
       </div>
@@ -32,7 +46,7 @@ export function ContactFormForm({ value, onChange }: Props) {
         <Textarea
           id="cf-subtitle"
           rows={2}
-          value={value.subtitle ?? ""}
+          value={local.subtitle ?? ""}
           onChange={(e) => set("subtitle", e.target.value || undefined)}
         />
       </div>
@@ -41,7 +55,7 @@ export function ContactFormForm({ value, onChange }: Props) {
         <Label htmlFor="cf-submit">Texto del botón</Label>
         <Input
           id="cf-submit"
-          value={value.submitLabel ?? ""}
+          value={local.submitLabel ?? ""}
           onChange={(e) => set("submitLabel", e.target.value || undefined)}
           placeholder="Enviar"
         />

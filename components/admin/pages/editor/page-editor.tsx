@@ -1,7 +1,8 @@
 "use client"
 
-import { useCallback, useMemo, useState, useTransition } from "react"
+import { useCallback, useState, useTransition } from "react"
 import Link from "next/link"
+import { useDebounce } from "use-debounce"
 import {
   ArrowLeft,
   ExternalLink,
@@ -50,13 +51,9 @@ export function PageEditor({
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [savedAt, setSavedAt] = useState<number | null>(null)
+  const [isDirty, setIsDirty] = useState(false)
 
-  const initialJson = useMemo(
-    () => JSON.stringify(initialSections),
-    [initialSections],
-  )
-  const currentJson = useMemo(() => JSON.stringify(sections), [sections])
-  const isDirty = initialJson !== currentJson
+  const [debouncedSections] = useDebounce(sections, 400)
 
   const selectedIndex = sections.findIndex((s) => s.id === selectedId)
   const selected = selectedIndex >= 0 ? sections[selectedIndex] : null
@@ -65,6 +62,7 @@ export function PageEditor({
     const next = createDefaultSection(type)
     setSections((prev) => [...prev, next])
     setSelectedId(next.id)
+    setIsDirty(true)
   }, [])
 
   const removeSection = useCallback(
@@ -76,6 +74,7 @@ export function PageEditor({
         }
         return next
       })
+      setIsDirty(true)
     },
     [selectedId],
   )
@@ -96,12 +95,14 @@ export function PageEditor({
       next.splice(toIndex, 0, item)
       return next
     })
+    setIsDirty(true)
   }, [])
 
   const toggleEnabled = useCallback((id: string) => {
     setSections((prev) =>
       prev.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s)),
     )
+    setIsDirty(true)
   }, [])
 
   /**
@@ -113,6 +114,7 @@ export function PageEditor({
       setSections((prev) =>
         prev.map((s) => (s.id === id ? { ...s, ...patch } : s)),
       )
+      setIsDirty(true)
     },
     [],
   )
@@ -130,6 +132,7 @@ export function PageEditor({
             : s,
         ),
       )
+      setIsDirty(true)
     },
     [],
   )
@@ -143,6 +146,7 @@ export function PageEditor({
         return
       }
       setSavedAt(Date.now())
+      setIsDirty(false)
       toast.success("Secciones guardadas correctamente")
     })
   }
@@ -151,6 +155,7 @@ export function PageEditor({
     setSections(initialSections)
     setSelectedId(initialSections[0]?.id ?? null)
     setError(null)
+    setIsDirty(false)
   }
 
   return (
@@ -282,7 +287,7 @@ export function PageEditor({
               {sections.length} secciones visibles
             </p>
           </div>
-          <LivePreview sections={sections} />
+          <LivePreview sections={debouncedSections} />
         </div>
       ) : null}
     </div>

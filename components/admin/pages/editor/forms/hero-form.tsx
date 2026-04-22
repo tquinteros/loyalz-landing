@@ -1,5 +1,7 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -45,10 +47,22 @@ function CtaFields({
 }
 
 export function HeroForm({ value, onChange }: Props) {
+  const [local, setLocal] = useState<HeroSectionProps>(value)
+
+  useEffect(() => {
+    setLocal(value)
+  }, [value])
+
+  const debouncedOnChange = useDebouncedCallback(onChange, 300)
+
   const set = <K extends keyof HeroSectionProps>(
     key: K,
     next: HeroSectionProps[K],
-  ) => onChange({ ...value, [key]: next })
+  ) => {
+    const nextValue = { ...local, [key]: next }
+    setLocal(nextValue)
+    debouncedOnChange(nextValue)
+  }
 
   return (
     <div className="space-y-4">
@@ -56,7 +70,7 @@ export function HeroForm({ value, onChange }: Props) {
         <Label htmlFor="hero-eyebrow">Eyebrow</Label>
         <Input
           id="hero-eyebrow"
-          value={value.eyebrow ?? ""}
+          value={local.eyebrow ?? ""}
           onChange={(e) => set("eyebrow", e.target.value || undefined)}
           placeholder="Anuncio corto en mayúsculas"
         />
@@ -66,7 +80,7 @@ export function HeroForm({ value, onChange }: Props) {
         <Label htmlFor="hero-title">Título *</Label>
         <Input
           id="hero-title"
-          value={value.title ?? ""}
+          value={local.title ?? ""}
           onChange={(e) => set("title", e.target.value)}
           placeholder="Convierte a cada cliente…"
         />
@@ -77,19 +91,19 @@ export function HeroForm({ value, onChange }: Props) {
         <Textarea
           id="hero-subtitle"
           rows={3}
-          value={value.subtitle ?? ""}
+          value={local.subtitle ?? ""}
           onChange={(e) => set("subtitle", e.target.value || undefined)}
         />
       </div>
 
       <CtaFields
         label="CTA principal"
-        value={value.primaryCta}
+        value={local.primaryCta}
         onChange={(next) => set("primaryCta", next)}
       />
       <CtaFields
         label="CTA secundario"
-        value={value.secondaryCta}
+        value={local.secondaryCta}
         onChange={(next) => set("secondaryCta", next)}
       />
     </div>
