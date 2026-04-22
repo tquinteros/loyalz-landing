@@ -41,6 +41,12 @@ export const SectionList = memo(function SectionList({
   onRemove,
   onToggleEnabled,
 }: Props) {
+  function handleMove(index: number, direction: "up" | "down") {
+    const targetIndex = direction === "up" ? index - 1 : index + 1
+    if (targetIndex < 0 || targetIndex >= sections.length) return
+    onReorder(index, targetIndex)
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-2 border-b px-4 py-3">
@@ -98,8 +104,10 @@ export const SectionList = memo(function SectionList({
                   key={section.id}
                   section={section}
                   index={i}
+                  total={sections.length}
                   isSelected={section.id === selectedId}
                   onSelect={onSelect}
+                  onMove={handleMove}
                   onRemove={onRemove}
                   onToggleEnabled={onToggleEnabled}
                 />

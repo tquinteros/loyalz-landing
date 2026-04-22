@@ -1,6 +1,6 @@
 "use client"
 
-import { Eye, EyeOff, GripVertical, Trash2 } from "lucide-react"
+import { ChevronDown, ChevronUp, Eye, EyeOff, GripVertical, Trash2 } from "lucide-react"
 import { useSortable } from "@dnd-kit/react/sortable"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -10,8 +10,10 @@ import type { AnyPageSection } from "@/lib/types/Pages"
 type Props = {
   section: AnyPageSection
   index: number
+  total: number
   isSelected: boolean
   onSelect: (id: string) => void
+  onMove: (index: number, direction: "up" | "down") => void
   onRemove: (id: string) => void
   onToggleEnabled: (id: string) => void
 }
@@ -24,8 +26,10 @@ function labelFor(type: string): string {
 export function SortableSectionItem({
   section,
   index,
+  total,
   isSelected,
   onSelect,
+  onMove,
   onRemove,
   onToggleEnabled,
 }: Props) {
@@ -53,13 +57,38 @@ export function SortableSectionItem({
         aria-label="Arrastrar para reordenar"
         title="Arrastrar para reordenar"
         className={cn(
-          "flex size-6 shrink-0 cursor-grab items-center justify-center rounded text-muted-foreground",
+          "hidden size-6 shrink-0 cursor-grab items-center justify-center rounded text-muted-foreground sm:flex",
           "hover:bg-muted hover:text-foreground active:cursor-grabbing",
           "touch-none select-none",
         )}
       >
         <GripVertical className="size-4" />
       </button>
+
+      <div className="flex shrink-0 flex-col sm:hidden">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-6"
+          title="Mover arriba"
+          onClick={() => onMove(index, "up")}
+          disabled={index === 0}
+        >
+          <ChevronUp className="size-3.5" />
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-6"
+          title="Mover abajo"
+          onClick={() => onMove(index, "down")}
+          disabled={index === total - 1}
+        >
+          <ChevronDown className="size-3.5" />
+        </Button>
+      </div>
 
       <button
         type="button"
