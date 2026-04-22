@@ -20,8 +20,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Blocks, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react"
-import { PageDialog } from "./page-dialog"
-import { DeletePageDialog } from "./delete-page-dialog"
+import { PageDialog } from "@/components/admin/pages/page-dialog"
+import { DeletePageDialog } from "@/components/admin/pages/delete-page-dialog"
 import type { AnyPageSection } from "@/lib/types/Pages"
 
 export type AdminPageRow = {
@@ -98,7 +98,7 @@ export default function PagesTemplate({ pages, error }: PagesTemplateProps) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Pages</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Controla el contenido dinámico de cada página del sitio.
           </p>
         </div>

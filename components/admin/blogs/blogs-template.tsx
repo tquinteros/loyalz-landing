@@ -93,6 +93,9 @@ export default function BlogsTemplate({ posts, error }: BlogsTemplateProps) {
           <h1 className="text-2xl font-semibold tracking-tight">
             Blogs
           </h1>
+          <p className="text-sm text-muted-foreground">
+            Controla el contenido de los blogs.
+          </p>
         </div>
         <Button onClick={openCreate} size="sm" className="shrink-0">
           <Plus className="size-4" />
