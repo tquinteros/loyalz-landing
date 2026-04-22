@@ -10,10 +10,7 @@ type Props = {
   onPatch: (patch: Partial<AnyPageSection>) => void
 }
 
-/**
- * Fields shared by every section (not inside `props`): background image,
- * extra class overrides, etc. Rendered in every section form.
- */
+
 export function CommonSectionFields({ section, onPatch }: Props) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
@@ -24,7 +21,7 @@ export function CommonSectionFields({ section, onPatch }: Props) {
           onChange={(url) => onPatch({ backgroundImage: url })}
         />
       </div>
-      <div className="space-y-1.5 sm:col-span-2">
+      {/* <div className="space-y-1.5 sm:col-span-2">
         <Label htmlFor="sec-class">Clases CSS extra</Label>
         <Input
           id="sec-class"
@@ -35,7 +32,7 @@ export function CommonSectionFields({ section, onPatch }: Props) {
         <p className="text-xs text-muted-foreground">
           Sólo para ajustes avanzados. Se añaden al wrapper de la sección.
         </p>
-      </div>
+      </div> */}
     </div>
   )
 }

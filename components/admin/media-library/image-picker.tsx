@@ -58,7 +58,7 @@ export function ImagePicker({
   }
 
   return (
-    <div className={cn("space-y-3", className)}>
+    <div className={cn("space-y-3 py-2", className)}>
       <Tabs
         value={tab}
         onValueChange={(v) => setTab(v as "upload" | "existing")}
