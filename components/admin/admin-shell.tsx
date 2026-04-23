@@ -8,6 +8,7 @@ import { FileText, Images, Layers, LayoutDashboard, Settings } from "lucide-reac
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -21,6 +22,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ThemeSwitcher } from "../theme-switcher"
+import { LogoutButton } from "../logout-button"
 
 function normalizePath(path: string) {
   if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1)
@@ -118,6 +120,9 @@ export function AdminShell({ children }: AdminShellProps) {
         </SidebarHeader>
 
         <AdminNavigation pathname={pathname} />
+        <SidebarFooter className="mt-auto border-t border-sidebar-border">
+          <LogoutButton />
+        </SidebarFooter>
       </Sidebar>
 
       <SidebarInset>
