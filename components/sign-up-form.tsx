@@ -47,11 +47,8 @@ export function SignUpForm({
           emailRedirectTo: `${window.location.origin}/`,
         },
       });
+      if (error) throw error;
       router.push("/auth/sign-up-success");
-    if (error) {
-      console.log(error, "error");
-      throw error;
-    }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
