@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const BlogsSkeleton = () => {
     return (
-        <div className="container mx-auto px-5 py-10 lg:px-0">
+        <div className="container mx-auto px-5 py-10 lg:px-8">
             <div className="mb-10 max-w-2xl">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Blogs</h1>
                 <p className="mt-2 text-muted-foreground">

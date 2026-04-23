@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { type ReactNode } from "react"
-import { FileText, LayoutDashboard, Settings, Users } from "lucide-react"
+import { FileText, Images, Layers, LayoutDashboard, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -20,6 +20,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { ThemeSwitcher } from "../theme-switcher"
 
 function normalizePath(path: string) {
   if (path.length > 1 && path.endsWith("/")) return path.slice(0, -1)
@@ -36,13 +37,14 @@ function isActiveNavItem(pathname: string, href: string) {
 
 const mainNavItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { title: "Pages", href: "/admin/pages", icon: Layers },
   { title: "Blogs", href: "/admin/blogs", icon: FileText },
-  // { title: "Pages", href: "/admin/pages", icon: FileText },
+  { title: "Imágenes", href: "/admin/media-library", icon: Images },
 ] as const
 
 const settingsNavItems = [
   { title: "Configuración", href: "/admin/settings", icon: Settings },
-  ] as const
+] as const
 
 type AdminShellProps = {
   children: ReactNode
@@ -109,8 +111,9 @@ export function AdminShell({ children }: AdminShellProps) {
     <SidebarProvider defaultOpen>
       <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
         <SidebarHeader className="h-14 border-b border-sidebar-border">
-          <div className="flex h-full items-center px-2">
+          <div className="flex h-full items-center justify-between px-2">
             <Link href="/" className="text-sm font-semibold tracking-tight">LoyalZ Admin</Link>
+            <ThemeSwitcher />
           </div>
         </SidebarHeader>
 

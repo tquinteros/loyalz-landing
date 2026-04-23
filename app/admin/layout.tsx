@@ -10,19 +10,26 @@ type AdminLayoutProps = {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    <Suspense fallback={<AdminShellFallback />}>
+    <Suspense fallback={<AdminAccessFallback />}>
       <AdminAccessGuard>{children}</AdminAccessGuard>
     </Suspense>
   )
 }
 
-function AdminShellFallback() {
+/**
+ * Fallback shown while `AdminAccessGuard` awaits the Supabase auth call.
+ *
+ * Must NOT render `AdminShell` — it's a client component that calls
+ * `usePathname()`, which `cacheComponents: true` treats as uncached dynamic
+ * data. If the shell appears in a Suspense fallback, Next can't prerender
+ * the static shell of any admin route (fails with
+ * "Uncached data was accessed outside of <Suspense>").
+ */
+function AdminAccessFallback() {
   return (
-    <AdminShell>
-      <div className="flex min-h-[40vh] items-center justify-center text-sm text-muted-foreground">
-        Verificando acceso…
-      </div>
-    </AdminShell>
+    <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
+      Verificando acceso…
+    </div>
   )
 }
 

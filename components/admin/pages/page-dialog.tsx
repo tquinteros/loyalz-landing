@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,13 +26,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { BlogEditor } from "./blog-editor"
-import { ImagePicker } from "@/components/admin/media-library/image-picker"
-import { createPost, updatePost } from "@/lib/actions/blog"
-import type { AdminPostRow } from "./blogs-template"
-import type { TipTapDocument } from "@/lib/types/content"
-import type { PostFormValues } from "@/lib/types/Posts"
-import { toast } from "sonner"
+import { createPage, updatePage } from "@/lib/actions/pages"
+import type { PageFormValues } from "@/lib/types/Pages"
+import type { AdminPageRow } from "./pages-template"
 
 function generateSlug(title: string): string {
   return title
@@ -43,29 +39,26 @@ function generateSlug(title: string): string {
     .replace(/^-+|-+$/g, "")
 }
 
-const EMPTY_FORM: PostFormValues = {
+const EMPTY_FORM: PageFormValues = {
   title: "",
   slug: "",
-  excerpt: "",
-  cover_image: "",
   status: "draft",
   seo_title: "",
   seo_description: "",
-  content: null,
 }
 
-type PostDialogProps = {
+type PageDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  post?: AdminPostRow | null
+  page?: AdminPageRow | null
 }
 
-export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
-  const isEditing = !!post
+export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
+  const isEditing = !!page
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [slugEdited, setSlugEdited] = useState(false)
-  const [form, setForm] = useState<PostFormValues>(EMPTY_FORM)
+  const [form, setForm] = useState<PageFormValues>(EMPTY_FORM)
 
   useEffect(() => {
     if (!open) {
@@ -73,28 +66,24 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
       setSlugEdited(false)
       return
     }
-    if (post) {
+    if (page) {
       setForm({
-        title: post.title ?? "",
-        slug: post.slug ?? "",
-        excerpt: post.excerpt ?? "",
-        cover_image: (post as { cover_image?: string | null }).cover_image ?? "",
-        status: (post.status as "draft" | "published") ?? "draft",
-        seo_title: (post as { seo_title?: string | null }).seo_title ?? "",
-        seo_description:
-          (post as { seo_description?: string | null }).seo_description ?? "",
-        content: (post as { content?: TipTapDocument | null }).content ?? null,
+        title: page.title ?? "",
+        slug: page.slug ?? "",
+        status: (page.status as "draft" | "published") ?? "draft",
+        seo_title: page.seo_title ?? "",
+        seo_description: page.seo_description ?? "",
       })
       setSlugEdited(true)
     } else {
       setForm(EMPTY_FORM)
       setSlugEdited(false)
     }
-  }, [open, post])
+  }, [open, page])
 
-  function set<K extends keyof PostFormValues>(
+  function set<K extends keyof PageFormValues>(
     key: K,
-    value: PostFormValues[K],
+    value: PageFormValues[K],
   ) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
@@ -109,31 +98,35 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
       setError("El título es obligatorio.")
       return
     }
+    const slug = form.slug || generateSlug(form.title)
+    if (!slug) {
+      setError("El slug es obligatorio.")
+      return
+    }
     setError(null)
 
     startTransition(async () => {
+      const payload: PageFormValues = { ...form, slug }
+
       const result = isEditing
-        ? await updatePost(post!.id, form)
-        : await createPost(form)
+        ? await updatePage(page!.id, payload)
+        : await createPage(payload)
 
       if (result.error) {
-        toast.error(result.error)
         setError(result.error)
         return
       }
-      toast.success(
-        isEditing ? "Blog guardado correctamente" : "Blog creado correctamente",
-      )
+
       onOpenChange(false)
     })
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[92dvh] max-w-3xl! overflow-y-auto flex-col gap-0 p-0">
+      <DialogContent className="flex max-h-[92dvh] max-w-2xl! flex-col gap-0 overflow-y-auto p-0">
         <DialogHeader className="shrink-0 border-b px-6 py-4">
           <DialogTitle>
-            {isEditing ? "Editar blog" : "Nuevo blog"}
+            {isEditing ? "Editar página" : "Nueva página"}
           </DialogTitle>
         </DialogHeader>
 
@@ -152,7 +145,7 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                   id="pd-title"
                   value={form.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="Mi blog"
+                  placeholder="Mi página"
                 />
               </div>
 
@@ -161,18 +154,23 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                 <Input
                   id="pd-slug"
                   value={form.slug}
+                  disabled={form.slug === "home"}
                   onChange={(e) => {
                     setSlugEdited(true)
                     set("slug", e.target.value)
                   }}
-                  placeholder="mi-blog"
+                  placeholder="mi-pagina"
                 />
+                <p className="text-xs text-muted-foreground">
+                  La página <code className="font-mono">home</code> no puede ser editada.
+                </p>
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="pd-status">Estado</Label>
                 <Select
                   value={form.status}
+                  disabled={form.slug === "home"}
                   onValueChange={(v) =>
                     set("status", v as "draft" | "published")
                   }
@@ -186,34 +184,14 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                   </SelectContent>
                 </Select>
               </div>
-
-              <div className="space-y-1.5 sm:col-span-2">
-                <Label>Imagen de portada</Label>
-                <ImagePicker
-                  value={form.cover_image || null}
-                  onChange={(url) => set("cover_image", url ?? "")}
-                />
-              </div>
-
-              <div className="space-y-1.5 sm:col-span-2">
-                <Label htmlFor="pd-excerpt">Resumen</Label>
-                <Textarea
-                  id="pd-excerpt"
-                  rows={2}
-                  value={form.excerpt}
-                  onChange={(e) => set("excerpt", e.target.value)}
-                  placeholder="Breve resumen que se muestra en las tarjetas…"
-                />
-              </div>
             </div>
 
-            <div className="space-y-1.5">
-              <Label>Contenido</Label>
-              <BlogEditor
-                value={form.content}
-                onChange={(doc) => set("content", doc)}
-              />
-            </div>
+            {!isEditing && (
+              <p className="rounded-md border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                Las secciones se añaden desde el editor de la página tras
+                crearla.
+              </p>
+            )}
 
             <Accordion
               type="single"
@@ -269,7 +247,7 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                 : "Creando…"
               : isEditing
                 ? "Guardar cambios"
-                : "Crear blog"}
+                : "Crear página"}
           </Button>
         </DialogFooter>
       </DialogContent>
