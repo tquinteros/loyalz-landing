@@ -1,6 +1,9 @@
 "use client"
 
 import { useState, useEffect, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 import {
   Dialog,
   DialogContent,
@@ -54,6 +57,44 @@ const EMPTY_FORM: PostFormValues = {
   content: null,
 }
 
+function hasMeaningfulContent(doc: TipTapDocument | null): boolean {
+  if (!doc?.content?.length) return false
+
+  const stack = [...doc.content]
+  while (stack.length > 0) {
+    const node = stack.pop()
+    if (!node) continue
+
+    if ("text" in node && typeof node.text === "string" && node.text.trim()) {
+      return true
+    }
+    if (node.type === "image") {
+      return true
+    }
+    if ("content" in node && Array.isArray(node.content)) {
+      stack.push(...node.content)
+    }
+  }
+
+  return false
+}
+
+const postSchema = z.object({
+  title: z.string().trim().min(1, "El título es obligatorio."),
+  slug: z.string().trim().min(1, "El slug es obligatorio."),
+  excerpt: z.string().trim().min(1, "El resumen es obligatorio."),
+  cover_image: z.string().trim().min(1, "La imagen de portada es obligatoria."),
+  status: z.enum(["draft", "published"]),
+  seo_title: z.string(),
+  seo_description: z.string(),
+  content: z
+    .custom<TipTapDocument | null>()
+    .refine(
+      (value) => hasMeaningfulContent(value ?? null),
+      "El contenido es obligatorio.",
+    ),
+})
+
 type PostDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -65,16 +106,29 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [slugEdited, setSlugEdited] = useState(false)
-  const [form, setForm] = useState<PostFormValues>(EMPTY_FORM)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<PostFormValues>({
+    resolver: zodResolver(postSchema),
+    defaultValues: EMPTY_FORM,
+  })
+
+  const form = watch()
 
   useEffect(() => {
     if (!open) {
       setError(null)
       setSlugEdited(false)
+      reset(EMPTY_FORM)
       return
     }
     if (post) {
-      setForm({
+      reset({
         title: post.title ?? "",
         slug: post.slug ?? "",
         excerpt: post.excerpt ?? "",
@@ -87,34 +141,25 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
       })
       setSlugEdited(true)
     } else {
-      setForm(EMPTY_FORM)
+      reset(EMPTY_FORM)
       setSlugEdited(false)
     }
-  }, [open, post])
-
-  function set<K extends keyof PostFormValues>(
-    key: K,
-    value: PostFormValues[K],
-  ) {
-    setForm((prev) => ({ ...prev, [key]: value }))
-  }
+  }, [open, post, reset])
 
   function handleTitleChange(title: string) {
-    set("title", title)
-    if (!slugEdited) set("slug", generateSlug(title))
+    setValue("title", title, { shouldValidate: true })
+    if (!slugEdited) {
+      setValue("slug", generateSlug(title), { shouldValidate: true })
+    }
   }
 
-  function handleSubmit() {
-    if (!form.title.trim()) {
-      setError("El título es obligatorio.")
-      return
-    }
+  const onSubmit = handleSubmit((values) => {
     setError(null)
 
     startTransition(async () => {
       const result = isEditing
-        ? await updatePost(post!.id, form)
-        : await createPost(form)
+        ? await updatePost(post!.id, values)
+        : await createPost(values)
 
       if (result.error) {
         toast.error(result.error)
@@ -126,7 +171,7 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
       )
       onOpenChange(false)
     })
-  }
+  })
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -150,32 +195,40 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                 <Label htmlFor="pd-title">Título *</Label>
                 <Input
                   id="pd-title"
-                  value={form.title}
+                  {...register("title")}
+                  value={form.title ?? ""}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="Mi blog"
                 />
+                {errors.title?.message && (
+                  <p className="text-sm text-destructive">{errors.title.message}</p>
+                )}
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="pd-slug">Slug (URL)</Label>
                 <Input
                   id="pd-slug"
-                  value={form.slug}
+                  {...register("slug")}
+                  value={form.slug ?? ""}
                   onChange={(e) => {
                     setSlugEdited(true)
-                    set("slug", e.target.value)
+                    setValue("slug", e.target.value, { shouldValidate: true })
                   }}
                   placeholder="mi-blog"
                 />
+                {errors.slug?.message && (
+                  <p className="text-sm text-destructive">{errors.slug.message}</p>
+                )}
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="pd-status">Estado</Label>
                 <Select
-                  value={form.status}
-                  onValueChange={(v) =>
-                    set("status", v as "draft" | "published")
-                  }
+                  value={form.status ?? "draft"}
+                  onValueChange={(v) => {
+                    setValue("status", v as "draft" | "published")
+                  }}
                 >
                   <SelectTrigger id="pd-status">
                     <SelectValue />
@@ -191,8 +244,15 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                 <Label>Imagen de portada</Label>
                 <ImagePicker
                   value={form.cover_image || null}
-                  onChange={(url) => set("cover_image", url ?? "")}
+                  onChange={(url) =>
+                    setValue("cover_image", url ?? "", { shouldValidate: true })
+                  }
                 />
+                {errors.cover_image?.message && (
+                  <p className="text-sm text-destructive">
+                    {errors.cover_image.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">
@@ -200,10 +260,18 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                 <Textarea
                   id="pd-excerpt"
                   rows={2}
-                  value={form.excerpt}
-                  onChange={(e) => set("excerpt", e.target.value)}
+                  {...register("excerpt")}
+                  value={form.excerpt ?? ""}
+                  onChange={(e) =>
+                    setValue("excerpt", e.target.value, { shouldValidate: true })
+                  }
                   placeholder="Breve resumen que se muestra en las tarjetas…"
                 />
+                {errors.excerpt?.message && (
+                  <p className="text-sm text-destructive">
+                    {errors.excerpt.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -211,8 +279,13 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
               <Label>Contenido</Label>
               <BlogEditor
                 value={form.content}
-                onChange={(doc) => set("content", doc)}
+                onChange={(doc) =>
+                  setValue("content", doc, { shouldValidate: true })
+                }
               />
+              {errors.content?.message && (
+                <p className="text-sm text-destructive">{errors.content.message}</p>
+              )}
             </div>
 
             <Accordion
@@ -230,8 +303,9 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                       <Label htmlFor="pd-seo-title">Título SEO</Label>
                       <Input
                         id="pd-seo-title"
-                        value={form.seo_title}
-                        onChange={(e) => set("seo_title", e.target.value)}
+                        {...register("seo_title")}
+                        value={form.seo_title ?? ""}
+                        onChange={(e) => setValue("seo_title", e.target.value)}
                         placeholder="Sustituye al título en los resultados de búsqueda"
                       />
                     </div>
@@ -240,10 +314,9 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                       <Textarea
                         id="pd-seo-desc"
                         rows={2}
-                        value={form.seo_description}
-                        onChange={(e) =>
-                          set("seo_description", e.target.value)
-                        }
+                        {...register("seo_description")}
+                        value={form.seo_description ?? ""}
+                        onChange={(e) => setValue("seo_description", e.target.value)}
                         placeholder="~155 caracteres — se muestra en los fragmentos de búsqueda"
                       />
                     </div>
@@ -262,7 +335,7 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
           >
             Cancelar
           </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
+          <Button onClick={onSubmit} disabled={isPending}>
             {isPending
               ? isEditing
                 ? "Guardando…"

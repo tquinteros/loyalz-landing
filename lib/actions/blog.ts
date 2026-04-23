@@ -51,12 +51,23 @@ export async function createPost(values: PostFormValues) {
 
   const slug = values.slug || generateSlug(values.title)
   const now = new Date().toISOString()
+  const normalizedSlug = slug.trim()
+
+  const { data: existingSlug } = await supabase
+    .from("posts")
+    .select("id")
+    .eq("slug", normalizedSlug)
+    .maybeSingle()
+
+  if (existingSlug) {
+    return { error: "Ya existe un blog con ese slug." }
+  }
 
   const { data, error } = await supabase
     .from("posts")
     .insert({
       title: values.title,
-      slug,
+      slug: normalizedSlug,
       excerpt: values.excerpt || null,
       cover_image: values.cover_image || null,
       status: values.status,
@@ -82,6 +93,18 @@ export async function updatePost(id: string, values: PostFormValues) {
   const supabase = createAdminClient()
 
   const slug = values.slug || generateSlug(values.title)
+  const normalizedSlug = slug.trim()
+
+  const { data: existingSlug } = await supabase
+    .from("posts")
+    .select("id")
+    .eq("slug", normalizedSlug)
+    .neq("id", id)
+    .maybeSingle()
+
+  if (existingSlug) {
+    return { error: "Ya existe un blog con ese slug." }
+  }
 
   const { data: existing } = await supabase
     .from("posts")
@@ -96,7 +119,7 @@ export async function updatePost(id: string, values: PostFormValues) {
     .from("posts")
     .update({
       title: values.title,
-      slug,
+      slug: normalizedSlug,
       excerpt: values.excerpt || null,
       cover_image: values.cover_image || null,
       status: values.status,
@@ -115,14 +138,14 @@ export async function updatePost(id: string, values: PostFormValues) {
   if (error) return { error: error.message }
 
   updateTag(PUBLIC_POSTS_TAG)
-  updateTag(publicPostTag(slug))
-  if (existing?.slug && existing.slug !== slug) {
+  updateTag(publicPostTag(normalizedSlug))
+  if (existing?.slug && existing.slug !== normalizedSlug) {
     updateTag(publicPostTag(existing.slug))
     revalidatePath(`/blogs/${existing.slug}`)
   }
   revalidatePath("/admin/blogs")
   revalidatePath("/blogs")
-  revalidatePath(`/blogs/${slug}`)
+  revalidatePath(`/blogs/${normalizedSlug}`)
 
   return { data }
 }

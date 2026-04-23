@@ -1,6 +1,9 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 import {
   Dialog,
   DialogContent,
@@ -47,6 +50,14 @@ const EMPTY_FORM: PageFormValues = {
   seo_description: "",
 }
 
+const pageSchema = z.object({
+  title: z.string().trim().min(1, "El título es obligatorio."),
+  slug: z.string().trim().min(1, "El slug es obligatorio."),
+  status: z.enum(["draft", "published"]),
+  seo_title: z.string(),
+  seo_description: z.string(),
+})
+
 type PageDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -58,16 +69,29 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [slugEdited, setSlugEdited] = useState(false)
-  const [form, setForm] = useState<PageFormValues>(EMPTY_FORM)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<PageFormValues>({
+    resolver: zodResolver(pageSchema),
+    defaultValues: EMPTY_FORM,
+  })
+
+  const form = watch()
 
   useEffect(() => {
     if (!open) {
       setError(null)
       setSlugEdited(false)
+      reset(EMPTY_FORM)
       return
     }
     if (page) {
-      setForm({
+      reset({
         title: page.title ?? "",
         slug: page.slug ?? "",
         status: (page.status as "draft" | "published") ?? "draft",
@@ -76,37 +100,26 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
       })
       setSlugEdited(true)
     } else {
-      setForm(EMPTY_FORM)
+      reset(EMPTY_FORM)
       setSlugEdited(false)
     }
-  }, [open, page])
-
-  function set<K extends keyof PageFormValues>(
-    key: K,
-    value: PageFormValues[K],
-  ) {
-    setForm((prev) => ({ ...prev, [key]: value }))
-  }
+  }, [open, page, reset])
 
   function handleTitleChange(title: string) {
-    set("title", title)
-    if (!slugEdited) set("slug", generateSlug(title))
+    setValue("title", title, { shouldValidate: true })
+    if (!slugEdited) {
+      setValue("slug", generateSlug(title), { shouldValidate: true })
+    }
   }
 
-  function handleSubmit() {
-    if (!form.title.trim()) {
-      setError("El título es obligatorio.")
-      return
-    }
-    const slug = form.slug || generateSlug(form.title)
-    if (!slug) {
-      setError("El slug es obligatorio.")
-      return
-    }
+  const onSubmit = handleSubmit((values) => {
     setError(null)
 
     startTransition(async () => {
-      const payload: PageFormValues = { ...form, slug }
+      const payload: PageFormValues = {
+        ...values,
+        slug: values.slug || generateSlug(values.title),
+      }
 
       const result = isEditing
         ? await updatePage(page!.id, payload)
@@ -119,7 +132,7 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
 
       onOpenChange(false)
     })
-  }
+  })
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -143,24 +156,32 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                 <Label htmlFor="pd-title">Título *</Label>
                 <Input
                   id="pd-title"
-                  value={form.title}
+                  {...register("title")}
+                  value={form.title ?? ""}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder="Mi página"
                 />
+                {errors.title?.message && (
+                  <p className="text-sm text-destructive">{errors.title.message}</p>
+                )}
               </div>
 
               <div className="space-y-1.5">
                 <Label htmlFor="pd-slug">Slug (URL)</Label>
                 <Input
                   id="pd-slug"
-                  value={form.slug}
+                  {...register("slug")}
+                  value={form.slug ?? ""}
                   disabled={form.slug === "home"}
                   onChange={(e) => {
                     setSlugEdited(true)
-                    set("slug", e.target.value)
+                    setValue("slug", e.target.value, { shouldValidate: true })
                   }}
                   placeholder="mi-pagina"
                 />
+                {errors.slug?.message && (
+                  <p className="text-sm text-destructive">{errors.slug.message}</p>
+                )}
                 <p className="text-xs text-muted-foreground">
                   La página <code className="font-mono">home</code> no puede ser editada.
                 </p>
@@ -169,10 +190,10 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
               <div className="space-y-1.5">
                 <Label htmlFor="pd-status">Estado</Label>
                 <Select
-                  value={form.status}
+                  value={form.status ?? "draft"}
                   disabled={form.slug === "home"}
                   onValueChange={(v) =>
-                    set("status", v as "draft" | "published")
+                    setValue("status", v as "draft" | "published")
                   }
                 >
                   <SelectTrigger id="pd-status">
@@ -208,8 +229,9 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                       <Label htmlFor="pd-seo-title">Título SEO</Label>
                       <Input
                         id="pd-seo-title"
-                        value={form.seo_title}
-                        onChange={(e) => set("seo_title", e.target.value)}
+                        {...register("seo_title")}
+                        value={form.seo_title ?? ""}
+                        onChange={(e) => setValue("seo_title", e.target.value)}
                         placeholder="Sustituye al título en los resultados de búsqueda"
                       />
                     </div>
@@ -218,10 +240,9 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                       <Textarea
                         id="pd-seo-desc"
                         rows={2}
-                        value={form.seo_description}
-                        onChange={(e) =>
-                          set("seo_description", e.target.value)
-                        }
+                        {...register("seo_description")}
+                        value={form.seo_description ?? ""}
+                        onChange={(e) => setValue("seo_description", e.target.value)}
                         placeholder="~155 caracteres — se muestra en los fragmentos de búsqueda"
                       />
                     </div>
@@ -240,7 +261,7 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
           >
             Cancelar
           </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
+          <Button onClick={onSubmit} disabled={isPending}>
             {isPending
               ? isEditing
                 ? "Guardando…"
