@@ -154,6 +154,7 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                 <Input
                   id="pd-slug"
                   value={form.slug}
+                  disabled={form.slug === "home"}
                   onChange={(e) => {
                     setSlugEdited(true)
                     set("slug", e.target.value)
@@ -161,8 +162,7 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                   placeholder="mi-pagina"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Usa <code className="font-mono">home</code> para la página
-                  principal.
+                  La página <code className="font-mono">home</code> no puede ser editada.
                 </p>
               </div>
 
@@ -170,6 +170,7 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                 <Label htmlFor="pd-status">Estado</Label>
                 <Select
                   value={form.status}
+                  disabled={form.slug === "home"}
                   onValueChange={(v) =>
                     set("status", v as "draft" | "published")
                   }
