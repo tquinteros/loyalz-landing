@@ -8,11 +8,21 @@ import {
   ExternalLink,
   Eye,
   EyeOff,
+  History,
   RotateCcw,
   Save,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { updatePageSections } from "@/lib/actions/pages"
+import { getPageVersions, updatePageSections } from "@/lib/actions/pages"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   createDefaultSection,
   type SectionType,
@@ -20,6 +30,7 @@ import {
 import type {
   AnyPageSection,
   PageSection,
+  PageVersion,
 } from "@/lib/types/Pages"
 import { SectionList } from "@/components/admin/pages/editor/section-list"
 import { SectionForm } from "@/components/admin/pages/editor/section-form"
@@ -31,10 +42,21 @@ type Props = {
   pageTitle: string
   pageSlug: string
   initialSections: AnyPageSection[]
+  initialVersions: PageVersion[]
 }
 
 function publicHref(slug: string) {
   return slug === "home" ? "/" : `/${slug}`
+}
+
+function formatVersionLabel(version: PageVersion) {
+  const date = new Date(version.snapshot_at)
+  if (Number.isNaN(date.getTime())) return "Versión anterior"
+
+  return date.toLocaleString("es-AR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  })
 }
 
 export function PageEditor({
@@ -42,8 +64,13 @@ export function PageEditor({
   pageTitle,
   pageSlug,
   initialSections,
+  initialVersions,
 }: Props) {
   const [sections, setSections] = useState<AnyPageSection[]>(initialSections)
+  const [savedSections, setSavedSections] =
+    useState<AnyPageSection[]>(initialSections)
+  const [versions, setVersions] = useState<PageVersion[]>(initialVersions)
+  const [selectedVersionId, setSelectedVersionId] = useState<string>()
   const [selectedId, setSelectedId] = useState<string | null>(
     initialSections[0]?.id ?? null,
   )
@@ -139,23 +166,45 @@ export function PageEditor({
 
   function handleSave() {
     setError(null)
+    const sectionsToSave = sections
+
     startTransition(async () => {
-      const result = await updatePageSections(pageId, sections)
+      const result = await updatePageSections(pageId, sectionsToSave)
       if (result.error) {
         setError(result.error)
         return
       }
       setSavedAt(Date.now())
+      setSavedSections(sectionsToSave)
+      setSelectedVersionId(undefined)
       setIsDirty(false)
       toast.success("Secciones guardadas correctamente")
+
+      const historyResult = await getPageVersions(pageId)
+      if (historyResult.data) {
+        setVersions(historyResult.data)
+      }
     })
   }
 
   function handleReset() {
-    setSections(initialSections)
-    setSelectedId(initialSections[0]?.id ?? null)
+    setSections(savedSections)
+    setSelectedId(savedSections[0]?.id ?? null)
+    setSelectedVersionId(undefined)
     setError(null)
     setIsDirty(false)
+  }
+
+  function handleVersionSelect(versionId: string) {
+    const version = versions.find((item) => item.id === versionId)
+    if (!version) return
+
+    setSections(version.sections)
+    setSelectedId(version.sections[0]?.id ?? null)
+    setSelectedVersionId(versionId)
+    setError(null)
+    setIsDirty(true)
+    toast.info("Versión anterior cargada. Guarda para restaurarla.")
   }
 
   return (
@@ -186,6 +235,34 @@ export function PageEditor({
           ) : savedAt ? (
             <span className="text-xs text-muted-foreground">Guardado</span>
           ) : null}
+
+          <Select
+            value={selectedVersionId}
+            disabled={versions.length === 0 || isPending}
+            onValueChange={handleVersionSelect}
+          >
+            <SelectTrigger
+              size="sm"
+              className="w-[190px]"
+              title="Cargar una versión anterior"
+            >
+              <History className="size-4" />
+              <SelectValue
+                placeholder={versions.length ? "Historial" : "Sin historial"}
+              />
+            </SelectTrigger>
+            <SelectContent align="end">
+              <SelectGroup>
+                <SelectLabel>Versiones anteriores</SelectLabel>
+                {versions.map((version) => (
+                  <SelectItem key={version.id} value={version.id}>
+                    {formatVersionLabel(version)} · {version.sections.length}{" "}
+                    secciones
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           <Button
             asChild

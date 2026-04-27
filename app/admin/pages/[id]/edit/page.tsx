@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
-import { getPage } from "@/lib/actions/pages"
+import { getPage, getPageVersions } from "@/lib/actions/pages"
 import { PageEditor } from "@/components/admin/pages/editor/page-editor"
 import type { AnyPageSection } from "@/lib/types/Pages"
 import { PageEditorSkeleton } from "@/components/admin/pages/editor/page-editor-skeleton"
@@ -28,7 +28,10 @@ export default function AdminPageEditorRoute({ params }: Props) {
 
 async function EditorLoader({ params }: { params: Promise<Params> }) {
   const { id } = await params
-  const { data, error } = await getPage(id)
+  const [{ data, error }, historyResult] = await Promise.all([
+    getPage(id),
+    getPageVersions(id),
+  ])
 
   if (error || !data) notFound()
 
@@ -45,6 +48,7 @@ async function EditorLoader({ params }: { params: Promise<Params> }) {
       pageTitle={page.title}
       pageSlug={page.slug}
       initialSections={Array.isArray(page.sections) ? page.sections : []}
+      initialVersions={historyResult.data ?? []}
     />
   )
 }

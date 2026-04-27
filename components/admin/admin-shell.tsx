@@ -39,7 +39,7 @@ function isActiveNavItem(pathname: string, href: string) {
 
 const mainNavItems = [
   { title: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { title: "Pages", href: "/admin/pages", icon: Layers },
+  { title: "Páginas", href: "/admin/pages", icon: Layers },
   { title: "Blogs", href: "/admin/blogs", icon: FileText },
   { title: "Imágenes", href: "/admin/media-library", icon: Images },
 ] as const

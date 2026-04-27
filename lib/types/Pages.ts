@@ -119,6 +119,21 @@ export type Page = {
   updated_at: string | null
 }
 
+export type PageVersion = {
+  id: string
+  page_id: string
+  title: string
+  slug: string
+  sections: AnyPageSection[]
+  status: string | null
+  seo_title: string | null
+  seo_description: string | null
+  page_created_at: string | null
+  page_updated_at: string | null
+  snapshot_at: string
+  created_by: string | null
+}
+
 /**
  * Shape used by the admin "create / edit page" dialog. Sections are managed
  * by their own dedicated editor, so this form only covers page metadata.
