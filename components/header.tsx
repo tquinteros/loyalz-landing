@@ -1,6 +1,5 @@
 "use client"
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 const Header = () => {
     return (
@@ -9,7 +8,7 @@ const Header = () => {
                 <div className="flex gap-5 items-center font-semibold">
                     <Link href="/">Home</Link>
                     <Link href="/blogs">Blogs</Link>
-                    <Link href="/admin">Admin</Link>
+                    <Link href="/admin" prefetch={false}>Admin</Link>
                 </div>
             </div>
         </header>
