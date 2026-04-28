@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { Suspense } from "react"
 import { redirect } from "next/navigation"
+import { ThemeProvider } from "next-themes"
 import { createClient } from "@/lib/supabase/server"
 import { AdminShell } from "@/components/admin/admin-shell"
 
@@ -10,9 +11,16 @@ type AdminLayoutProps = {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    <Suspense fallback={<AdminAccessFallback />}>
-      <AdminAccessGuard>{children}</AdminAccessGuard>
-    </Suspense>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Suspense fallback={<AdminAccessFallback />}>
+        <AdminAccessGuard>{children}</AdminAccessGuard>
+      </Suspense>
+    </ThemeProvider>
   )
 }
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Funnel_Display, Inter } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner"
@@ -31,16 +30,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${funnel.className} antialiased`}>
         <QueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {/* <Header /> */}
-            {children}
-            <Toaster richColors />
-          </ThemeProvider>
+          {/* <Header /> */}
+          {children}
+          <Toaster richColors />
         </QueryProvider>
       </body>
     </html>
