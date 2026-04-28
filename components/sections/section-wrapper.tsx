@@ -48,7 +48,8 @@ export function SectionWrapper({
       )}
       <div
         className={cn(
-          "container relative mx-auto px-5 lg:px-8",
+          // "container relative mx-auto px-5 lg:px-8",
+          "relative px-5 lg:px-20",
           innerClassName,
         )}
       >

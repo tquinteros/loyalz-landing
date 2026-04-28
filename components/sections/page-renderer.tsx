@@ -6,6 +6,8 @@ import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
+import CTASection from "./cta-section"
+import PricingSection from "./pricing-section"
 
 type Props = {
   sections: AnyPageSection[]
@@ -52,9 +54,11 @@ function SectionSwitch({ section }: { section: PageSection }) {
       return <FAQSection {...section.props} {...common} />
     case "contact_form":
       return <ContactFormSection {...section.props} {...common} />
-    default: {
-      const _exhaustive: never = section
-      return _exhaustive
-    }
+    case "cta":
+      return <CTASection {...section.props} {...common} />
+    case "pricing":
+      return <PricingSection {...section.props} {...common} />
+    default:
+      return null
   }
 }

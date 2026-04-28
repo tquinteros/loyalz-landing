@@ -22,6 +22,8 @@ import { StatsForm } from "./forms/stats-form"
 import { TestimonialsForm } from "./forms/testimonials-form"
 import { FAQForm } from "./forms/faq-form"
 import { ContactFormForm } from "./forms/contact-form-form"
+import { CtaForm } from "./forms/cta-form"
+import { PricingForm } from "./forms/pricing-form"
 
 type Props = {
   section: AnyPageSection
@@ -132,6 +134,10 @@ function TypedSectionBody({
       return (
         <ContactFormForm value={section.props} onChange={onPropsChange} />
       )
+    case "cta":
+      return <CtaForm value={section.props} onChange={onPropsChange} />
+    case "pricing":
+      return <PricingForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

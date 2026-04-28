@@ -6,6 +6,8 @@ import TestimonialsSection from "./testimonials-section"
 import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import type { PageSection } from "@/lib/types/Pages"
+import CTASection from "./cta-section"
+import PricingSection from "./pricing-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -102,6 +104,42 @@ export function createDefaultSection<T extends PageSection["type"]>(
           submitLabel: "Send",
         },
       } as SectionFor<T>
+    case "cta":
+      return {
+        ...base,
+        type: "cta",
+        props: {
+          title: "Ready to get started?",
+          label: "Contact us",
+        },
+      } as SectionFor<T>
+    case "pricing":
+      return {
+        ...base,
+        type: "pricing",
+        props: {
+          label: "Plans",
+          title: "Simple pricing for every team",
+          description: "Pick the plan that best fits your business.",
+          bottomMessage: "POS + Pay are included in all plans.",
+          cards: [
+            {
+              title: "Starter",
+              price: "$79",
+              shops: "Up to 1 shop",
+              savings: "19%",
+              features: ["Club", "Reviews", "POS", "Pay"],
+            },
+            {
+              title: "Growth",
+              price: "$349",
+              shops: "Up to 3 shops",
+              savings: "22%",
+              features: ["Club", "Reviews", "POS", "Pay", "AI Pro"],
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -166,6 +204,18 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Contact form",
     description: "Lead-capture form.",
     component: ContactFormSection,
+  },
+  cta: {
+    type: "cta",
+    label: "CTA",
+    description: "Call to action section.",
+    component: CTASection,
+  },
+  pricing: {
+    type: "pricing",
+    label: "Pricing",
+    description: "Pricing cards with plans and features.",
+    component: PricingSection,
   },
 }
 

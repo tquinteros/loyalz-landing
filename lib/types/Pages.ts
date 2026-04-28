@@ -83,12 +83,33 @@ export type ContactFormSectionProps = {
   submitLabel?: string
 }
 
+export type CTASectionProps = {
+  title?: string
+  label?: string
+}
+
+export type PricingSectionProps = {
+  label?: string
+  title?: string
+  description?: string
+  bottomMessage?: string
+  cards: Array<{
+    title: string
+    price: string
+    shops: string
+    savings: string
+    features: string[]
+  }>
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
 export type StatsSection = BaseSection<"stats", StatsSectionProps>
 export type TestimonialsSection = BaseSection<"testimonials", TestimonialsSectionProps>
 export type FAQSection = BaseSection<"faq", FAQSectionProps>
 export type ContactFormSection = BaseSection<"contact_form", ContactFormSectionProps>
+export type CTASection = BaseSection<"cta", CTASectionProps>
+export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -98,6 +119,8 @@ export type PageSection =
   | TestimonialsSection
   | FAQSection
   | ContactFormSection
+  | CTASection
+  | PricingSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not
