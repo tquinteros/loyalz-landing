@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Funnel_Display, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
@@ -15,11 +15,12 @@ export const metadata: Metadata = {
   description: "LoyalZ Landing",
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
-});
+export const funnel = Funnel_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+})
 
 export default function RootLayout({
   children,
@@ -28,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${funnel.className} antialiased`}>
         <QueryProvider>
           <ThemeProvider
             attribute="class"
