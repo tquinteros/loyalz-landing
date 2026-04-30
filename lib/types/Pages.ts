@@ -61,10 +61,15 @@ export type TestimonialsSectionProps = {
   title?: string
   subtitle?: string
   items: Array<{
-    quote: string
+    summary: string
     author: string
-    role?: string
+    place?: string
     avatar?: string
+    logo?: string
+    badges?: string[]
+    /** Legacy fields kept so previously saved page JSON keeps rendering. */
+    quote?: string
+    role?: string
   }>
 }
 

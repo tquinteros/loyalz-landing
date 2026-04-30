@@ -19,7 +19,7 @@ const PRODUCT_CARDS = [
   {
     title: "Loyalz club",
     description: "El sistema de fidelizacion para que siempre vuelvan.",
-    href: "/blogs",
+    href: "/club",
     cta: "Conoce mas",
     bgColor: "#754390",
   },

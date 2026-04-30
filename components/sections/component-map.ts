@@ -76,9 +76,12 @@ export function createDefaultSection<T extends PageSection["type"]>(
           title: "What people are saying",
           items: [
             {
-              quote: "An amazing product.",
+              logo: "",
+              badges: ["+6.000 members", "+30% growth"],
+              summary: "An amazing product.",
               author: "Jane Doe",
-              role: "CEO, Acme",
+              place: "Acme",
+              avatar: "",
             },
           ],
         },

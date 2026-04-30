@@ -26,7 +26,7 @@ export function SectionWrapper({
   return (
     <section
       className={cn(
-        "relative w-full py-16 sm:py-24",
+        "relative w-full py-16 bg-foreground sm:py-24",
         hasBg && "text-white",
         className,
       )}
