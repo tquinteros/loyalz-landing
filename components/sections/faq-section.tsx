@@ -23,17 +23,17 @@ export default function FAQSection({
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={className}
-      innerClassName="max-w-3xl"
+      innerClassName="max-w-3xl mx-auto"
     >
       {(title || subtitle) && (
         <div className="mb-10 text-center">
           {title ? (
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-5xl text-background">
               {title}
             </h2>
           ) : null}
           {subtitle ? (
-            <p className="mt-3 text-muted-foreground">{subtitle}</p>
+            <p className="mt-4 text-background">{subtitle}</p>
           ) : null}
         </div>
       )}
@@ -41,10 +41,10 @@ export default function FAQSection({
       <Accordion type="single" collapsible className="w-full">
         {items.map((item, i) => (
           <AccordionItem key={`${item.question}-${i}`} value={`item-${i}`}>
-            <AccordionTrigger className="text-left text-base">
+            <AccordionTrigger className="text-left text-base text-background">
               {item.question}
             </AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">
+            <AccordionContent className="text-background">
               {item.answer}
             </AccordionContent>
           </AccordionItem>

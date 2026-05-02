@@ -353,7 +353,7 @@ export function PageEditor({
       </div>
 
       {/* Live preview */}
-      {showPreview ? (
+      {/* {showPreview ? (
         <div className="border-t bg-muted/30">
           <div className="flex items-center justify-between border-b bg-background/60 px-4 py-2 md:px-6">
             <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -366,7 +366,7 @@ export function PageEditor({
           </div>
           <LivePreview sections={debouncedSections} />
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   )
 }

@@ -17,9 +17,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <Suspense fallback={<AdminAccessFallback />}>
-        <AdminAccessGuard>{children}</AdminAccessGuard>
-      </Suspense>
+      <div className="theme-admin min-h-screen bg-background text-foreground">
+        <Suspense fallback={<AdminAccessFallback />}>
+          <AdminAccessGuard>{children}</AdminAccessGuard>
+        </Suspense>
+      </div>
     </ThemeProvider>
   )
 }

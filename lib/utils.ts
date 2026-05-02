@@ -12,4 +12,5 @@ export const hasEnvVars =
 
 
 export const HOME_SLUG = "home" as const
-  export const BLOGS_SLUG = "blogs" as const
+export const BLOGS_SLUG = "blogs" as const
+export const CLUB_SLUG = "club" as const
