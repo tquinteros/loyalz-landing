@@ -22,6 +22,7 @@ const PRODUCT_CARDS = [
     href: "/club",
     cta: "Conoce mas",
     bgColor: "#754390",
+    image: "/club.png"
   },
   {
     title: "Loyalz reviews",
@@ -29,6 +30,7 @@ const PRODUCT_CARDS = [
     href: "/blogs",
     cta: "Conoce mas",
     bgColor: "#EC491E",
+    image: "/club.png"
   },
   {
     title: "Loyalz pos",
@@ -36,6 +38,7 @@ const PRODUCT_CARDS = [
     href: "/blogs",
     cta: "Conoce mas",
     bgColor: "#8C7F1F",
+    image: "/club.png"
   },
   {
     title: "Loyalz ai",
@@ -43,6 +46,7 @@ const PRODUCT_CARDS = [
     href: "/blogs",
     cta: "Conoce mas",
     bgColor: "#013662",
+    image: "/club.png"
   },
 ]
 
@@ -78,9 +82,12 @@ const Header = () => {
                               <Card className="flex h-full flex-col overflow-hidden rounded-2xl border-0 shadow-none">
                                 <div className="relative aspect-video w-full">
                                   <Image
-                                    src="https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/covers/1776792217088-ftxwwpxa59h.jpg"
+                                    src={card.image}
                                     alt={card.title}
                                     fill
+                                    priority
+                                    loading="eager"
+                                    sizes="(max-width: 1024px) 100vw, 25vw"
                                     className="object-cover"
                                   />
                                 </div>

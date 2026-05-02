@@ -25,6 +25,7 @@ import { FAQForm } from "./forms/faq-form"
 import { ContactFormForm } from "./forms/contact-form-form"
 import { CtaForm } from "./forms/cta-form"
 import { PricingForm } from "./forms/pricing-form"
+import { ClubCardsForm } from "./forms/club-cards-form"
 
 type Props = {
   section: AnyPageSection
@@ -141,6 +142,8 @@ function TypedSectionBody({
       return <CtaForm value={section.props} onChange={onPropsChange} />
     case "pricing":
       return <PricingForm value={section.props} onChange={onPropsChange} />
+    case "club_cards":
+      return <ClubCardsForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

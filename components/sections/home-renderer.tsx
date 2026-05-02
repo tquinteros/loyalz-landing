@@ -6,6 +6,7 @@ import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import CTASection from "./cta-section"
 import PricingSection from "./pricing-section"
+import ClubCardsSection from "./club-cards-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 
@@ -48,6 +49,8 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <CTASection {...section.props} {...common} />
     case "pricing":
       return <PricingSection {...section.props} {...common} />
+    case "club_cards":
+      return <ClubCardsSection {...section.props} {...common} />
     default:
       return null
   }

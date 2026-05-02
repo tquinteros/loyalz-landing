@@ -9,6 +9,7 @@ import ContactFormSection from "./contact-form-section"
 import type { PageSection } from "@/lib/types/Pages"
 import CTASection from "./cta-section"
 import PricingSection from "./pricing-section"
+import ClubCardsSection from "./club-cards-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -155,6 +156,22 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "club_cards":
+      return {
+        ...base,
+        type: "club_cards",
+        props: {
+          label: "Club",
+          title: "Section title",
+          subtitle: "Section subtitle",
+          cards: [
+            {
+              title: "Card title",
+              description: "Card description",
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -237,6 +254,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Pricing",
     description: "Pricing cards with plans and features.",
     component: PricingSection,
+  },
+  club_cards: {
+    type: "club_cards",
+    label: "Club Cards",
+    description: "Label, title, subtitle and cards grid.",
+    component: ClubCardsSection,
   },
 }
 

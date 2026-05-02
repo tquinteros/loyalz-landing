@@ -64,12 +64,16 @@ export default function PricingSection({
             className={`group border-none rounded-2xl transition-colors duration-200 ${pricingStyles.cardHover} ${pricingStyles.cardBackground}`}
           >
             <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="bg-[#754390] w-10 h-[7px] rounded-full"></div>
-                <div className="bg-primary w-10 h-[7px] rounded-full"></div>
-                <div className="bg-accent w-10 h-[7px] rounded-full"></div>
-                <div className="bg-secondary w-10 h-[7px] rounded-full"></div>
-              </div>
+              {
+                pathname === "/" && (
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="bg-[#754390] w-10 h-[7px] rounded-full"></div>
+                    <div className="bg-primary w-10 h-[7px] rounded-full"></div>
+                    <div className="bg-accent w-10 h-[7px] rounded-full"></div>
+                    <div className="bg-secondary w-10 h-[7px] rounded-full"></div>
+                  </div>
+                )
+              }
               <CardTitle className={`text-2xl transition-colors duration-200 group-hover:text-foreground ${pricingStyles.cardText}`}>
                 {card.title}
               </CardTitle>
