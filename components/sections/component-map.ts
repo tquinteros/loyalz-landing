@@ -1,5 +1,6 @@
 import type { ComponentType } from "react"
 import HeroSection from "./hero-section"
+import HeroClubSection from "./hero-club-section"
 import FeatureLinksSection from "./feature-links-section"
 import StatsSection from "./stats-section"
 import TestimonialsSection from "./testimonials-section"
@@ -40,6 +41,17 @@ export function createDefaultSection<T extends PageSection["type"]>(
         props: {
           title: "New hero section",
           subtitle: "",
+          primaryCta: { label: "Get started", href: "/contact" },
+        },
+      } as SectionFor<T>
+    case "hero_club":
+      return {
+        ...base,
+        type: "hero_club",
+        props: {
+          title: "New Hero Club section",
+          subtitle: "",
+          image: "",
           primaryCta: { label: "Get started", href: "/contact" },
         },
       } as SectionFor<T>
@@ -177,6 +189,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Hero",
     description: "Large headline, subtitle and CTAs.",
     component: HeroSection,
+  },
+  hero_club: {
+    type: "hero_club",
+    label: "Hero Club",
+    description: "Hero for the Club page — same layout as Hero.",
+    component: HeroClubSection,
   },
   feature_links: {
     type: "feature_links",

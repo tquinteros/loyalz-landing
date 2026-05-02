@@ -17,6 +17,7 @@ import type {
 } from "@/lib/types/Pages"
 import { CommonSectionFields } from "./common-fields"
 import { HeroForm } from "./forms/hero-form"
+import { HeroClubForm } from "./forms/hero-club-form"
 import { FeatureLinksForm } from "./forms/feature-links-form"
 import { StatsForm } from "./forms/stats-form"
 import { TestimonialsForm } from "./forms/testimonials-form"
@@ -118,6 +119,8 @@ function TypedSectionBody({
   switch (section.type) {
     case "hero":
       return <HeroForm value={section.props} onChange={onPropsChange} />
+    case "hero_club":
+      return <HeroClubForm value={section.props} onChange={onPropsChange} />
     case "feature_links":
       return (
         <FeatureLinksForm value={section.props} onChange={onPropsChange} />

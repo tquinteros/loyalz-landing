@@ -37,6 +37,13 @@ export type HeroSectionProps = {
   secondaryCta?: CTA
 }
 
+export type HeroClubSectionProps = {
+  title: string
+  subtitle: string
+  image: string
+  primaryCta: CTA
+}
+
 export type FeatureLinksSectionProps = {
   title?: string
   subtitle?: string
@@ -108,6 +115,7 @@ export type PricingSectionProps = {
 }
 
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
+export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
 export type StatsSection = BaseSection<"stats", StatsSectionProps>
 export type TestimonialsSection = BaseSection<"testimonials", TestimonialsSectionProps>
@@ -119,6 +127,7 @@ export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
   | HeroSection
+  | HeroClubSection
   | FeatureLinksSection
   | StatsSection
   | TestimonialsSection
@@ -138,6 +147,7 @@ export type AnyPageSection = PageSection | UnknownSection
 export type Page = {
   id: string
   slug: string
+  type: string | null
   title: string
   sections: AnyPageSection[]
   status: string | null

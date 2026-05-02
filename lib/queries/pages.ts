@@ -7,7 +7,7 @@ export const publicPageTag = (slug: string) => `public-page:${slug}`
 export const PUBLIC_PAGES_TAG = "public-pages"
 
 const PAGE_COLUMNS =
-  "id, slug, title, sections, status, seo_title, seo_description, created_at, updated_at"
+  "id, slug, type, title, sections, status, seo_title, seo_description, created_at, updated_at"
 
 /**
  * Plain read-only public fetcher for a page by slug. Client-safe (no `'use cache'`).

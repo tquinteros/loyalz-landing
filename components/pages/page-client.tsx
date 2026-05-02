@@ -24,5 +24,6 @@ export default function PageClient({ slug, initialData }: Props) {
 
   const page = data ?? initialData
 
-  return <PageRenderer sections={page.sections} />
+  return <PageRenderer page={page} />
 }
+ 

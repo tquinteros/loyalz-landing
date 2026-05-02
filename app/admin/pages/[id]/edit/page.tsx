@@ -39,6 +39,7 @@ async function EditorLoader({ params }: { params: Promise<Params> }) {
     id: string
     title: string
     slug: string
+    type: string | null
     sections: AnyPageSection[] | null
   }
 
@@ -47,6 +48,7 @@ async function EditorLoader({ params }: { params: Promise<Params> }) {
       pageId={page.id}
       pageTitle={page.title}
       pageSlug={page.slug}
+      pageType={page.type}
       initialSections={Array.isArray(page.sections) ? page.sections : []}
       initialVersions={historyResult.data ?? []}
     />

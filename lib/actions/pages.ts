@@ -11,7 +11,7 @@ import type {
 } from "@/lib/types/Pages"
 
 const PAGE_COLUMNS =
-  "id, slug, title, sections, status, seo_title, seo_description, created_at, updated_at"
+  "id, slug, type, title, sections, status, seo_title, seo_description, created_at, updated_at"
 const PAGE_VERSION_COLUMNS =
   "id, page_id, title, slug, sections, status, seo_title, seo_description, page_created_at, page_updated_at, snapshot_at, created_by"
 

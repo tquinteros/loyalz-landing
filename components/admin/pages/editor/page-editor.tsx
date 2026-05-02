@@ -41,6 +41,7 @@ type Props = {
   pageId: string
   pageTitle: string
   pageSlug: string
+  pageType?: string | null
   initialSections: AnyPageSection[]
   initialVersions: PageVersion[]
 }
@@ -63,6 +64,7 @@ export function PageEditor({
   pageId,
   pageTitle,
   pageSlug,
+  pageType,
   initialSections,
   initialVersions,
 }: Props) {
@@ -364,7 +366,7 @@ export function PageEditor({
               {sections.length} secciones visibles
             </p>
           </div>
-          <LivePreview sections={debouncedSections} />
+          <LivePreview sections={debouncedSections} pageType={pageType} />
         </div>
       ) : null} */}
     </div>
