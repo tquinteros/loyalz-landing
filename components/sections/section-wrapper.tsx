@@ -5,6 +5,11 @@ type Props = {
   children: ReactNode
   /** Optional image URL painted behind the section. */
   backgroundImage?: string | null
+  /**
+   * Solid background (e.g. hex/rgb from CMS). When set, overrides the default
+   * `bg-foreground` shell — use for sections with editor-controlled color.
+   */
+  surfaceColor?: string | null
   className?: string | null
   /** Inner container className (used for padding / max-width tweaks). */
   innerClassName?: string
@@ -18,15 +23,18 @@ type Props = {
 export function SectionWrapper({
   children,
   backgroundImage,
+  surfaceColor,
   className,
   innerClassName,
 }: Props) {
   const hasBg = !!backgroundImage
+  const hasSurface = !!surfaceColor?.trim()
 
   return (
     <section
       className={cn(
-        "relative w-full py-16 bg-foreground sm:py-24",
+        "relative w-full py-16 sm:py-24",
+        !hasBg && !hasSurface && "bg-foreground",
         hasBg && "text-white",
         className,
       )}
@@ -37,7 +45,9 @@ export function SectionWrapper({
               backgroundSize: "cover",
               backgroundPosition: "center",
             }
-          : undefined
+          : hasSurface && surfaceColor
+            ? { backgroundColor: surfaceColor }
+            : undefined
       }
     >
       {hasBg && (
@@ -49,7 +59,7 @@ export function SectionWrapper({
       <div
         className={cn(
           // "container relative mx-auto px-5 lg:px-8",
-          "relative px-5 lg:px-20",
+          "relative px-5 lg:px-16",
           innerClassName,
         )}
       >

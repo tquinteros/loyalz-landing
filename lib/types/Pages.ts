@@ -124,6 +124,27 @@ export type ClubCardsSectionProps = {
   }>
 }
 
+/** Product (Club) page — titled steps with image + copy per step. */
+export type StepsClubSectionProps = {
+  title: string
+  steps: Array<{
+    title: string
+    description: string
+    image: string
+  }>
+}
+
+/** Shared CTA band — solid background color + copy + two CTAs + image. */
+export type CommonCTASectionProps = {
+  /** CSS color string, e.g. `#754390` or `rgb(117 67 144)`. */
+  backgroundColor: string
+  title: string
+  description: string
+  firstCta: CTA
+  secondCta: CTA
+  image: string
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -134,6 +155,8 @@ export type ContactFormSection = BaseSection<"contact_form", ContactFormSectionP
 export type CTASection = BaseSection<"cta", CTASectionProps>
 export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
+export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
+export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -147,6 +170,8 @@ export type PageSection =
   | CTASection
   | PricingSection
   | ClubCardsSection
+  | StepsClubSection
+  | CommonCTASection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

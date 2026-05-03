@@ -10,6 +10,8 @@ import type { PageSection } from "@/lib/types/Pages"
 import CTASection from "./cta-section"
 import PricingSection from "./pricing-section"
 import ClubCardsSection from "./club-cards-section"
+import StepsClubSection from "./steps-club-section"
+import CommonCTASection from "./common-cta-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -172,6 +174,34 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "steps_club":
+      return {
+        ...base,
+        type: "steps_club",
+        props: {
+          title: "Cómo funciona",
+          steps: [
+            {
+              title: "Paso 1",
+              description: "Descripción del paso.",
+              image: "",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "common_cta":
+      return {
+        ...base,
+        type: "common_cta",
+        props: {
+          backgroundColor: "#754390",
+          title: "Tu próximo paso",
+          description: "Breve texto que acompaña el llamado a la acción.",
+          firstCta: { label: "Empezar", href: "/contact" },
+          secondCta: { label: "Saber más", href: "/club" },
+          image: "",
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -260,6 +290,18 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Club Cards",
     description: "Label, title, subtitle and cards grid.",
     component: ClubCardsSection,
+  },
+  steps_club: {
+    type: "steps_club",
+    label: "Steps Club",
+    description: "Title and steps with image, title and description (Club / product pages).",
+    component: StepsClubSection,
+  },
+  common_cta: {
+    type: "common_cta",
+    label: "Common CTA",
+    description: "Solid background, title, description, two CTAs and image.",
+    component: CommonCTASection,
   },
 }
 

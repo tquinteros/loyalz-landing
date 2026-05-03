@@ -53,7 +53,7 @@ const PRODUCT_CARDS = [
 const Header = () => {
   return (
     <header className="sticky top-0 z-50 h-20 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black">
-      <div className="flex h-full w-full items-center justify-between px-5 py-3 text-sm lg:px-20">
+      <div className="flex h-full w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
         <div className="flex items-center gap-5">
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
