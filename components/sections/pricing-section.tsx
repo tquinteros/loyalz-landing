@@ -33,8 +33,8 @@ export default function PricingSection({
 
     return {
       cardBackground: "bg-black/5",
-      cardHover: "hover:bg-background hover:text-foreground",
-      cardText: "text-foreground",
+      cardHover: "hover:bg-background hover:text-background",
+      cardText: "text-background",
       savingsButton: "bg-background text-foreground",
     }
   }, [pathname])
