@@ -39,7 +39,7 @@ export default function CommonCTASection({
         className={cn(
           "grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-0",
           !hasSectionBg &&
-            "rounded-[28px] sm:rounded-[32px] p-8 lg:p-4",
+          "rounded-[28px] sm:rounded-[32px] p-8 lg:p-4",
           hasSectionBg && "relative",
         )}
         style={

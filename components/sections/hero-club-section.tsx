@@ -22,8 +22,8 @@ export default function HeroClubSection({
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
-      className={className}
-      innerClassName="!bg-background"
+      className={`${className} !py-0 sm:!py-0`}
+      innerClassName="!bg-background "
     >
       <div className="grid grid-cols-1 gap-4 lg:gap-0 py-12 md:grid-cols-12 md:py-24">
         <div className="col-span-1 flex h-full flex-col justify-between rounded-[24px] bg-white p-6 md:col-span-7 md:rounded-[32px] md:p-12">

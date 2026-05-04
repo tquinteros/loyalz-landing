@@ -42,7 +42,7 @@ export function CommonCtaForm({ value, onChange }: Props) {
           placeholder="#754390"
         />
         <p className="text-xs text-muted-foreground">
-          Hex, rgb() o nombre CSS. Se ignora si la sección usa imagen de fondo
+          Hex color. Se ignora si la sección usa imagen de fondo
           (avanzado).
         </p>
       </div>
