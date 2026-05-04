@@ -52,6 +52,7 @@ export default function ClubActivationSection({
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 514px"
                       priority={index < 3}
+                      
                     />
                   ) : (
                     <div className="absolute inset-0 bg-muted" aria-hidden />

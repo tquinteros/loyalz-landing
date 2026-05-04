@@ -1,13 +1,15 @@
 import { Loader2 } from "lucide-react"
+import Image from "next/image"
 
 /** Full-screen loading state while the DB-driven page is streaming in. */
 export function PageSkeleton() {
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-background">
-      <Loader2
-        className="size-10 animate-spin text-muted-foreground"
-        aria-hidden
-      />
+    <div className="flex min-h-dvh w-full items-center justify-center bg-foreground">
+        {/* <Loader2
+          className="size-10 animate-spin text-chart-5"
+          aria-hidden
+        /> */}
+      <Image src="/logo.svg" alt="Logo" width={100} height={100} className="animate-pulse" />
       <span className="sr-only">Loading page…</span>
     </div>
   )

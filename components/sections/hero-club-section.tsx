@@ -37,8 +37,8 @@ export default function HeroClubSection({
           </div>
           <div className="flex flex-col my-4 lg:my-0 gap-4 sm:gap-5">
             <div className="flex flex-row gap-2 sm:gap-3">
-              <AppStoreButton />
               <AndroidButton />
+              <AppStoreButton />
             </div>
             {primaryCta?.href && primaryCta.label ? (
               <Button asChild size="lg" className="w-fit h-12">
