@@ -35,7 +35,7 @@ export function SectionWrapper({
       className={cn(
         "relative w-full py-16 sm:py-24",
         !hasBg && !hasSurface && "bg-foreground",
-        hasBg && "text-white",
+        hasBg && "text-foreground",
         className,
       )}
       style={

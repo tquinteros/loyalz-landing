@@ -27,14 +27,14 @@ export default function PricingSection({
         cardBackground: "bg-[#DBC5E8]",
         cardHover: "hover:bg-chart-5 hover:text-foreground",
         cardText: "text-chart-5",
-        savingsButton: "bg-chart-5 text-white border-chart-5",
+        savingsButton: "bg-chart-5 text-foreground border-chart-5",
       }
     }
 
     return {
       cardBackground: "bg-black/5",
       cardHover: "hover:bg-background hover:text-foreground",
-      cardText: "text-background",
+      cardText: "text-foreground",
       savingsButton: "bg-background text-foreground",
     }
   }, [pathname])
@@ -106,7 +106,7 @@ export default function PricingSection({
       </div>
 
       {bottomMessage ? (
-        <p className={`mt-16 text-center text-md ${pricingStyles.cardText}`}>{bottomMessage}</p>
+        <p className={`mt-16 text-center text-lg ${pricingStyles.cardText}`}>{bottomMessage}</p>
       ) : null}
     </SectionWrapper>
   )

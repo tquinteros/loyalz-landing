@@ -28,6 +28,8 @@ import { PricingForm } from "./forms/pricing-form"
 import { ClubCardsForm } from "./forms/club-cards-form"
 import { StepsClubForm } from "./forms/steps-club-form"
 import { CommonCtaForm } from "./forms/common-cta-form"
+import { ClubActivationForm } from "./forms/club-activation-form"
+import { NotificationClubForm } from "./forms/notification-club-form"
 
 type Props = {
   section: AnyPageSection
@@ -150,6 +152,14 @@ function TypedSectionBody({
       return <StepsClubForm value={section.props} onChange={onPropsChange} />
     case "common_cta":
       return <CommonCtaForm value={section.props} onChange={onPropsChange} />
+    case "club_activation":
+      return (
+        <ClubActivationForm value={section.props} onChange={onPropsChange} />
+      )
+    case "notification_club":
+      return (
+        <NotificationClubForm value={section.props} onChange={onPropsChange} />
+      )
     default: {
       const _exhaustive: never = section
       return _exhaustive

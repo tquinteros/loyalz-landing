@@ -145,6 +145,28 @@ export type CommonCTASectionProps = {
   image: string
 }
 
+/** Club — activation grid cards with image backgrounds + overlay copy + footer label. */
+export type ClubActivationSectionProps = {
+  title: string
+  activationCards: Array<{
+    image: string
+    stat: string
+    title: string
+    description?: string
+  }>
+  bottomLabel: string
+}
+
+/** Club — push notifications showcase with phone mockup + glass badges. */
+export type NotificationClubSectionProps = {
+  title: string
+  description: string
+  badges: Array<{
+    brand: string
+    message: string
+  }>
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -157,6 +179,8 @@ export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
 export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
+export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
+export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -172,6 +196,8 @@ export type PageSection =
   | ClubCardsSection
   | StepsClubSection
   | CommonCTASection
+  | ClubActivationSection
+  | NotificationClubSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

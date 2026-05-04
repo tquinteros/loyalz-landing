@@ -56,12 +56,12 @@ export default function CommonCTASection({
           )}
         >
           {title ? (
-            <h2 className="text-left text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-6xl max-w-2xl">
+            <h2 className="text-left text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-6xl max-w-2xl">
               {title}
             </h2>
           ) : null}
           {description ? (
-            <p className="max-w-2xl text-left text-base leading-relaxed text-white/95 sm:text-lg">
+            <p className="max-w-2xl text-left text-base leading-relaxed text-foreground/95 sm:text-lg">
               {description}
             </p>
           ) : null}
@@ -71,7 +71,7 @@ export default function CommonCTASection({
               <Button
                 asChild
                 size="lg"
-                className="h-12 rounded-[12px] border-0 bg-[#F8F5EF] px-8 text-base font-semibold shadow-none hover:bg-[#F8F5EF]/90"
+                className="h-12 rounded-[12px] border-0 bg-foreground px-8 text-base font-semibold shadow-none hover:bg-foreground/90"
               >
                 <Link
                   href={firstCta.href}
@@ -86,7 +86,7 @@ export default function CommonCTASection({
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 rounded-[12px] border-2 border-white bg-transparent px-8 text-base font-semibold text-white shadow-none hover:bg-white/10 hover:text-white"
+                className="h-12 rounded-[12px] border-2 border-foreground bg-transparent px-8 text-base font-semibold text-foreground shadow-none hover:bg-foreground/10 hover:text-foreground"
               >
                 <Link href={secondCta.href}>{secondCta.label}</Link>
               </Button>

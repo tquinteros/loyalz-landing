@@ -22,10 +22,10 @@ const AndroidButton = ({ fill = "#754390" }: { fill?: string }) => {
         <path d="M25.7145 23.4267C23.8777 21.7333 22.1823 20.0397 20.3455 18.3462C22.1823 16.5116 24.0191 14.6769 25.8558 12.8423C26.421 13.1245 26.9862 13.4068 27.5513 13.8301C28.9643 14.6769 30.5185 15.3826 31.9314 16.2293C32.3553 16.3704 32.6379 16.6527 32.9204 17.076C33.4856 17.7816 33.4856 18.4874 32.9204 19.193C32.6379 19.4752 32.3553 19.7575 31.9314 19.8986C29.9533 21.1687 27.834 22.2978 25.7145 23.4267Z" fill={fill} />
       </svg>
       <div className="flex flex-col gap-0">
-        <span className={`text-[8px] font-semibold leading-none sm:text-[9px] ${fill === "#754390" ? "text-chart-5" : "text-background"}`}>
+        <span className={`text-[8px] uppercase font-semibold leading-none sm:text-[9px] ${fill === "#754390" ? "text-chart-5" : "text-background"}`}>
           Descargá loyalz en
         </span>
-        <span className={`-mt-0.5 text-base font-medium leading-none sm:-mt-1 sm:text-2xl ${fill === "#754390" ? "text-chart-5" : "text-background"}`}>
+        <span className={`text-base font-medium leading-none sm:mt-1 sm:text-2xl ${fill === "#754390" ? "text-chart-5" : "text-background"}`}>
           Google Play
         </span>
       </div>

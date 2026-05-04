@@ -44,7 +44,7 @@ export default function ClubCardsSection({
           ) : null}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {cards.map((card, index) => (
-              <Card key={`${card.title}-${index}`} className="rounded-xl border-4 p-8 border-[#DBC5E8]">
+              <Card key={`${card.title}-${index}`} className="rounded-xl bg-foreground border-4 p-8 border-[#DBC5E8]">
                 <CardContent className="p-0">
                   <div className="border p-2 border-[#DBC5E8] rounded-lg w-fit">
                     <svg width="29" height="24" viewBox="0 0 29 24" fill="none" xmlns="http://www.w3.org/2000/svg">

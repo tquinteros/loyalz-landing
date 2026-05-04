@@ -49,6 +49,7 @@ export default function TestimonialsSection({
     }
   }, [api])
 // TODO: ADD 112PX PY TO SECTIONS
+// TODO: ADD BORDER TO 2ND PRICING CARD & HOVERING COLOR MUST BE SOLID IN LAST ONE
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={className}>
       {(title || subtitle) && (

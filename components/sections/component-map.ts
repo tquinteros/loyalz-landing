@@ -12,6 +12,8 @@ import PricingSection from "./pricing-section"
 import ClubCardsSection from "./club-cards-section"
 import StepsClubSection from "./steps-club-section"
 import CommonCTASection from "./common-cta-section"
+import ClubActivationSection from "./club-activation-section"
+import NotificationClubSection from "./notification-club-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -202,6 +204,61 @@ export function createDefaultSection<T extends PageSection["type"]>(
           image: "",
         },
       } as SectionFor<T>
+    case "club_activation":
+      return {
+        ...base,
+        type: "club_activation",
+        props: {
+          title: "Activaciones",
+          activationCards: [
+            {
+              image: "",
+              stat: "+4x",
+              title: "Frecuencia en clientes",
+              description: "Texto opcional bajo el título.",
+            },
+            {
+              image: "",
+              stat: "12",
+              title: "Segundo bloque",
+              description: "",
+            },
+            {
+              image: "",
+              stat: "24/7",
+              title: "Tercer bloque",
+            },
+          ],
+          bottomLabel: "Pie de sección",
+        },
+      } as SectionFor<T>
+    case "notification_club":
+      return {
+        ...base,
+        type: "notification_club",
+        props: {
+          title: "Notificaciones Push",
+          description:
+            "Reactivá clientes sin costo. Mandales promociones, recordatorios o mensajes de cumpleaños directo al celular.",
+          badges: [
+            {
+              brand: "AIR COFFEE",
+              message:
+                "¡Disfrutá un 50% de descuento en nuestro local hoy! ☕️",
+            },
+            {
+              brand: "INNAMORATO",
+              message:
+                "¡Bienvenido a INNsaciables! Un club de beneficios para los incomprendidos 🍦😍",
+            },
+            {
+              brand: "COFI JAUS",
+              message:
+                "Hola 🙌 ¡Estas cerca de Cofi, pasa por el local y recordá que cada 6 te regalamos 1 Café ☕️🫶",
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -302,6 +359,18 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Common CTA",
     description: "Solid background, title, description, two CTAs and image.",
     component: CommonCTASection,
+  },
+  club_activation: {
+    type: "club_activation",
+    label: "Club activation",
+    description: "Title, activation cards (image + stat + title), bottom label.",
+    component: ClubActivationSection,
+  },
+  notification_club: {
+    type: "notification_club",
+    label: "Notification Club",
+    description: "Push notifications — copy left, phone + glass badges right.",
+    component: NotificationClubSection,
   },
 }
 

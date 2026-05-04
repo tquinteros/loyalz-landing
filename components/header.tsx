@@ -92,7 +92,7 @@ const Header = () => {
                                   />
                                 </div>
                                 <CardContent
-                                  className="flex flex-1 flex-col gap-4 p-6 text-white"
+                                  className="flex flex-1 flex-col gap-4 p-6 text-foreground"
                                   style={{ backgroundColor: card.bgColor }}
                                 >
                                   <CardTitle className="text-3xl font-semibold leading-none tracking-tight">
@@ -104,10 +104,10 @@ const Header = () => {
                                       </span>
                                     ) : null}
                                   </CardTitle>
-                                  <CardDescription className="flex-1 text-base leading-snug text-white/95">
+                                    <CardDescription className="flex-1 text-base leading-snug text-foreground/95">
                                     {card.description}
                                   </CardDescription>
-                                  <span className="inline-flex h-auto w-fit rounded-lg border border-white/60 bg-transparent px-5 py-2 text-sm font-semibold text-white">
+                                  <span className="inline-flex h-auto w-fit rounded-lg border border-foreground/60 bg-transparent px-5 py-2 text-sm font-semibold text-foreground">
                                     {card.cta}
                                   </span>
                                 </CardContent>
