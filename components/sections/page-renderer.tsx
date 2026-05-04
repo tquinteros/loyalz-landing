@@ -1,60 +1,19 @@
-import HeroSection from "./hero-section"
-import FeatureLinksSection from "./feature-links-section"
-import StatsSection from "./stats-section"
-import TestimonialsSection from "./testimonials-section"
-import FAQSection from "./faq-section"
-import ContactFormSection from "./contact-form-section"
-import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
-import { isKnownSectionType } from "./component-map"
+import type { Page } from "@/lib/types/Pages"
+import HomeRenderer from "./home-renderer"
+import ProductRenderer from "./product-renderer"
 
 type Props = {
-  sections: AnyPageSection[]
+  page: Page
 }
 
 /**
- * Renders a list of page sections coming from the DB.
- *
- * Rules:
- *  - `enabled: false` sections are skipped.
- *  - Unknown section `type`s (e.g. added later in the admin but not yet shipped
- *    in this bundle) are skipped silently so the page still renders.
- *  - A switch over the union narrows `props` per section type so each
- *    component gets fully typed input.
+ * Chooses the renderer family for the current page.
+ * Section-level rendering lives in the page-specific renderers.
  */
-export default function PageRenderer({ sections }: Props) {
-  return (
-    <>
-      {sections.map((section) => {
-        if (!section.enabled) return null
-        if (!isKnownSectionType(section.type)) return null
-        return <SectionSwitch key={section.id} section={section as PageSection} />
-      })}
-    </>
-  )
-}
-
-function SectionSwitch({ section }: { section: PageSection }) {
-  const common = {
-    backgroundImage: section.backgroundImage ?? null,
-    className: section.className ?? null,
+export default function PageRenderer({ page }: Props) {
+  if (page.type === "product") {
+    return <ProductRenderer sections={page.sections} />
   }
 
-  switch (section.type) {
-    case "hero":
-      return <HeroSection {...section.props} {...common} />
-    case "feature_links":
-      return <FeatureLinksSection {...section.props} {...common} />
-    case "stats":
-      return <StatsSection {...section.props} {...common} />
-    case "testimonials":
-      return <TestimonialsSection {...section.props} {...common} />
-    case "faq":
-      return <FAQSection {...section.props} {...common} />
-    case "contact_form":
-      return <ContactFormSection {...section.props} {...common} />
-    default: {
-      const _exhaustive: never = section
-      return _exhaustive
-    }
-  }
+  return <HomeRenderer sections={page.sections} />
 }

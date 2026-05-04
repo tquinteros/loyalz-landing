@@ -1,11 +1,17 @@
 import type { ComponentType } from "react"
 import HeroSection from "./hero-section"
+import HeroClubSection from "./hero-club-section"
 import FeatureLinksSection from "./feature-links-section"
 import StatsSection from "./stats-section"
 import TestimonialsSection from "./testimonials-section"
 import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import type { PageSection } from "@/lib/types/Pages"
+import CTASection from "./cta-section"
+import PricingSection from "./pricing-section"
+import ClubCardsSection from "./club-cards-section"
+import StepsClubSection from "./steps-club-section"
+import CommonCTASection from "./common-cta-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -38,6 +44,17 @@ export function createDefaultSection<T extends PageSection["type"]>(
         props: {
           title: "New hero section",
           subtitle: "",
+          primaryCta: { label: "Get started", href: "/contact" },
+        },
+      } as SectionFor<T>
+    case "hero_club":
+      return {
+        ...base,
+        type: "hero_club",
+        props: {
+          title: "New Hero Club section",
+          subtitle: "",
+          image: "",
           primaryCta: { label: "Get started", href: "/contact" },
         },
       } as SectionFor<T>
@@ -74,9 +91,12 @@ export function createDefaultSection<T extends PageSection["type"]>(
           title: "What people are saying",
           items: [
             {
-              quote: "An amazing product.",
+              logo: "",
+              badges: ["+6.000 members", "+30% growth"],
+              summary: "An amazing product.",
               author: "Jane Doe",
-              role: "CEO, Acme",
+              place: "Acme",
+              avatar: "",
             },
           ],
         },
@@ -100,6 +120,86 @@ export function createDefaultSection<T extends PageSection["type"]>(
           title: "Get in touch",
           subtitle: "",
           submitLabel: "Send",
+        },
+      } as SectionFor<T>
+    case "cta":
+      return {
+        ...base,
+        type: "cta",
+        props: {
+          title: "Ready to get started?",
+          label: "Contact us",
+        },
+      } as SectionFor<T>
+    case "pricing":
+      return {
+        ...base,
+        type: "pricing",
+        props: {
+          label: "Plans",
+          title: "Simple pricing for every team",
+          description: "Pick the plan that best fits your business.",
+          bottomMessage: "POS + Pay are included in all plans.",
+          cards: [
+            {
+              title: "Starter",
+              price: "$79",
+              shops: "Up to 1 shop",
+              savings: "19%",
+              features: ["Club", "Reviews", "POS", "Pay"],
+            },
+            {
+              title: "Growth",
+              price: "$349",
+              shops: "Up to 3 shops",
+              savings: "22%",
+              features: ["Club", "Reviews", "POS", "Pay", "AI Pro"],
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "club_cards":
+      return {
+        ...base,
+        type: "club_cards",
+        props: {
+          label: "Club",
+          title: "Section title",
+          subtitle: "Section subtitle",
+          cards: [
+            {
+              title: "Card title",
+              description: "Card description",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "steps_club":
+      return {
+        ...base,
+        type: "steps_club",
+        props: {
+          title: "Cómo funciona",
+          steps: [
+            {
+              title: "Paso 1",
+              description: "Descripción del paso.",
+              image: "",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "common_cta":
+      return {
+        ...base,
+        type: "common_cta",
+        props: {
+          backgroundColor: "#754390",
+          title: "Tu próximo paso",
+          description: "Breve texto que acompaña el llamado a la acción.",
+          firstCta: { label: "Empezar", href: "/contact" },
+          secondCta: { label: "Saber más", href: "/club" },
+          image: "",
         },
       } as SectionFor<T>
     default: {
@@ -137,6 +237,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description: "Large headline, subtitle and CTAs.",
     component: HeroSection,
   },
+  hero_club: {
+    type: "hero_club",
+    label: "Hero Club",
+    description: "Hero for the Club page — same layout as Hero.",
+    component: HeroClubSection,
+  },
   feature_links: {
     type: "feature_links",
     label: "Feature links",
@@ -166,6 +272,36 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Contact form",
     description: "Lead-capture form.",
     component: ContactFormSection,
+  },
+  cta: {
+    type: "cta",
+    label: "CTA",
+    description: "Call to action section.",
+    component: CTASection,
+  },
+  pricing: {
+    type: "pricing",
+    label: "Pricing",
+    description: "Pricing cards with plans and features.",
+    component: PricingSection,
+  },
+  club_cards: {
+    type: "club_cards",
+    label: "Club Cards",
+    description: "Label, title, subtitle and cards grid.",
+    component: ClubCardsSection,
+  },
+  steps_club: {
+    type: "steps_club",
+    label: "Steps Club",
+    description: "Title and steps with image, title and description (Club / product pages).",
+    component: StepsClubSection,
+  },
+  common_cta: {
+    type: "common_cta",
+    label: "Common CTA",
+    description: "Solid background, title, description, two CTAs and image.",
+    component: CommonCTASection,
   },
 }
 

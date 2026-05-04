@@ -17,11 +17,17 @@ import type {
 } from "@/lib/types/Pages"
 import { CommonSectionFields } from "./common-fields"
 import { HeroForm } from "./forms/hero-form"
+import { HeroClubForm } from "./forms/hero-club-form"
 import { FeatureLinksForm } from "./forms/feature-links-form"
 import { StatsForm } from "./forms/stats-form"
 import { TestimonialsForm } from "./forms/testimonials-form"
 import { FAQForm } from "./forms/faq-form"
 import { ContactFormForm } from "./forms/contact-form-form"
+import { CtaForm } from "./forms/cta-form"
+import { PricingForm } from "./forms/pricing-form"
+import { ClubCardsForm } from "./forms/club-cards-form"
+import { StepsClubForm } from "./forms/steps-club-form"
+import { CommonCtaForm } from "./forms/common-cta-form"
 
 type Props = {
   section: AnyPageSection
@@ -116,6 +122,8 @@ function TypedSectionBody({
   switch (section.type) {
     case "hero":
       return <HeroForm value={section.props} onChange={onPropsChange} />
+    case "hero_club":
+      return <HeroClubForm value={section.props} onChange={onPropsChange} />
     case "feature_links":
       return (
         <FeatureLinksForm value={section.props} onChange={onPropsChange} />
@@ -132,6 +140,16 @@ function TypedSectionBody({
       return (
         <ContactFormForm value={section.props} onChange={onPropsChange} />
       )
+    case "cta":
+      return <CtaForm value={section.props} onChange={onPropsChange} />
+    case "pricing":
+      return <PricingForm value={section.props} onChange={onPropsChange} />
+    case "club_cards":
+      return <ClubCardsForm value={section.props} onChange={onPropsChange} />
+    case "steps_club":
+      return <StepsClubForm value={section.props} onChange={onPropsChange} />
+    case "common_cta":
+      return <CommonCtaForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

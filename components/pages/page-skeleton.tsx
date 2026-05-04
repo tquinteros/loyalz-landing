@@ -1,6 +1,21 @@
+import { Loader2 } from "lucide-react"
+
+/** Full-screen loading state while the DB-driven page is streaming in. */
+export function PageSkeleton() {
+  return (
+    <div className="flex min-h-dvh w-full items-center justify-center bg-background">
+      <Loader2
+        className="size-10 animate-spin text-muted-foreground"
+        aria-hidden
+      />
+      <span className="sr-only">Loading page…</span>
+    </div>
+  )
+}
+
+/*
 import { Skeleton } from "@/components/ui/skeleton"
 
-/** Generic skeleton used while the DB-driven page is streaming in. */
 export function PageSkeleton() {
   return (
     <div className="flex flex-col gap-16 py-16 sm:py-24">
@@ -23,3 +38,4 @@ export function PageSkeleton() {
     </div>
   )
 }
+*/
