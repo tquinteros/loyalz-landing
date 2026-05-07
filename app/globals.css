@@ -273,3 +273,17 @@
 .tiptap pre { @apply rounded-lg bg-muted px-4 py-3 font-mono text-sm my-3 overflow-x-auto; }
 .tiptap code:not(pre code) { @apply rounded bg-muted px-1 py-0.5 font-mono text-sm; }
 .tiptap hr { @apply border-muted my-6; }
+
+.home-activation-marquee {
+  animation: home-activation-marquee 24s linear infinite;
+  will-change: transform;
+}
+
+@keyframes home-activation-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

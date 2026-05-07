@@ -6,9 +6,12 @@ import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import CTASection from "./cta-section"
 import PricingSection from "./pricing-section"
+import ProductPricingSection from "./product-pricing-section"
 import ClubCardsSection from "./club-cards-section"
+import HomeProductsSection from "./home-products-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
+import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
@@ -52,12 +55,18 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <CTASection {...section.props} {...common} />
     case "pricing":
       return <PricingSection {...section.props} {...common} />
+    case "productpricing":
+      return <ProductPricingSection {...section.props} {...common} />
     case "club_cards":
       return <ClubCardsSection {...section.props} {...common} />
+    case "home_products":
+      return <HomeProductsSection {...section.props} {...common} />
     case "common_cta":
       return <CommonCTASection {...section.props} {...common} />
     case "club_activation":
       return <ClubActivationSection {...section.props} {...common} />
+    case "home_activation":
+      return <HomeActivationSection {...section.props} {...common} />
     case "notification_club":
       return <NotificationClubSection {...section.props} {...common} />
     default:

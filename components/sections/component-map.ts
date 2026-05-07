@@ -9,10 +9,13 @@ import ContactFormSection from "./contact-form-section"
 import type { PageSection } from "@/lib/types/Pages"
 import CTASection from "./cta-section"
 import PricingSection from "./pricing-section"
+import ProductPricingSection from "./product-pricing-section"
 import ClubCardsSection from "./club-cards-section"
+import HomeProductsSection from "./home-products-section"
 import StepsClubSection from "./steps-club-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
+import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 
 /**
@@ -44,9 +47,10 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "hero",
         props: {
-          title: "New hero section",
-          subtitle: "",
-          primaryCta: { label: "Get started", href: "/contact" },
+          title: "El sistema all-in-one para hacer crecer tu negocio.",
+          images: ["/club.png", "/club.png", "/club.png", "/club.png", "/club.png"],
+          ctaLabel: "Demo Gratis",
+          ctaHref: "/contact",
         },
       } as SectionFor<T>
     case "hero_club":
@@ -109,6 +113,11 @@ export function createDefaultSection<T extends PageSection["type"]>(
         type: "faq",
         props: {
           title: "Frequently asked questions",
+          image: "",
+          helpTitle: "Still have questions?",
+          helpDescription: "Talk to our team and learn everything about Loyalz.",
+          helpCtaLabel: "Contact us",
+          helpCtaHref: "/contact",
           items: [
             { question: "A common question?", answer: "The answer." },
           ],
@@ -160,6 +169,50 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "productpricing":
+      return {
+        ...base,
+        type: "productpricing",
+        props: {
+          label: "Nuestros productos",
+          title: "Los precios claros. Como todo en Loyalz.",
+          description: "Empeza con lo que necesitas hoy. Escala cuando quieras.",
+          cards: [
+            {
+              price: 19,
+              title: "Loyalz club",
+              description: "Mantené más visitas de tus clientes con la fidelizacion.",
+              href: "/club",
+              ctaLabel: "Explorar Club",
+              color: "#754390",
+            },
+            {
+              price: 19,
+              title: "Loyalz reviews",
+              description: "Más reseñas positivas en Google sin tener que pedirlas.",
+              href: "/reviews",
+              ctaLabel: "Explorar Reviews",
+              color: "#8C7F1F",
+            },
+            {
+              price: 0,
+              title: "Loyalz pos",
+              description: "Obtené los datos de tus clientes de forma automatica.",
+              href: "/pos",
+              ctaLabel: "Explorar Pos",
+              color: "#EC491E",
+            },
+            {
+              price: 19,
+              title: "Loyalz ai",
+              description: "Tu asistente que responde, reactiva y vende 24/7.",
+              href: "/ai",
+              ctaLabel: "Explorar AI",
+              color: "#013662",
+            },
+          ],
+        },
+      } as SectionFor<T>
     case "club_cards":
       return {
         ...base,
@@ -172,6 +225,31 @@ export function createDefaultSection<T extends PageSection["type"]>(
             {
               title: "Card title",
               description: "Card description",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "home_products":
+      return {
+        ...base,
+        type: "home_products",
+        props: {
+          label: "Productos",
+          title: "Todo lo que necesitás para vender más",
+          products: [
+            {
+              title: "Loyalz Club",
+              subtitle: "Fidelización",
+              description: "Convertí compras en clientes que siempre vuelven.",
+              color: "#754390",
+              image: "",
+            },
+            {
+              title: "Loyalz Reviews",
+              subtitle: "Reseñas",
+              description: "Pedí y mostrà reseñas reales en tus canales.",
+              color: "#EC491E",
+              image: "",
             },
           ],
         },
@@ -228,6 +306,39 @@ export function createDefaultSection<T extends PageSection["type"]>(
               stat: "24/7",
               title: "Tercer bloque",
             },
+          ],
+          bottomLabel: "Pie de sección",
+        },
+      } as SectionFor<T>
+    case "home_activation":
+      return {
+        ...base,
+        type: "home_activation",
+        props: {
+          title: "Activaciones",
+          activationCards: [
+            {
+              image: "",
+              stat: "+4x",
+              title: "Frecuencia en clientes",
+              description: "Texto opcional bajo el título.",
+            },
+            {
+              image: "",
+              stat: "12",
+              title: "Segundo bloque",
+              description: "",
+            },
+            {
+              image: "",
+              stat: "24/7",
+              title: "Tercer bloque",
+            },
+          ],
+          brands: [
+            { name: "Marca 1", logo: "" },
+            { name: "Marca 2", logo: "" },
+            { name: "Marca 3", logo: "" },
           ],
           bottomLabel: "Pie de sección",
         },
@@ -291,7 +402,7 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
   hero: {
     type: "hero",
     label: "Hero",
-    description: "Large headline, subtitle and CTAs.",
+    description: "Full-viewport hero — headline, five-thumb carousel, single CTA.",
     component: HeroSection,
   },
   hero_club: {
@@ -342,11 +453,23 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description: "Pricing cards with plans and features.",
     component: PricingSection,
   },
+  productpricing: {
+    type: "productpricing",
+    label: "Product pricing",
+    description: "Label, title, description and product cards with href.",
+    component: ProductPricingSection,
+  },
   club_cards: {
     type: "club_cards",
     label: "Club Cards",
     description: "Label, title, subtitle and cards grid.",
     component: ClubCardsSection,
+  },
+  home_products: {
+    type: "home_products",
+    label: "Home Products",
+    description: "Label, title and hoverable products with image preview.",
+    component: HomeProductsSection,
   },
   steps_club: {
     type: "steps_club",
@@ -365,6 +488,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Club activation",
     description: "Title, activation cards (image + stat + title), bottom label.",
     component: ClubActivationSection,
+  },
+  home_activation: {
+    type: "home_activation",
+    label: "Home activation",
+    description: "Title, activation cards (image + stat + title), bottom label.",
+    component: HomeActivationSection,
   },
   notification_club: {
     type: "notification_club",

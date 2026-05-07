@@ -30,11 +30,11 @@ type BaseSection<TType extends string, TProps> = {
 }
 
 export type HeroSectionProps = {
-  eyebrow?: string
   title: string
-  subtitle?: string
-  primaryCta?: CTA
-  secondaryCta?: CTA
+  /** Carousel slides (URLs or paths). Five cells are shown; the center cell is visually emphasized. */
+  images: string[]
+  ctaLabel: string
+  ctaHref: string
 }
 
 export type HeroClubSectionProps = {
@@ -83,6 +83,11 @@ export type TestimonialsSectionProps = {
 export type FAQSectionProps = {
   title?: string
   subtitle?: string
+  image?: string
+  helpTitle?: string
+  helpDescription?: string
+  helpCtaLabel?: string
+  helpCtaHref?: string
   items: Array<{
     question: string
     answer: string
@@ -114,6 +119,20 @@ export type PricingSectionProps = {
   }>
 }
 
+export type ProductPricingSectionProps = {
+  label?: string
+  title?: string
+  description?: string
+  cards: Array<{
+    price: number
+    title: string
+    description: string
+    href: string
+    ctaLabel: string
+    color: string
+  }>
+}
+
 export type ClubCardsSectionProps = {
   label?: string
   title?: string
@@ -121,6 +140,18 @@ export type ClubCardsSectionProps = {
   cards: Array<{
     title: string
     description?: string
+  }>
+}
+
+export type HomeProductsSectionProps = {
+  label?: string
+  title: string
+  products: Array<{
+    title: string
+    subtitle: string
+    description: string
+    color: string
+    image: string
   }>
 }
 
@@ -157,6 +188,22 @@ export type ClubActivationSectionProps = {
   bottomLabel: string
 }
 
+/** Home — activation grid cards with image backgrounds + overlay copy + footer label. */
+export type HomeActivationSectionProps = {
+  title: string
+  activationCards: Array<{
+    image: string
+    stat: string
+    title: string
+    description?: string
+  }>
+  brands: Array<{
+    name: string
+    logo: string
+  }>
+  bottomLabel: string
+}
+
 /** Club — push notifications showcase with phone mockup + glass badges. */
 export type NotificationClubSectionProps = {
   title: string
@@ -176,10 +223,13 @@ export type FAQSection = BaseSection<"faq", FAQSectionProps>
 export type ContactFormSection = BaseSection<"contact_form", ContactFormSectionProps>
 export type CTASection = BaseSection<"cta", CTASectionProps>
 export type PricingSection = BaseSection<"pricing", PricingSectionProps>
+export type ProductPricingSection = BaseSection<"productpricing", ProductPricingSectionProps>
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
+export type HomeProductsSection = BaseSection<"home_products", HomeProductsSectionProps>
 export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
+export type HomeActivationSection = BaseSection<"home_activation", HomeActivationSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
@@ -193,10 +243,13 @@ export type PageSection =
   | ContactFormSection
   | CTASection
   | PricingSection
+  | ProductPricingSection
   | ClubCardsSection
+  | HomeProductsSection
   | StepsClubSection
   | CommonCTASection
   | ClubActivationSection
+  | HomeActivationSection
   | NotificationClubSection
 
 /**

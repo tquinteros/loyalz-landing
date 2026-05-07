@@ -9,9 +9,13 @@ function NavigationMenu({
   className,
   children,
   viewport = true,
+  viewportClassName,
+  viewportWrapperClassName,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
   viewport?: boolean
+  viewportClassName?: string
+  viewportWrapperClassName?: string
 }) {
   return (
     <NavigationMenuPrimitive.Root
@@ -24,7 +28,12 @@ function NavigationMenu({
       {...props}
     >
       {children}
-      {viewport && <NavigationMenuViewport />}
+      {viewport && (
+        <NavigationMenuViewport
+          className={viewportClassName}
+          wrapperClassName={viewportWrapperClassName}
+        />
+      )}
     </NavigationMenuPrimitive.Root>
   )
 }
@@ -101,12 +110,17 @@ function NavigationMenuContent({
 
 function NavigationMenuViewport({
   className,
+  wrapperClassName,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Viewport> & {
+  wrapperClassName?: string
+}) {
   return (
     <div
       className={cn(
-        "absolute top-full left-0 isolate z-50 flex justify-center"
+        wrapperClassName
+          ? cn("isolate z-50 flex", wrapperClassName)
+          : "absolute top-full left-0 isolate z-50 flex justify-center",
       )}
     >
       <NavigationMenuPrimitive.Viewport

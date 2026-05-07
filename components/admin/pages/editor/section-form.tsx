@@ -25,10 +25,13 @@ import { FAQForm } from "./forms/faq-form"
 import { ContactFormForm } from "./forms/contact-form-form"
 import { CtaForm } from "./forms/cta-form"
 import { PricingForm } from "./forms/pricing-form"
+import { ProductPricingForm } from "./forms/product-pricing-form"
 import { ClubCardsForm } from "./forms/club-cards-form"
+import { HomeProductsForm } from "./forms/home-products-form"
 import { StepsClubForm } from "./forms/steps-club-form"
 import { CommonCtaForm } from "./forms/common-cta-form"
 import { ClubActivationForm } from "./forms/club-activation-form"
+import { HomeActivationForm } from "./forms/home-activation-form"
 import { NotificationClubForm } from "./forms/notification-club-form"
 
 type Props = {
@@ -146,8 +149,14 @@ function TypedSectionBody({
       return <CtaForm value={section.props} onChange={onPropsChange} />
     case "pricing":
       return <PricingForm value={section.props} onChange={onPropsChange} />
+    case "productpricing":
+      return (
+        <ProductPricingForm value={section.props} onChange={onPropsChange} />
+      )
     case "club_cards":
       return <ClubCardsForm value={section.props} onChange={onPropsChange} />
+    case "home_products":
+      return <HomeProductsForm value={section.props} onChange={onPropsChange} />
     case "steps_club":
       return <StepsClubForm value={section.props} onChange={onPropsChange} />
     case "common_cta":
@@ -155,6 +164,10 @@ function TypedSectionBody({
     case "club_activation":
       return (
         <ClubActivationForm value={section.props} onChange={onPropsChange} />
+      )
+    case "home_activation":
+      return (
+        <HomeActivationForm value={section.props} onChange={onPropsChange} />
       )
     case "notification_club":
       return (

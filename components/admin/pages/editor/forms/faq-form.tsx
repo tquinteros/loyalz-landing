@@ -5,6 +5,7 @@ import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
 import type { FAQSectionProps } from "@/lib/types/Pages"
 
@@ -54,6 +55,15 @@ export function FAQForm({ value, onChange }: Props) {
         />
       </div>
 
+      <div className="space-y-1.5">
+        <Label>Imagen</Label>
+        <ImagePicker
+          value={local.image || null}
+          onChange={(url) => set("image", url ?? "")}
+          aspect="video"
+        />
+      </div>
+
       <div className="space-y-2">
         <Label>Preguntas</Label>
         <ItemsField<FAQItem>
@@ -81,6 +91,44 @@ export function FAQForm({ value, onChange }: Props) {
               </div>
             </div>
           )}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="faq-help-title">Título bloque de ayuda</Label>
+        <Input
+          id="faq-help-title"
+          value={local.helpTitle ?? ""}
+          onChange={(e) => set("helpTitle", e.target.value || undefined)}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="faq-help-description">Descripción bloque de ayuda</Label>
+        <Textarea
+          id="faq-help-description"
+          rows={2}
+          value={local.helpDescription ?? ""}
+          onChange={(e) => set("helpDescription", e.target.value || undefined)}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="faq-help-cta-label">Texto botón ayuda</Label>
+        <Input
+          id="faq-help-cta-label"
+          value={local.helpCtaLabel ?? ""}
+          onChange={(e) => set("helpCtaLabel", e.target.value || undefined)}
+        />
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="faq-help-cta-href">Enlace botón ayuda</Label>
+        <Input
+          id="faq-help-cta-href"
+          value={local.helpCtaHref ?? ""}
+          onChange={(e) => set("helpCtaHref", e.target.value || undefined)}
+          placeholder="/contact"
         />
       </div>
     </div>

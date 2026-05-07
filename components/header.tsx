@@ -62,14 +62,18 @@ const Header = () => {
           <div className="hidden items-center gap-5 font-semibold md:flex">
             <Link href="/">Empresa</Link>
 
-            <NavigationMenu className="z-50">
+            <NavigationMenu
+              className="z-50"
+              viewportWrapperClassName="fixed top-20 left-0 right-0 z-[60] w-full max-w-[100vw] justify-center"
+              viewportClassName="mt-0 h-[var(--radix-navigation-menu-viewport-height)] w-full max-w-[100vw] overflow-hidden rounded-none border-x-0 border-b border-t-0 border-border/30 bg-background shadow-none md:mt-0 md:w-screen md:max-w-none"
+            >
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="h-auto bg-transparent px-0 py-0 text-sm font-semibold hover:bg-transparent focus:bg-transparent data-[state=open]:text-black data-[state=open]:bg-transparent">
                     Productos
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="min-w-[min(1200px,92vw)] rounded-xl bg-[#F8F5EF] p-7 border-none">
-                    <div className="grid auto-rows-fr grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                  <NavigationMenuContent className="w-full max-w-none rounded-none border-0 bg-transparent p-0 md:left-0 md:w-full">
+                    <div className="grid auto-rows-fr grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-2 lg:px-16 xl:grid-cols-4">
                       {PRODUCT_CARDS.map((card) => {
                         const [mainWord, ...secondaryWords] = card.title.split(" ")
                         return (
