@@ -95,7 +95,9 @@ export default function HomeProductsSection({
                         </motion.div>
                       ) : null}
                     </AnimatePresence>
+                    
                     <div className="flex h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5">
+                      
                       <h3 className="text-lg font-bold text-background sm:text-xl">
                         {(() => {
                           const words = product.title.split(/\s+/).filter(Boolean)

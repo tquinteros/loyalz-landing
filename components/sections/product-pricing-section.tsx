@@ -26,11 +26,16 @@ export default function ProductPricingSection({
     >
       <div className="w-full space-y-8 sm:space-y-10">
         {(label || title || description) && (
-          <div className="max-w-4xl space-y-2 text-left">
+          <div className="max-w-7xl space-y-2 text-left">
             {label ? (
-              <p className="inline-flex rounded-md border border-foreground/20 bg-background/30 px-2 py-1 text-xs font-medium text-foreground">
-                {label}
-              </p>
+              <div className="flex items-center gap-2 rounded border border-foreground/20 bg-background/30 px-4 py-2 w-fit">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="10" height="10" rx="2" fill="#F8F5EF" />
+                </svg>
+                <p className="text-xs font-semibold text-foreground tracking-wider">
+                  {label}
+                </p>
+              </div>
             ) : null}
             {title ? (
               <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
@@ -51,7 +56,7 @@ export default function ProductPricingSection({
               <li key={`${card.title}-${index}`} className="h-full list-none">
                 <motion.article
                   className={cn(
-                    "flex h-[320px] flex-col rounded-3xl p-6 text-foreground sm:h-[380px]",
+                    "flex h-[380px] flex-col rounded-3xl p-6 text-foreground sm:h-[420px]",
                   )}
                   style={{
                     backgroundColor: card.color || "#754390",
