@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Funnel_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
+import { LanguageProvider } from "@/providers/language-provider";
 import { Toaster } from "@/components/ui/sonner"
 
 const defaultUrl = process.env.VERCEL_URL
@@ -30,9 +31,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${funnel.className} antialiased`}>
         <QueryProvider>
-          {/* <Header /> */}
-          {children}
-          <Toaster richColors />
+          <LanguageProvider>
+            {/* <Header /> */}
+            {children}
+            <Toaster richColors />
+          </LanguageProvider>
         </QueryProvider>
       </body>
     </html>

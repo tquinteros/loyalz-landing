@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { LocalizedField } from "./localized-field"
 import type { ContactFormSectionProps } from "@/lib/types/Pages"
 
 type Props = {
@@ -32,34 +30,30 @@ export function ContactFormForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="cf-title">Título</Label>
-        <Input
-          id="cf-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Título"
+        idPrefix="cf-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="cf-subtitle">Subtítulo</Label>
-        <Textarea
-          id="cf-subtitle"
-          rows={2}
-          value={local.subtitle ?? ""}
-          onChange={(e) => set("subtitle", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Subtítulo"
+        idPrefix="cf-subtitle"
+        multiline
+        rows={2}
+        value={local.subtitle}
+        onChange={(next) => set("subtitle", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="cf-submit">Texto del botón</Label>
-        <Input
-          id="cf-submit"
-          value={local.submitLabel ?? ""}
-          onChange={(e) => set("submitLabel", e.target.value || undefined)}
-          placeholder="Enviar"
-        />
-      </div>
+      <LocalizedField
+        label="Texto del botón"
+        idPrefix="cf-submit"
+        value={local.submitLabel}
+        onChange={(next) => set("submitLabel", next)}
+        placeholderEs="Enviar"
+        placeholderEn="Send"
+      />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
+import { LocalizedField } from "./localized-field"
 import type { HeroSectionProps } from "@/lib/types/Pages"
 
 type Props = {
@@ -40,15 +41,14 @@ export function HeroForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="hero-title">Título *</Label>
-        <Input
-          id="hero-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="El sistema all-in-one para hacer crecer tu negocio."
-        />
-      </div>
+      <LocalizedField
+        label="Título *"
+        idPrefix="hero-title"
+        value={local.title}
+        onChange={(next) => set("title", next ?? { es: "", en: "" })}
+        placeholderEs="El sistema all-in-one para hacer crecer tu negocio."
+        placeholderEn="The all-in-one system to grow your business."
+      />
 
       <div className="space-y-2">
         <Label>Imágenes del carrusel</Label>
@@ -71,15 +71,14 @@ export function HeroForm({ value, onChange }: Props) {
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="hero-cta-label">Texto del CTA *</Label>
-        <Input
-          id="hero-cta-label"
-          value={local.ctaLabel ?? ""}
-          onChange={(e) => set("ctaLabel", e.target.value)}
-          placeholder="Demo Gratis"
-        />
-      </div>
+      <LocalizedField
+        label="Texto del CTA *"
+        idPrefix="hero-cta-label"
+        value={local.ctaLabel}
+        onChange={(next) => set("ctaLabel", next ?? { es: "", en: "" })}
+        placeholderEs="Demo Gratis"
+        placeholderEn="Free Demo"
+      />
 
       <div className="space-y-1.5">
         <Label htmlFor="hero-cta-href">Enlace del CTA *</Label>

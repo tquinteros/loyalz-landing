@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { LocalizedField } from "./localized-field"
 import type { CTASectionProps } from "@/lib/types/Pages"
 
 type Props = {
@@ -28,25 +27,23 @@ export function CtaForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="cta-title">Title</Label>
-        <Input
-          id="cta-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-          placeholder="Ready to get started?"
-        />
-      </div>
+      <LocalizedField
+        label="Title"
+        idPrefix="cta-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+        placeholderEs="¿Listo para empezar?"
+        placeholderEn="Ready to get started?"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="cta-label">Label</Label>
-        <Input
-          id="cta-label"
-          value={local.label ?? ""}
-          onChange={(e) => set("label", e.target.value || undefined)}
-          placeholder="Contact us"
-        />
-      </div>
+      <LocalizedField
+        label="Label"
+        idPrefix="cta-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Contactanos"
+        placeholderEn="Contact us"
+      />
     </div>
   )
 }

@@ -14,3 +14,16 @@ export const hasEnvVars =
 export const HOME_SLUG = "home" as const
 export const BLOGS_SLUG = "blogs" as const
 export const CLUB_SLUG = "club" as const
+
+export function t(
+  value?: string | { es?: string; en?: string },
+  locale: "es" | "en" = "es",
+) {
+  if (!value) return ""
+
+  if (typeof value === "string") {
+    return value
+  }
+
+  return value[locale] || value.es || value.en || ""
+}

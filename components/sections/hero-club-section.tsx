@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { SectionWrapper } from "./section-wrapper"
@@ -5,6 +7,7 @@ import type { HeroClubSectionProps } from "@/lib/types/Pages"
 import Image from "next/image"
 import AppStoreButton from "../ui/app-store-button"
 import AndroidButton from "../ui/android-button"
+import { useT } from "@/providers/language-provider"
 
 type Props = HeroClubSectionProps & {
   backgroundImage?: string | null
@@ -19,6 +22,11 @@ export default function HeroClubSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+  const ctaLabel = t(primaryCta?.label)
+
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
@@ -29,10 +37,10 @@ export default function HeroClubSection({
         <div className="col-span-1 flex h-full flex-col justify-between rounded-[24px] bg-foreground p-6 md:col-span-7 md:rounded-[32px] md:p-12">
           <div className="flex flex-col gap-1">
             <h1 className="text-3xl font-bold tracking-tight text-chart-5 sm:text-4xl lg:text-6xl">
-              {title}
+              {titleText}
             </h1>
-            {subtitle ? (
-              <p className="max-w-2xl text-2xl font-bold leading-tight text-chart-5 sm:text-3xl lg:text-4xl">{subtitle}</p>
+            {subtitleText ? (
+              <p className="max-w-2xl text-2xl font-bold leading-tight text-chart-5 sm:text-3xl lg:text-4xl">{subtitleText}</p>
             ) : null}
           </div>
           <div className="flex flex-col my-4 lg:my-0 gap-4 sm:gap-5">
@@ -40,9 +48,9 @@ export default function HeroClubSection({
               <AndroidButton />
               <AppStoreButton />
             </div>
-            {primaryCta?.href && primaryCta.label ? (
+            {primaryCta?.href && ctaLabel ? (
               <Button asChild size="lg" className="w-fit h-12">
-                <Link href={primaryCta.href}>{primaryCta.label}</Link>
+                <Link href={primaryCta.href}>{ctaLabel}</Link>
               </Button>
             ) : null}
           </div>
@@ -63,7 +71,7 @@ export default function HeroClubSection({
           {image ? (
             <Image
               src={image}
-              alt={title}
+              alt={titleText}
               width={500}
               height={500}
               priority

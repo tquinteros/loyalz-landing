@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
-import type { FAQSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type { FAQSectionProps, LocalizedString } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: FAQSectionProps
@@ -15,6 +16,8 @@ type Props = {
 }
 
 type FAQItem = FAQSectionProps["items"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function FAQForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<FAQSectionProps>(value)
@@ -36,24 +39,21 @@ export function FAQForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="faq-title">Título</Label>
-        <Input
-          id="faq-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Título"
+        idPrefix="faq-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="faq-subtitle">Subtítulo</Label>
-        <Textarea
-          id="faq-subtitle"
-          rows={2}
-          value={local.subtitle ?? ""}
-          onChange={(e) => set("subtitle", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Subtítulo"
+        idPrefix="faq-subtitle"
+        multiline
+        rows={2}
+        value={local.subtitle}
+        onChange={(next) => set("subtitle", next)}
+      />
 
       <div className="space-y-1.5">
         <Label>Imagen</Label>
@@ -69,58 +69,57 @@ export function FAQForm({ value, onChange }: Props) {
         <ItemsField<FAQItem>
           items={local.items ?? []}
           onChange={(items) => set("items", items)}
-          createItem={() => ({ question: "", answer: "" })}
+          createItem={() => ({
+            question: { es: "", en: "" },
+            answer: { es: "", en: "" },
+          })}
           addLabel="Añadir pregunta"
-          itemLabel={(it, i) => it.question || `Pregunta ${i + 1}`}
+          itemLabel={(it, i) => translate(it.question) || `Pregunta ${i + 1}`}
           renderItem={(item, update) => (
-            <div className="space-y-2">
-              <div className="space-y-1">
-                <Label className="text-xs">Pregunta *</Label>
-                <Input
-                  value={item.question}
-                  onChange={(e) => update({ question: e.target.value })}
-                />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Respuesta *</Label>
-                <Textarea
-                  rows={3}
-                  value={item.answer}
-                  onChange={(e) => update({ answer: e.target.value })}
-                />
-              </div>
+            <div className="space-y-3">
+              <LocalizedField
+                label="Pregunta"
+                required
+                value={item.question}
+                onChange={(next) =>
+                  update({ question: next ?? EMPTY_LOCALIZED })
+                }
+              />
+              <LocalizedField
+                label="Respuesta"
+                required
+                multiline
+                rows={3}
+                value={item.answer}
+                onChange={(next) => update({ answer: next ?? EMPTY_LOCALIZED })}
+              />
             </div>
           )}
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="faq-help-title">Título bloque de ayuda</Label>
-        <Input
-          id="faq-help-title"
-          value={local.helpTitle ?? ""}
-          onChange={(e) => set("helpTitle", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Título bloque de ayuda"
+        idPrefix="faq-help-title"
+        value={local.helpTitle}
+        onChange={(next) => set("helpTitle", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="faq-help-description">Descripción bloque de ayuda</Label>
-        <Textarea
-          id="faq-help-description"
-          rows={2}
-          value={local.helpDescription ?? ""}
-          onChange={(e) => set("helpDescription", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Descripción bloque de ayuda"
+        idPrefix="faq-help-description"
+        multiline
+        rows={2}
+        value={local.helpDescription}
+        onChange={(next) => set("helpDescription", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="faq-help-cta-label">Texto botón ayuda</Label>
-        <Input
-          id="faq-help-cta-label"
-          value={local.helpCtaLabel ?? ""}
-          onChange={(e) => set("helpCtaLabel", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Texto botón ayuda"
+        idPrefix="faq-help-cta-label"
+        value={local.helpCtaLabel}
+        onChange={(next) => set("helpCtaLabel", next)}
+      />
 
       <div className="space-y-1.5">
         <Label htmlFor="faq-help-cta-href">Enlace botón ayuda</Label>

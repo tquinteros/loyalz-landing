@@ -47,9 +47,12 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "hero",
         props: {
-          title: "El sistema all-in-one para hacer crecer tu negocio.",
+          title: {
+            es: "El sistema all-in-one para hacer crecer tu negocio.",
+            en: "The all-in-one system to grow your business.",
+          },
           images: ["/club.png", "/club.png", "/club.png", "/club.png", "/club.png"],
-          ctaLabel: "Demo Gratis",
+          ctaLabel: { es: "Demo Gratis", en: "Free Demo" },
           ctaHref: "/contact",
         },
       } as SectionFor<T>
@@ -58,10 +61,13 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "hero_club",
         props: {
-          title: "New Hero Club section",
-          subtitle: "",
+          title: { es: "Nueva sección Hero Club", en: "New Hero Club section" },
+          subtitle: { es: "", en: "" },
           image: "",
-          primaryCta: { label: "Get started", href: "/contact" },
+          primaryCta: {
+            label: { es: "Empezar", en: "Get started" },
+            href: "/contact",
+          },
         },
       } as SectionFor<T>
     case "feature_links":
@@ -69,11 +75,19 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "feature_links",
         props: {
-          title: "Features",
-          subtitle: "",
+          title: { es: "Funcionalidades", en: "Features" },
+          subtitle: { es: "", en: "" },
           items: [
-            { icon: "sparkles", title: "Feature one", description: "" },
-            { icon: "zap", title: "Feature two", description: "" },
+            {
+              icon: "sparkles",
+              title: { es: "Funcionalidad uno", en: "Feature one" },
+              description: { es: "", en: "" },
+            },
+            {
+              icon: "zap",
+              title: { es: "Funcionalidad dos", en: "Feature two" },
+              description: { es: "", en: "" },
+            },
           ],
         },
       } as SectionFor<T>
@@ -82,10 +96,10 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "stats",
         props: {
-          title: "Our numbers",
+          title: { es: "Nuestros números", en: "Our numbers" },
           items: [
-            { value: "100+", label: "Customers" },
-            { value: "24/7", label: "Support" },
+            { value: "100+", label: { es: "Clientes", en: "Customers" } },
+            { value: "24/7", label: { es: "Soporte", en: "Support" } },
           ],
         },
       } as SectionFor<T>
@@ -94,14 +108,23 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "testimonials",
         props: {
-          title: "What people are saying",
+          title: {
+            es: "Lo que dicen nuestros clientes",
+            en: "What people are saying",
+          },
           items: [
             {
               logo: "",
-              badges: ["+6.000 members", "+30% growth"],
-              summary: "An amazing product.",
+              badges: [
+                { es: "+6.000 miembros", en: "+6,000 members" },
+                { es: "+30% crecimiento", en: "+30% growth" },
+              ],
+              summary: {
+                es: "Un producto increíble.",
+                en: "An amazing product.",
+              },
               author: "Jane Doe",
-              place: "Acme",
+              place: { es: "Acme", en: "Acme" },
               avatar: "",
             },
           ],
@@ -112,14 +135,29 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "faq",
         props: {
-          title: "Frequently asked questions",
+          title: {
+            es: "Preguntas frecuentes",
+            en: "Frequently asked questions",
+          },
           image: "",
-          helpTitle: "Still have questions?",
-          helpDescription: "Talk to our team and learn everything about Loyalz.",
-          helpCtaLabel: "Contact us",
+          helpTitle: {
+            es: "¿Aún tenés dudas?",
+            en: "Still have questions?",
+          },
+          helpDescription: {
+            es: "Hablá con nuestro equipo y descubrí todo sobre Loyalz.",
+            en: "Talk to our team and learn everything about Loyalz.",
+          },
+          helpCtaLabel: { es: "Contactanos", en: "Contact us" },
           helpCtaHref: "/contact",
           items: [
-            { question: "A common question?", answer: "The answer." },
+            {
+              question: {
+                es: "¿Una pregunta común?",
+                en: "A common question?",
+              },
+              answer: { es: "La respuesta.", en: "The answer." },
+            },
           ],
         },
       } as SectionFor<T>
@@ -128,9 +166,9 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "contact_form",
         props: {
-          title: "Get in touch",
-          subtitle: "",
-          submitLabel: "Send",
+          title: { es: "Hablá con nosotros", en: "Get in touch" },
+          subtitle: { es: "", en: "" },
+          submitLabel: { es: "Enviar", en: "Send" },
         },
       } as SectionFor<T>
     case "cta":
@@ -138,8 +176,11 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "cta",
         props: {
-          title: "Ready to get started?",
-          label: "Contact us",
+          title: {
+            es: "¿Listo para empezar?",
+            en: "Ready to get started?",
+          },
+          label: { es: "Contactanos", en: "Contact us" },
         },
       } as SectionFor<T>
     case "pricing":
@@ -147,24 +188,44 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "pricing",
         props: {
-          label: "Plans",
-          title: "Simple pricing for every team",
-          description: "Pick the plan that best fits your business.",
-          bottomMessage: "POS + Pay are included in all plans.",
+          label: { es: "Planes", en: "Plans" },
+          title: {
+            es: "Precios simples para cada equipo",
+            en: "Simple pricing for every team",
+          },
+          description: {
+            es: "Elegí el plan que mejor se adapta a tu negocio.",
+            en: "Pick the plan that best fits your business.",
+          },
+          bottomMessage: {
+            es: "POS + Pay están incluidos en todos los planes.",
+            en: "POS + Pay are included in all plans.",
+          },
           cards: [
             {
-              title: "Starter",
+              title: { es: "Starter", en: "Starter" },
               price: "$79",
-              shops: "Up to 1 shop",
+              shops: { es: "Hasta 1 local", en: "Up to 1 shop" },
               savings: "19%",
-              features: ["Club", "Reviews", "POS", "Pay"],
+              features: [
+                { es: "Club", en: "Club" },
+                { es: "Reviews", en: "Reviews" },
+                { es: "POS", en: "POS" },
+                { es: "Pay", en: "Pay" },
+              ],
             },
             {
-              title: "Growth",
+              title: { es: "Growth", en: "Growth" },
               price: "$349",
-              shops: "Up to 3 shops",
+              shops: { es: "Hasta 3 locales", en: "Up to 3 shops" },
               savings: "22%",
-              features: ["Club", "Reviews", "POS", "Pay", "AI Pro"],
+              features: [
+                { es: "Club", en: "Club" },
+                { es: "Reviews", en: "Reviews" },
+                { es: "POS", en: "POS" },
+                { es: "Pay", en: "Pay" },
+                { es: "AI Pro", en: "AI Pro" },
+              ],
             },
           ],
         },
@@ -174,40 +235,58 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "productpricing",
         props: {
-          label: "Nuestros productos",
-          title: "Los precios claros. Como todo en Loyalz.",
-          description: "Empeza con lo que necesitas hoy. Escala cuando quieras.",
+          label: { es: "Nuestros productos", en: "Our products" },
+          title: {
+            es: "Los precios claros. Como todo en Loyalz.",
+            en: "Clear pricing. Just like everything at Loyalz.",
+          },
+          description: {
+            es: "Empeza con lo que necesitas hoy. Escala cuando quieras.",
+            en: "Start with what you need today. Scale whenever you want.",
+          },
           cards: [
             {
               price: 19,
-              title: "Loyalz club",
-              description: "Mantené más visitas de tus clientes con la fidelizacion.",
+              title: { es: "Loyalz club", en: "Loyalz club" },
+              description: {
+                es: "Mantené más visitas de tus clientes con la fidelizacion.",
+                en: "Keep your customers coming back with loyalty.",
+              },
               href: "/club",
-              ctaLabel: "Explorar Club",
+              ctaLabel: { es: "Explorar Club", en: "Explore Club" },
               color: "#754390",
             },
             {
               price: 19,
-              title: "Loyalz reviews",
-              description: "Más reseñas positivas en Google sin tener que pedirlas.",
+              title: { es: "Loyalz reviews", en: "Loyalz reviews" },
+              description: {
+                es: "Más reseñas positivas en Google sin tener que pedirlas.",
+                en: "More positive Google reviews without having to ask.",
+              },
               href: "/reviews",
-              ctaLabel: "Explorar Reviews",
+              ctaLabel: { es: "Explorar Reviews", en: "Explore Reviews" },
               color: "#8C7F1F",
             },
             {
               price: 0,
-              title: "Loyalz pos",
-              description: "Obtené los datos de tus clientes de forma automatica.",
+              title: { es: "Loyalz pos", en: "Loyalz pos" },
+              description: {
+                es: "Obtené los datos de tus clientes de forma automatica.",
+                en: "Get your customers' data automatically.",
+              },
               href: "/pos",
-              ctaLabel: "Explorar Pos",
+              ctaLabel: { es: "Explorar Pos", en: "Explore Pos" },
               color: "#EC491E",
             },
             {
               price: 19,
-              title: "Loyalz ai",
-              description: "Tu asistente que responde, reactiva y vende 24/7.",
+              title: { es: "Loyalz ai", en: "Loyalz ai" },
+              description: {
+                es: "Tu asistente que responde, reactiva y vende 24/7.",
+                en: "Your assistant that replies, re-engages and sells 24/7.",
+              },
               href: "/ai",
-              ctaLabel: "Explorar AI",
+              ctaLabel: { es: "Explorar AI", en: "Explore AI" },
               color: "#013662",
             },
           ],
@@ -218,13 +297,16 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "club_cards",
         props: {
-          label: "Club",
-          title: "Section title",
-          subtitle: "Section subtitle",
+          label: { es: "Club", en: "Club" },
+          title: { es: "Título de sección", en: "Section title" },
+          subtitle: { es: "Subtítulo de sección", en: "Section subtitle" },
           cards: [
             {
-              title: "Card title",
-              description: "Card description",
+              title: { es: "Título de tarjeta", en: "Card title" },
+              description: {
+                es: "Descripción de tarjeta",
+                en: "Card description",
+              },
             },
           ],
         },
@@ -234,20 +316,29 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "home_products",
         props: {
-          label: "Productos",
-          title: "Todo lo que necesitás para vender más",
+          label: { es: "Productos", en: "Products" },
+          title: {
+            es: "Todo lo que necesitás para vender más",
+            en: "Everything you need to sell more",
+          },
           products: [
             {
-              title: "Loyalz Club",
-              subtitle: "Fidelización",
-              description: "Convertí compras en clientes que siempre vuelven.",
+              title: { es: "Loyalz Club", en: "Loyalz Club" },
+              subtitle: { es: "Fidelización", en: "Loyalty" },
+              description: {
+                es: "Convertí compras en clientes que siempre vuelven.",
+                en: "Turn purchases into customers who keep coming back.",
+              },
               color: "#754390",
               image: "",
             },
             {
-              title: "Loyalz Reviews",
-              subtitle: "Reseñas",
-              description: "Pedí y mostrà reseñas reales en tus canales.",
+              title: { es: "Loyalz Reviews", en: "Loyalz Reviews" },
+              subtitle: { es: "Reseñas", en: "Reviews" },
+              description: {
+                es: "Pedí y mostrá reseñas reales en tus canales.",
+                en: "Request and showcase real reviews on your channels.",
+              },
               color: "#EC491E",
               image: "",
             },
@@ -259,11 +350,14 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "steps_club",
         props: {
-          title: "Cómo funciona",
+          title: { es: "Cómo funciona", en: "How it works" },
           steps: [
             {
-              title: "Paso 1",
-              description: "Descripción del paso.",
+              title: { es: "Paso 1", en: "Step 1" },
+              description: {
+                es: "Descripción del paso.",
+                en: "Step description.",
+              },
               image: "",
             },
           ],
@@ -275,10 +369,19 @@ export function createDefaultSection<T extends PageSection["type"]>(
         type: "common_cta",
         props: {
           backgroundColor: "#754390",
-          title: "Tu próximo paso",
-          description: "Breve texto que acompaña el llamado a la acción.",
-          firstCta: { label: "Empezar", href: "/contact" },
-          secondCta: { label: "Saber más", href: "/club" },
+          title: { es: "Tu próximo paso", en: "Your next step" },
+          description: {
+            es: "Breve texto que acompaña el llamado a la acción.",
+            en: "Short copy accompanying the call to action.",
+          },
+          firstCta: {
+            label: { es: "Empezar", en: "Get started" },
+            href: "/contact",
+          },
+          secondCta: {
+            label: { es: "Saber más", en: "Learn more" },
+            href: "/club",
+          },
           image: "",
         },
       } as SectionFor<T>
@@ -287,27 +390,33 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "club_activation",
         props: {
-          title: "Activaciones",
+          title: { es: "Activaciones", en: "Activations" },
           activationCards: [
             {
               image: "",
               stat: "+4x",
-              title: "Frecuencia en clientes",
-              description: "Texto opcional bajo el título.",
+              title: {
+                es: "Frecuencia en clientes",
+                en: "Customer frequency",
+              },
+              description: {
+                es: "Texto opcional bajo el título.",
+                en: "Optional copy below the title.",
+              },
             },
             {
               image: "",
               stat: "12",
-              title: "Segundo bloque",
-              description: "",
+              title: { es: "Segundo bloque", en: "Second block" },
+              description: { es: "", en: "" },
             },
             {
               image: "",
               stat: "24/7",
-              title: "Tercer bloque",
+              title: { es: "Tercer bloque", en: "Third block" },
             },
           ],
-          bottomLabel: "Pie de sección",
+          bottomLabel: { es: "Pie de sección", en: "Section footer" },
         },
       } as SectionFor<T>
     case "home_activation":
@@ -315,24 +424,30 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "home_activation",
         props: {
-          title: "Activaciones",
+          title: { es: "Activaciones", en: "Activations" },
           activationCards: [
             {
               image: "",
               stat: "+4x",
-              title: "Frecuencia en clientes",
-              description: "Texto opcional bajo el título.",
+              title: {
+                es: "Frecuencia en clientes",
+                en: "Customer frequency",
+              },
+              description: {
+                es: "Texto opcional bajo el título.",
+                en: "Optional copy below the title.",
+              },
             },
             {
               image: "",
               stat: "12",
-              title: "Segundo bloque",
-              description: "",
+              title: { es: "Segundo bloque", en: "Second block" },
+              description: { es: "", en: "" },
             },
             {
               image: "",
               stat: "24/7",
-              title: "Tercer bloque",
+              title: { es: "Tercer bloque", en: "Third block" },
             },
           ],
           brands: [
@@ -340,7 +455,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
             { name: "Marca 2", logo: "" },
             { name: "Marca 3", logo: "" },
           ],
-          bottomLabel: "Pie de sección",
+          bottomLabel: { es: "Pie de sección", en: "Section footer" },
         },
       } as SectionFor<T>
     case "notification_club":
@@ -348,24 +463,35 @@ export function createDefaultSection<T extends PageSection["type"]>(
         ...base,
         type: "notification_club",
         props: {
-          title: "Notificaciones Push",
-          description:
-            "Reactivá clientes sin costo. Mandales promociones, recordatorios o mensajes de cumpleaños directo al celular.",
+          title: {
+            es: "Notificaciones Push",
+            en: "Push Notifications",
+          },
+          description: {
+            es: "Reactivá clientes sin costo. Mandales promociones, recordatorios o mensajes de cumpleaños directo al celular.",
+            en: "Re-engage customers for free. Send them promos, reminders or birthday messages right to their phone.",
+          },
           badges: [
             {
               brand: "AIR COFFEE",
-              message:
-                "¡Disfrutá un 50% de descuento en nuestro local hoy! ☕️",
+              message: {
+                es: "¡Disfrutá un 50% de descuento en nuestro local hoy! ☕️",
+                en: "Enjoy 50% off at our shop today! ☕️",
+              },
             },
             {
               brand: "INNAMORATO",
-              message:
-                "¡Bienvenido a INNsaciables! Un club de beneficios para los incomprendidos 🍦😍",
+              message: {
+                es: "¡Bienvenido a INNsaciables! Un club de beneficios para los incomprendidos 🍦😍",
+                en: "Welcome to INNsaciables! A perks club for the unique 🍦😍",
+              },
             },
             {
               brand: "COFI JAUS",
-              message:
-                "Hola 🙌 ¡Estas cerca de Cofi, pasa por el local y recordá que cada 6 te regalamos 1 Café ☕️🫶",
+              message: {
+                es: "Hola 🙌 ¡Estas cerca de Cofi, pasa por el local y recordá que cada 6 te regalamos 1 Café ☕️🫶",
+                en: "Hi 🙌 You're near Cofi — drop by, and remember every 6 visits we treat you to 1 free coffee ☕️🫶",
+              },
             },
           ],
         },

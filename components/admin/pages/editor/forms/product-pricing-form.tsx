@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ItemsField } from "../items-field"
+import { LocalizedField } from "./localized-field"
 import type { ProductPricingSectionProps } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: ProductPricingSectionProps
@@ -35,36 +36,34 @@ export function ProductPricingForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="product-pricing-label">Label</Label>
-        <Input
-          id="product-pricing-label"
-          value={local.label ?? ""}
-          onChange={(e) => set("label", e.target.value || undefined)}
-          placeholder="Nuestros productos"
-        />
-      </div>
+      <LocalizedField
+        label="Label"
+        idPrefix="product-pricing-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Nuestros productos"
+        placeholderEn="Our products"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="product-pricing-title">Title</Label>
-        <Input
-          id="product-pricing-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-          placeholder="Los precios claros. Como todo en Loyalz."
-        />
-      </div>
+      <LocalizedField
+        label="Title"
+        idPrefix="product-pricing-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+        placeholderEs="Los precios claros. Como todo en Loyalz."
+        placeholderEn="Clear pricing. Just like everything at Loyalz."
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="product-pricing-description">Description</Label>
-        <Textarea
-          id="product-pricing-description"
-          rows={2}
-          value={local.description ?? ""}
-          onChange={(e) => set("description", e.target.value || undefined)}
-          placeholder="Empeza con lo que necesitas hoy. Escala cuando quieras."
-        />
-      </div>
+      <LocalizedField
+        label="Description"
+        idPrefix="product-pricing-description"
+        multiline
+        rows={2}
+        value={local.description}
+        onChange={(next) => set("description", next)}
+        placeholderEs="Empeza con lo que necesitas hoy. Escala cuando quieras."
+        placeholderEn="Start with what you need today. Scale whenever you want."
+      />
 
       <div className="space-y-2">
         <Label>Cards</Label>
@@ -73,50 +72,81 @@ export function ProductPricingForm({ value, onChange }: Props) {
           onChange={(cards) => set("cards", cards)}
           createItem={() => ({
             price: 0,
-            title: "Loyalz product",
-            description: "Descripcion del producto.",
+            title: { es: "Loyalz product", en: "Loyalz product" },
+            description: {
+              es: "Descripcion del producto.",
+              en: "Product description.",
+            },
             href: "/",
-            ctaLabel: "Explorar",
+            ctaLabel: { es: "Explorar", en: "Explore" },
             color: "#754390",
           })}
           addLabel="Add card"
-          itemLabel={(it, i) => it.title || `Card ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Card ${i + 1}`}
           renderItem={(item, update) => (
-            <div className="grid gap-2 sm:grid-cols-2">
-              <div className="space-y-1">
-                <Label className="text-xs">Price *</Label>
-                <Input
-                  type="number"
-                  step="1"
-                  min="0"
-                  value={item.price ?? 0}
-                  onChange={(e) =>
-                    update({ price: Number.isNaN(Number(e.target.value)) ? 0 : Number(e.target.value) })
-                  }
-                  placeholder="19"
-                />
+            <div className="space-y-3">
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <Label className="text-xs">Price *</Label>
+                  <Input
+                    type="number"
+                    step="1"
+                    min="0"
+                    value={item.price ?? 0}
+                    onChange={(e) =>
+                      update({
+                        price: Number.isNaN(Number(e.target.value))
+                          ? 0
+                          : Number(e.target.value),
+                      })
+                    }
+                    placeholder="19"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label className="text-xs">Color (hex) *</Label>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="color"
+                      value={item.color || "#754390"}
+                      onChange={(e) => update({ color: e.target.value })}
+                      className="h-9 w-14 p-1"
+                    />
+                    <Input
+                      value={item.color ?? ""}
+                      onChange={(e) => update({ color: e.target.value })}
+                      placeholder="#754390"
+                    />
+                  </div>
+                </div>
               </div>
+
+              <LocalizedField
+                label="Title"
+                required
+                value={item.title}
+                onChange={(next) =>
+                  update({ title: next ?? { es: "", en: "" } })
+                }
+                placeholderEs="Loyalz Club"
+                placeholderEn="Loyalz Club"
+              />
+
+              <LocalizedField
+                label="Description"
+                required
+                multiline
+                rows={3}
+                value={item.description}
+                onChange={(next) =>
+                  update({ description: next ?? { es: "", en: "" } })
+                }
+                placeholderEs="Mantené más visitas de tus clientes."
+                placeholderEn="Keep your customers coming back."
+              />
 
               <div className="space-y-1">
-                <Label className="text-xs">Title *</Label>
-                <Input
-                  value={item.title ?? ""}
-                  onChange={(e) => update({ title: e.target.value })}
-                  placeholder="Loyalz Club"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <Label className="text-xs">Description *</Label>
-                <Textarea
-                  rows={3}
-                  value={item.description ?? ""}
-                  onChange={(e) => update({ description: e.target.value })}
-                  placeholder="Mantené más visitas de tus clientes."
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
                 <Label className="text-xs">Href *</Label>
                 <Input
                   value={item.href ?? ""}
@@ -125,31 +155,16 @@ export function ProductPricingForm({ value, onChange }: Props) {
                 />
               </div>
 
-              <div className="space-y-1 sm:col-span-2">
-                <Label className="text-xs">CTA label *</Label>
-                <Input
-                  value={item.ctaLabel ?? ""}
-                  onChange={(e) => update({ ctaLabel: e.target.value })}
-                  placeholder="Explorar Club"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <Label className="text-xs">Color (hex) *</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="color"
-                    value={item.color || "#754390"}
-                    onChange={(e) => update({ color: e.target.value })}
-                    className="h-9 w-14 p-1"
-                  />
-                  <Input
-                    value={item.color ?? ""}
-                    onChange={(e) => update({ color: e.target.value })}
-                    placeholder="#754390"
-                  />
-                </div>
-              </div>
+              <LocalizedField
+                label="CTA label"
+                required
+                value={item.ctaLabel}
+                onChange={(next) =>
+                  update({ ctaLabel: next ?? { es: "", en: "" } })
+                }
+                placeholderEs="Explorar Club"
+                placeholderEn="Explore Club"
+              />
             </div>
           )}
         />

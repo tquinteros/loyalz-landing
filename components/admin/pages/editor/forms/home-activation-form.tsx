@@ -4,10 +4,14 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
-import type { HomeActivationSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type {
+  HomeActivationSectionProps,
+  LocalizedString,
+} from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: HomeActivationSectionProps
@@ -16,6 +20,8 @@ type Props = {
 
 type Card = HomeActivationSectionProps["activationCards"][number]
 type Brand = HomeActivationSectionProps["brands"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function HomeActivationForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<HomeActivationSectionProps>(value)
@@ -37,29 +43,28 @@ export function HomeActivationForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="home-activation-title">Titulo *</Label>
-        <Input
-          id="home-activation-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="Activaciones Home"
-        />
-      </div>
+      <LocalizedField
+        label="Título *"
+        idPrefix="home-activation-title"
+        value={local.title}
+        onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Activaciones Home"
+        placeholderEn="Home Activations"
+      />
 
       <div className="space-y-2">
-        <Label>Tarjetas de activacion</Label>
+        <Label>Tarjetas de activación</Label>
         <ItemsField<Card>
           items={local.activationCards ?? []}
           onChange={(activationCards) => set("activationCards", activationCards)}
           createItem={() => ({
             image: "",
             stat: "+12%",
-            title: "Titulo de la tarjeta",
-            description: "",
+            title: { es: "Título de la tarjeta", en: "Card title" },
+            description: { es: "", en: "" },
           })}
-          addLabel="Anadir tarjeta"
-          itemLabel={(it, i) => it.title || `Tarjeta ${i + 1}`}
+          addLabel="Añadir tarjeta"
+          itemLabel={(it, i) => translate(it.title) || `Tarjeta ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
               <div className="space-y-1">
@@ -77,37 +82,32 @@ export function HomeActivationForm({ value, onChange }: Props) {
                   placeholder="+4x"
                 />
               </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Titulo *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Descripcion</Label>
-                <Textarea
-                  rows={2}
-                  value={item.description ?? ""}
-                  onChange={(e) =>
-                    update({ description: e.target.value || undefined })
-                  }
-                />
-              </div>
+              <LocalizedField
+                label="Título"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+              />
+              <LocalizedField
+                label="Descripción"
+                multiline
+                rows={2}
+                value={item.description}
+                onChange={(next) => update({ description: next })}
+              />
             </div>
           )}
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="home-activation-bottom">Texto inferior *</Label>
-        <Input
-          id="home-activation-bottom"
-          value={local.bottomLabel ?? ""}
-          onChange={(e) => set("bottomLabel", e.target.value)}
-          placeholder="Etiqueta bajo la grilla"
-        />
-      </div>
+      <LocalizedField
+        label="Texto inferior *"
+        idPrefix="home-activation-bottom"
+        value={local.bottomLabel}
+        onChange={(next) => set("bottomLabel", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Etiqueta bajo la grilla"
+        placeholderEn="Label below the grid"
+      />
 
       <div className="space-y-2">
         <Label>Marcas (marquee)</Label>
@@ -118,7 +118,7 @@ export function HomeActivationForm({ value, onChange }: Props) {
             name: "Nueva marca",
             logo: "",
           })}
-          addLabel="Anadir marca"
+          addLabel="Añadir marca"
           itemLabel={(it, i) => it.name || `Marca ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">

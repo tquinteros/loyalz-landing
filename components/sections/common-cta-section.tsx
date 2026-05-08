@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import type { CommonCTASectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
 import { cn } from "@/lib/utils"
+import { useT } from "@/providers/language-provider"
 
 type Props = CommonCTASectionProps & {
   backgroundImage?: string | null
@@ -22,6 +23,13 @@ export default function CommonCTASection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const descriptionText = t(description)
+  const firstCtaLabel = t(firstCta?.label)
+  const secondCtaLabel = t(secondCta?.label)
+  const fallbackImageAlt = t({ es: "CTA", en: "CTA" })
+
   const hasSectionBg = !!backgroundImage
 
   return (
@@ -55,19 +63,19 @@ export default function CommonCTASection({
             image ? "lg:col-span-8" : "lg:col-span-12",
           )}
         >
-          {title ? (
+          {titleText ? (
             <h2 className="text-left text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-6xl max-w-2xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
-          {description ? (
+          {descriptionText ? (
             <p className="max-w-2xl text-left text-base leading-relaxed text-foreground/95 sm:text-lg">
-              {description}
+              {descriptionText}
             </p>
           ) : null}
 
           <div className="flex flex-wrap gap-3 pt-2 sm:gap-4 lg:pt-4">
-            {firstCta?.label && firstCta?.href ? (
+            {firstCtaLabel && firstCta?.href ? (
               <Button
                 asChild
                 size="lg"
@@ -77,18 +85,18 @@ export default function CommonCTASection({
                   href={firstCta.href}
                   style={{ color: backgroundColor || undefined }}
                 >
-                  {firstCta.label}
+                  {firstCtaLabel}
                 </Link>
               </Button>
             ) : null}
-            {secondCta?.label && secondCta?.href ? (
+            {secondCtaLabel && secondCta?.href ? (
               <Button
                 asChild
                 size="lg"
                 variant="outline"
                 className="h-12 rounded-[12px] border-2 border-foreground bg-transparent px-8 text-base font-semibold text-foreground shadow-none hover:bg-foreground/10 hover:text-foreground"
               >
-                <Link href={secondCta.href}>{secondCta.label}</Link>
+                <Link href={secondCta.href}>{secondCtaLabel}</Link>
               </Button>
             ) : null}
           </div>
@@ -100,7 +108,7 @@ export default function CommonCTASection({
             <div className="relative mx-auto aspect-4/3 w-full max-w-md overflow-hidden rounded-[24px] sm:max-w-none lg:mx-0">
               <Image
                 src={image}
-                alt={title || "CTA"}
+                alt={titleText || fallbackImageAlt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 33vw"

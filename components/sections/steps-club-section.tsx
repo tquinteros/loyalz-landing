@@ -6,6 +6,7 @@ import { useState } from "react"
 import type { StepsClubSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
 import { cn } from "@/lib/utils"
+import { useT } from "@/providers/language-provider"
 
 type Props = StepsClubSectionProps & {
   backgroundImage?: string | null
@@ -18,15 +19,18 @@ export default function StepsClubSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+
   /** `null` = not hovering any step (preview shows first step; no chart-5 highlight). */
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   if (!steps.length) {
     return (
       <SectionWrapper backgroundImage={backgroundImage} className={className}>
-        {title ? (
+        {titleText ? (
           <h2 className="text-2xl font-bold whitespace-pre-line sm:text-4xl">
-            {title}
+            {titleText}
           </h2>
         ) : null}
       </SectionWrapper>
@@ -36,6 +40,7 @@ export default function StepsClubSection({
   const previewIndex = hoveredIndex ?? 0
   const previewStep = steps[Math.min(previewIndex, steps.length - 1)]
   const previewSrc = previewStep?.image
+  const previewStepTitle = t(previewStep?.title)
 
   return (
     <div className="bg-[#DBC5E8] p-6">
@@ -59,7 +64,7 @@ export default function StepsClubSection({
                   >
                     <Image
                       src={previewSrc}
-                      alt={previewStep.title}
+                      alt={previewStepTitle}
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 50vw"
@@ -83,9 +88,9 @@ export default function StepsClubSection({
 
             {/* Right: title + steps — 50% width on lg; border = column divider */}
             <div className="flex min-w-0 flex-col pt-8 lg:pt-0 lg:pl-8 xl:pl-10">
-              {title ? (
+              {titleText ? (
                 <h2 className="mb-8 text-2xl max-w-md font-bold leading-tight tracking-tight whitespace-pre-line sm:text-3xl lg:text-4xl">
-                  {title}
+                  {titleText}
                 </h2>
               ) : null}
 
@@ -95,8 +100,10 @@ export default function StepsClubSection({
               >
                 {steps.map((step, index) => {
                   const isActive = hoveredIndex === index
+                  const stepTitle = t(step.title)
+                  const stepDescription = t(step.description)
                   return (
-                    <li key={`${step.title}-${index}`}>
+                    <li key={`${stepTitle}-${index}`}>
                       <button
                         type="button"
                         className={cn(
@@ -132,9 +139,9 @@ export default function StepsClubSection({
                                 isActive ? "text-chart-5" : "text-background",
                               )}
                             >
-                              {step.title}
+                              {stepTitle}
                             </h3>
-                            {step.description ? (
+                            {stepDescription ? (
                               <p
                                 className={cn(
                                   "text-sm leading-relaxed transition-colors sm:text-base",
@@ -143,7 +150,7 @@ export default function StepsClubSection({
                                     : "text-background",
                                 )}
                               >
-                                {step.description}
+                                {stepDescription}
                               </p>
                             ) : null}
                           </div>

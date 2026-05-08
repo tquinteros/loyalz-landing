@@ -1,10 +1,17 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRightIcon, MenuIcon } from "lucide-react"
+import { ArrowRightIcon, GlobeIcon, MenuIcon } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardDescription, CardTitle } from "./ui/card"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,43 +21,127 @@ import {
   NavigationMenuTrigger,
 } from "./ui/navigation-menu"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet"
+import { useLanguage, useT, type Locale } from "@/providers/language-provider"
+import type { LocalizedString } from "@/lib/types/Pages"
 
-const PRODUCT_CARDS = [
+const LANGUAGE_OPTIONS: ReadonlyArray<{ value: Locale; label: string; short: string }> = [
+  { value: "es", label: "Español", short: "ES" },
+  { value: "en", label: "English", short: "EN" },
+]
+
+const HEADER_COPY = {
+  company: { es: "Empresa", en: "Company" },
+  products: { es: "Productos", en: "Products" },
+  businessTypes: { es: "Tipos de Negocio", en: "Business types" },
+  admin: { es: "Admin", en: "Admin" },
+  ctaConsult: {
+    es: "Consulta por tu negocio",
+    en: "Inquire about your business",
+  },
+  openMenu: { es: "Abrir menú", en: "Open menu" },
+  menuTitle: { es: "Menú", en: "Menu" },
+  changeLanguage: { es: "Cambiar idioma", en: "Change language" },
+} satisfies Record<string, LocalizedString>
+
+type HeaderProductCard = {
+  /** Stable key for React lists (does not change with locale). */
+  id: string
+  title: LocalizedString
+  description: LocalizedString
+  cta: LocalizedString
+  href: string
+  bgColor: string
+  image: string
+}
+
+const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
   {
-    title: "Loyalz club",
-    description: "El sistema de fidelizacion para que siempre vuelvan.",
+    id: "club",
+    title: { es: "Loyalz club", en: "Loyalz club" },
+    description: {
+      es: "El sistema de fidelizacion para que siempre vuelvan.",
+      en: "The loyalty system that keeps them coming back.",
+    },
+    cta: { es: "Conoce mas", en: "Learn more" },
     href: "/club",
-    cta: "Conoce mas",
     bgColor: "#754390",
-    image: "/club.png"
+    image: "/club.png",
   },
   {
-    title: "Loyalz reviews",
-    description: "La herramienta que convierte experiencias en resenas.",
+    id: "reviews",
+    title: { es: "Loyalz reviews", en: "Loyalz reviews" },
+    description: {
+      es: "La herramienta que convierte experiencias en resenas.",
+      en: "The tool that turns experiences into reviews.",
+    },
+    cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
-    cta: "Conoce mas",
     bgColor: "#EC491E",
-    image: "/club.png"
+    image: "/club.png",
   },
   {
-    title: "Loyalz pos",
-    description: "El punto de venta que ordena y simplifica tu dia.",
+    id: "pos",
+    title: { es: "Loyalz pos", en: "Loyalz pos" },
+    description: {
+      es: "El punto de venta que ordena y simplifica tu dia.",
+      en: "The point of sale that organizes and simplifies your day.",
+    },
+    cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
-    cta: "Conoce mas",
     bgColor: "#8C7F1F",
-    image: "/club.png"
+    image: "/club.png",
   },
   {
-    title: "Loyalz ai",
-    description: "La inteligencia que optimiza tu negocio en automatico.",
+    id: "ai",
+    title: { es: "Loyalz ai", en: "Loyalz ai" },
+    description: {
+      es: "La inteligencia que optimiza tu negocio en automatico.",
+      en: "The intelligence that optimizes your business automatically.",
+    },
+    cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
-    cta: "Conoce mas",
     bgColor: "#013662",
-    image: "/club.png"
+    image: "/club.png",
   },
 ]
 
+function LanguageSwitcher({ className }: { className?: string }) {
+  const { locale, setLocale, t } = useLanguage()
+  const current = LANGUAGE_OPTIONS.find((opt) => opt.value === locale) ?? LANGUAGE_OPTIONS[0]
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`h-9 gap-2 px-2 text-sm font-semibold text-black hover:bg-black/5 ${className ?? ""}`}
+          aria-label={t(HEADER_COPY.changeLanguage)}
+        >
+          <GlobeIcon className="h-4 w-4" />
+          <span>{current.short}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-32">
+        <DropdownMenuRadioGroup
+          value={locale}
+          onValueChange={(value) => setLocale(value as Locale)}
+        >
+          {LANGUAGE_OPTIONS.map((opt) => (
+            <DropdownMenuRadioItem key={opt.value} value={opt.value} className="gap-2 hover:bg-transparent! hover:text-background!">
+              <span className="text-xs font-semibold text-muted-foreground">{opt.short}</span>
+              <span>{opt.label}</span>
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 const Header = () => {
+  const t = useT()
+
   return (
     <header className="sticky top-0 z-50 h-20 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black">
       <div className="flex h-full w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
@@ -60,7 +151,7 @@ const Header = () => {
           </Link>
 
           <div className="hidden items-center gap-5 font-semibold md:flex">
-            <Link href="/">Empresa</Link>
+            <Link href="/">{t(HEADER_COPY.company)}</Link>
 
             <NavigationMenu
               className="z-50"
@@ -70,15 +161,16 @@ const Header = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="h-auto bg-transparent px-0 py-0 text-sm font-semibold hover:bg-transparent focus:bg-transparent data-[state=open]:text-black data-[state=open]:bg-transparent">
-                    Productos
+                    {t(HEADER_COPY.products)}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="w-full max-w-none rounded-none border-0 bg-transparent p-0 md:left-0 md:w-full">
                     <div className="grid auto-rows-fr grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-2 lg:px-16 xl:grid-cols-4">
                       {PRODUCT_CARDS.map((card) => {
-                        const [mainWord, ...secondaryWords] = card.title.split(" ")
+                        const cardTitle = t(card.title)
+                        const [mainWord, ...secondaryWords] = cardTitle.split(" ")
                         return (
                           <NavigationMenuLink
-                            key={card.title}
+                            key={card.id}
                             asChild
                             className="h-full rounded-xl p-0 transition-none hover:bg-transparent hover:text-inherit focus:bg-transparent focus:text-inherit"
                           >
@@ -87,7 +179,7 @@ const Header = () => {
                                 <div className="relative aspect-video w-full">
                                   <Image
                                     src={card.image}
-                                    alt={card.title}
+                                    alt={cardTitle}
                                     fill
                                     priority
                                     loading="eager"
@@ -109,10 +201,10 @@ const Header = () => {
                                     ) : null}
                                   </CardTitle>
                                     <CardDescription className="flex-1 text-base leading-snug text-foreground/95">
-                                    {card.description}
+                                    {t(card.description)}
                                   </CardDescription>
                                   <span className="inline-flex h-auto w-fit rounded-lg border border-foreground/60 bg-transparent px-5 py-2 text-sm font-semibold text-foreground">
-                                    {card.cta}
+                                    {t(card.cta)}
                                   </span>
                                 </CardContent>
                               </Card>
@@ -126,27 +218,29 @@ const Header = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <Link href="/blogs">Tipos de Negocio</Link>
+            <Link href="/blogs">{t(HEADER_COPY.businessTypes)}</Link>
             <Link href="/admin" prefetch={false}>
-              Admin
+              {t(HEADER_COPY.admin)}
             </Link>
           </div>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-2 md:flex">
+          <LanguageSwitcher />
           <Button  className="py-5">
-            Consulta por tu negocio <ArrowRightIcon className="h-4 w-4" />
+            {t(HEADER_COPY.ctaConsult)} <ArrowRightIcon className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className="md:hidden">
+        <div className="flex items-center gap-1 md:hidden">
+          <LanguageSwitcher />
           <Sheet>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
                 className="h-10 w-10 rounded-lg text-black hover:bg-black/5"
-                aria-label="Abrir menu"
+                aria-label={t(HEADER_COPY.openMenu)}
               >
                 <MenuIcon className="h-5 w-5" />
               </Button>
@@ -154,31 +248,31 @@ const Header = () => {
             <SheetContent side="right" className="w-[86vw] bg-[#F8F5EF] p-0 text-black">
               <div className="flex h-full flex-col">
                 <div className="border-b border-black/10 px-6 py-5">
-                  <SheetTitle className="text-base text-black">Menu</SheetTitle>
+                  <SheetTitle className="text-base text-black">{t(HEADER_COPY.menuTitle)}</SheetTitle>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-5">
                   <nav className="space-y-2 text-base font-semibold text-black">
                     <SheetClose asChild>
                       <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/">
-                        Empresa
+                        {t(HEADER_COPY.company)}
                       </Link>
                     </SheetClose>
 
                     <Accordion type="single" collapsible>
                       <AccordionItem value="productos" className="border-b-0">
                         <AccordionTrigger className="rounded-md px-2 py-2 text-base font-semibold text-black hover:no-underline">
-                          Productos
+                          {t(HEADER_COPY.products)}
                         </AccordionTrigger>
                         <AccordionContent className="pb-0">
                           <div className="space-y-1 pl-2">
                             {PRODUCT_CARDS.map((card) => (
-                              <SheetClose asChild key={card.title}>
+                              <SheetClose asChild key={card.id}>
                                 <Link
                                   href={card.href}
                                   className="block rounded-md px-2 py-2 text-sm font-medium hover:bg-black/5"
                                 >
-                                  {card.title}
+                                  {t(card.title)}
                                 </Link>
                               </SheetClose>
                             ))}
@@ -189,12 +283,12 @@ const Header = () => {
 
                     <SheetClose asChild>
                       <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/blogs">
-                        Tipos de Negocio
+                        {t(HEADER_COPY.businessTypes)}
                       </Link>
                     </SheetClose>
                     <SheetClose asChild>
                       <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/admin" prefetch={false}>
-                        Admin
+                        {t(HEADER_COPY.admin)}
                       </Link>
                     </SheetClose>
                   </nav>
@@ -203,7 +297,7 @@ const Header = () => {
                 <div className="border-t border-black/10 p-6">
                   <SheetClose asChild>
                     <Button className="h-11 w-full">
-                      Consulta por tu negocio <ArrowRightIcon className="h-4 w-4" />
+                      {t(HEADER_COPY.ctaConsult)} <ArrowRightIcon className="h-4 w-4" />
                     </Button>
                   </SheetClose>
                 </div>

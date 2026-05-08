@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { SectionWrapper } from "./section-wrapper"
 import type { TestimonialsSectionProps } from "@/lib/types/Pages"
+import { useT } from "@/providers/language-provider"
 
 type Props = TestimonialsSectionProps & {
   backgroundImage?: string | null
@@ -27,6 +28,11 @@ export default function TestimonialsSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+  const successCasesLabel = t({ es: "Casos de éxito", en: "Success stories" })
+
   const [api, setApi] = useState<CarouselApi>()
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollSnapCount, setScrollSnapCount] = useState(0)
@@ -52,7 +58,7 @@ export default function TestimonialsSection({
 // TODO: ADD BORDER TO 2ND PRICING CARD & HOVERING COLOR MUST BE SOLID IN LAST ONE
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={className}>
-      {(title || subtitle) && (
+      {(titleText || subtitleText) && (
         <div className=" mb-12">
           <div className="flex items-center mb-3 gap-3 border border-black/5 rounded-[4px] p-1.5 px-3 w-fit">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,16 +66,16 @@ export default function TestimonialsSection({
             </svg>
 
             <p className="text-sm text-background">
-              Casos de éxito
+              {successCasesLabel}
             </p>
           </div>
-          {title ? (
+          {titleText ? (
             <h2 className="text-3xl text-background font-bold tracking-tight sm:text-6xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
-          {subtitle ? (
-            <p className="mt-3 text-lg text-background">{subtitle}</p>
+          {subtitleText ? (
+            <p className="mt-3 text-lg text-background">{subtitleText}</p>
           ) : null}
         </div>
       )}
@@ -81,8 +87,8 @@ export default function TestimonialsSection({
       >
         <CarouselContent className="-ml-5">
           {items.map((item, i) => {
-            const summary = item.summary || item.quote
-            const place = item.place || item.role
+            const summary = t(item.summary) || t(item.quote)
+            const place = t(item.place) || t(item.role)
             const firstName = item.author.split(" ")[0] || item.author
 
             return (
@@ -108,15 +114,18 @@ export default function TestimonialsSection({
 
                       {item.badges?.length ? (
                         <div className="mb-7 flex flex-wrap gap-2">
-                          {item.badges.map((badge, index) => (
-                            <Badge
-                              key={`${badge}-${index}`}
-                              variant="secondary"
-                              className="rounded-md border-none bg-black/5 hover:bg-black/5 px-2.5 py-1 text-[11px] font-bold text-background"
-                            >
-                              {badge}
-                            </Badge>
-                          ))}
+                          {item.badges.map((badge, index) => {
+                            const badgeText = t(badge)
+                            return (
+                              <Badge
+                                key={`${badgeText}-${index}`}
+                                variant="secondary"
+                                className="rounded-md border-none bg-black/5 hover:bg-black/5 px-2.5 py-1 text-[11px] font-bold text-background"
+                              >
+                                {badgeText}
+                              </Badge>
+                            )
+                          })}
                         </div>
                       ) : null}
 
@@ -161,7 +170,10 @@ export default function TestimonialsSection({
                 <button
                   key={index}
                   type="button"
-                  aria-label={`Go to testimonial ${index + 1}`}
+                  aria-label={t({
+                    es: `Ir al testimonio ${index + 1}`,
+                    en: `Go to testimonial ${index + 1}`,
+                  })}
                   className={`h-1.5 rounded-full transition-all ${selectedIndex === index
                     ? "w-8 bg-foreground"
                     : "w-8 bg-foreground/20"
@@ -182,7 +194,9 @@ export default function TestimonialsSection({
               disabled={!api?.canScrollPrev()}
             >
               <ArrowLeft className="size-4" />
-              <span className="sr-only">Previous testimonial</span>
+              <span className="sr-only">
+                {t({ es: "Testimonio anterior", en: "Previous testimonial" })}
+              </span>
             </Button>
             <Button
               type="button"
@@ -193,7 +207,9 @@ export default function TestimonialsSection({
               disabled={!api?.canScrollNext()}
             >
               <ArrowRight className="size-4" />
-              <span className="sr-only">Next testimonial</span>
+              <span className="sr-only">
+                {t({ es: "Siguiente testimonio", en: "Next testimonial" })}
+              </span>
             </Button>
           </div>
         </div>

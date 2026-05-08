@@ -4,6 +4,7 @@ import Image from "next/image"
 import type { HomeActivationSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
 import { cn } from "@/lib/utils"
+import { useT } from "@/providers/language-provider"
 
 type Props = HomeActivationSectionProps & {
   backgroundImage?: string | null
@@ -18,6 +19,10 @@ export default function HomeActivationSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const bottomLabelText = t(bottomLabel)
+  const brandLogoFallback = t({ es: "Logo de marca", en: "Brand logo" })
   const marqueeBrands = [...(brands ?? []), ...(brands ?? [])]
 
   return (
@@ -27,19 +32,21 @@ export default function HomeActivationSection({
         className={cn("bg-background py-0 sm:py-0", className)}
       >
         <div className="w-full space-y-8 sm:space-y-6">
-          {title ? (
+          {titleText ? (
             <h2 className="text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
 
           <ul className="grid w-full grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-3">
             {activationCards.map((card, index) => {
               const bandAtBottom = index % 2 === 0
+              const cardTitle = t(card.title)
+              const cardDescription = t(card.description)
 
               return (
                 <li
-                  key={`${card.title}-${index}`}
+                  key={`${cardTitle}-${index}`}
                   className="w-full min-w-0 list-none"
                 >
                   <article
@@ -60,7 +67,7 @@ export default function HomeActivationSection({
                       {card.image ? (
                         <Image
                           src={card.image}
-                          alt={card.title}
+                          alt={cardTitle}
                           fill
                           className="object-cover"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 514px"
@@ -85,13 +92,13 @@ export default function HomeActivationSection({
                           {card.stat}
                         </p>
                       ) : null}
-                      {card.title ? (
+                      {cardTitle ? (
                         <p className="text-base leading-snug text-background sm:text-lg">
-                          <span className="font-bold">{card.title}</span>
-                          {card.description ? (
+                          <span className="font-bold">{cardTitle}</span>
+                          {cardDescription ? (
                             <span className="font-normal">
                               {" "}
-                              {card.description}
+                              {cardDescription}
                             </span>
                           ) : null}
                         </p>
@@ -103,10 +110,10 @@ export default function HomeActivationSection({
             })}
           </ul>
 
-          {bottomLabel ? (
+          {bottomLabelText ? (
             <div className="p-4 py-8">
               <p className="text-center text-xl font-medium text-foreground sm:text-6xl">
-                {bottomLabel}
+                {bottomLabelText}
               </p>
             </div>
           ) : null}
@@ -125,7 +132,7 @@ export default function HomeActivationSection({
                   {brand.logo ? (
                     <Image
                       src={brand.logo}
-                      alt={brand.name || "Brand logo"}
+                      alt={brand.name || brandLogoFallback}
                       fill
                       className="object-contain"
                       sizes="112px"

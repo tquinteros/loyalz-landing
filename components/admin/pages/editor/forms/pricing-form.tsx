@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ItemsField } from "../items-field"
-import type { PricingSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type { PricingSectionProps, LocalizedString } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: PricingSectionProps
@@ -15,11 +17,13 @@ type Props = {
 
 type PricingCard = PricingSectionProps["cards"][number]
 
-function parseFeatures(value: string) {
-  return value
-    .split("\n")
-    .map((line) => line.trim())
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
+
+function featuresToText(features: LocalizedString[] | undefined, locale: "es" | "en") {
+  return (features ?? [])
+    .map((f) => f[locale] ?? "")
     .filter(Boolean)
+    .join("\n")
 }
 
 export function PricingForm({ value, onChange }: Props) {
@@ -42,46 +46,41 @@ export function PricingForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="pricing-label">Label</Label>
-        <Input
-          id="pricing-label"
-          value={local.label ?? ""}
-          onChange={(e) => set("label", e.target.value || undefined)}
-          placeholder="Plans"
-        />
-      </div>
+      <LocalizedField
+        label="Label"
+        idPrefix="pricing-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Planes"
+        placeholderEn="Plans"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="pricing-title">Title</Label>
-        <Input
-          id="pricing-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-          placeholder="Simple pricing for every team"
-        />
-      </div>
+      <LocalizedField
+        label="Title"
+        idPrefix="pricing-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+        placeholderEs="Precios simples para cada equipo"
+        placeholderEn="Simple pricing for every team"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="pricing-description">Description</Label>
-        <Textarea
-          id="pricing-description"
-          rows={2}
-          value={local.description ?? ""}
-          onChange={(e) => set("description", e.target.value || undefined)}
-          placeholder="Pick the plan that best fits your business."
-        />
-      </div>
+      <LocalizedField
+        label="Description"
+        idPrefix="pricing-description"
+        multiline
+        rows={2}
+        value={local.description}
+        onChange={(next) => set("description", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="pricing-bottom-message">Bottom message</Label>
-        <Input
-          id="pricing-bottom-message"
-          value={local.bottomMessage ?? ""}
-          onChange={(e) => set("bottomMessage", e.target.value || undefined)}
-          placeholder="POS + Pay are included in all plans."
-        />
-      </div>
+      <LocalizedField
+        label="Bottom message"
+        idPrefix="pricing-bottom-message"
+        value={local.bottomMessage}
+        onChange={(next) => set("bottomMessage", next)}
+        placeholderEs="POS + Pay están incluidos en todos los planes."
+        placeholderEn="POS + Pay are included in all plans."
+      />
 
       <div className="space-y-2">
         <Label>Pricing cards</Label>
@@ -89,65 +88,106 @@ export function PricingForm({ value, onChange }: Props) {
           items={local.cards ?? []}
           onChange={(cards) => set("cards", cards)}
           createItem={() => ({
-            title: "New plan",
+            title: { es: "Nuevo plan", en: "New plan" },
             price: "$0",
-            shops: "Up to 1 shop",
+            shops: { es: "Hasta 1 local", en: "Up to 1 shop" },
             savings: "0%",
-            features: ["Feature one"],
+            features: [{ es: "Funcionalidad", en: "Feature one" }],
           })}
           addLabel="Add pricing card"
-          itemLabel={(it, i) => it.title || `Card ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Card ${i + 1}`}
           renderItem={(item, update) => (
-            <div className="grid gap-2 sm:grid-cols-2">
-              <div className="space-y-1">
-                <Label className="text-xs">Title *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                  placeholder="Total Start"
-                />
+            <div className="grid gap-3">
+              <LocalizedField
+                label="Title"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Total Start"
+                placeholderEn="Total Start"
+              />
+
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <Label className="text-xs">Price *</Label>
+                  <Input
+                    value={item.price}
+                    onChange={(e) => update({ price: e.target.value })}
+                    placeholder="$79"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">Savings (%) *</Label>
+                  <Input
+                    value={item.savings}
+                    onChange={(e) => update({ savings: e.target.value })}
+                    placeholder="19%"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-xs">Price *</Label>
-                <Input
-                  value={item.price}
-                  onChange={(e) => update({ price: e.target.value })}
-                  placeholder="$79"
-                />
-              </div>
+              <LocalizedField
+                label="Cantidad de locales"
+                required
+                value={item.shops}
+                onChange={(next) => update({ shops: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Hasta 1 local"
+                placeholderEn="Up to 1 shop"
+              />
 
-              <div className="space-y-1">
-                <Label className="text-xs">Amount of shops *</Label>
-                <Input
-                  value={item.shops}
-                  onChange={(e) => update({ shops: e.target.value })}
-                  placeholder="Up to 1 shop"
-                />
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <Label className="text-xs">
+                    Features ES (una por línea)
+                  </Label>
+                  <Textarea
+                    rows={4}
+                    value={featuresToText(item.features, "es")}
+                    onChange={(e) => {
+                      const lines = e.target.value
+                        .split("\n")
+                        .map((l) => l.trim())
+                      update({
+                        features: lines
+                          .filter(Boolean)
+                          .map((es, i) => ({
+                            es,
+                            en: item.features?.[i]?.en ?? es,
+                          })),
+                      })
+                    }}
+                    placeholder={"Club\nReviews\nPOS\nPay"}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">
+                    Features EN (one per line)
+                  </Label>
+                  <Textarea
+                    rows={4}
+                    value={featuresToText(item.features, "en")}
+                    onChange={(e) => {
+                      const lines = e.target.value
+                        .split("\n")
+                        .map((l) => l.trim())
+                      update({
+                        features: lines
+                          .filter(Boolean)
+                          .map((en, i) => ({
+                            es: item.features?.[i]?.es ?? en,
+                            en,
+                          })),
+                      })
+                    }}
+                    placeholder={"Club\nReviews\nPOS\nPay"}
+                  />
+                </div>
               </div>
-
-              <div className="space-y-1">
-                <Label className="text-xs">Savings (%) *</Label>
-                <Input
-                  value={item.savings}
-                  onChange={(e) => update({ savings: e.target.value })}
-                  placeholder="19%"
-                />
-              </div>
-
-              <div className="space-y-1 sm:col-span-2">
-                <Label className="text-xs">Features (one per line)</Label>
-                <Textarea
-                  rows={4}
-                  value={(item.features ?? []).join("\n")}
-                  onChange={(e) =>
-                    update({
-                      features: parseFeatures(e.target.value),
-                    })
-                  }
-                  placeholder={"Club\nReviews\nPOS\nPay"}
-                />
-              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Las listas se asocian línea por línea entre ES y EN. Si una
+                tiene más líneas que la otra, las faltantes copian el otro
+                idioma.
+              </p>
             </div>
           )}
         />

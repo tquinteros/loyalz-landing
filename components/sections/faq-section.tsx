@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +10,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { SectionWrapper } from "./section-wrapper"
 import type { FAQSectionProps } from "@/lib/types/Pages"
+import { useT } from "@/providers/language-provider"
 
 type Props = FAQSectionProps & {
   backgroundImage?: string | null
@@ -26,6 +29,14 @@ export default function FAQSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+  const helpTitleText = t(helpTitle)
+  const helpDescriptionText = t(helpDescription)
+  const helpCtaLabelText = t(helpCtaLabel)
+  const fallbackImageAlt = t({ es: "Imagen de FAQ", en: "FAQ image" })
+
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
@@ -34,48 +45,52 @@ export default function FAQSection({
     >
       <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:items-start">
         <div>
-          {(title || subtitle) && (
+          {(titleText || subtitleText) && (
             <div className="mb-8 text-left">
-              {title ? (
+              {titleText ? (
                 <h2 className="text-3xl font-bold tracking-tight text-background sm:text-5xl">
-                  {title}
+                  {titleText}
                 </h2>
               ) : null}
-              {subtitle ? (
-                <p className="mt-4 text-background">{subtitle}</p>
+              {subtitleText ? (
+                <p className="mt-4 text-background">{subtitleText}</p>
               ) : null}
             </div>
           )}
 
           <Accordion type="single" collapsible className="w-full">
-            {items.map((item, i) => (
-              <AccordionItem key={`${item.question}-${i}`} value={`item-${i}`}>
-                <AccordionTrigger className="text-left text-base text-background">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-background">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
+            {items.map((item, i) => {
+              const question = t(item.question)
+              const answer = t(item.answer)
+              return (
+                <AccordionItem key={`${question}-${i}`} value={`item-${i}`}>
+                  <AccordionTrigger className="text-left text-base text-background">
+                    {question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-background">
+                    {answer}
+                  </AccordionContent>
+                </AccordionItem>
+              )
+            })}
           </Accordion>
 
-          {(helpTitle || helpDescription || helpCtaLabel) && (
+          {(helpTitleText || helpDescriptionText || helpCtaLabelText) && (
             <div className="mt-12 space-y-4">
-              {helpTitle ? (
+              {helpTitleText ? (
                 <h3 className="text-2xl font-bold tracking-tight text-background sm:text-3xl">
-                  {helpTitle}
+                  {helpTitleText}
                 </h3>
               ) : null}
-              {helpDescription ? (
-                <p className="text-background">{helpDescription}</p>
+              {helpDescriptionText ? (
+                <p className="text-background">{helpDescriptionText}</p>
               ) : null}
-              {helpCtaLabel ? (
+              {helpCtaLabelText ? (
                 <Link
                   href={helpCtaHref || "#"}
                   className="inline-flex min-h-11 items-center justify-center rounded-sm border border-background px-6 py-2 text-base font-semibold text-background transition-colors hover:bg-background hover:text-foreground"
                 >
-                  {helpCtaLabel}
+                  {helpCtaLabelText}
                 </Link>
               ) : null}
             </div>
@@ -86,7 +101,7 @@ export default function FAQSection({
           {image ? (
             <Image
               src={image}
-              alt={title || "FAQ image"}
+              alt={titleText || fallbackImageAlt}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"

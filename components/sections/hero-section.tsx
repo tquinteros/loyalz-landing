@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils"
 import type { CTA, HeroSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
+import { useT } from "@/providers/language-provider"
 
 type Props = HeroSectionProps & {
   backgroundImage?: string | null
@@ -38,9 +39,13 @@ function signedDistance(index: number, current: number, total: number) {
 export default function HeroSection(props: Props) {
   const { title, backgroundImage, className } = props
   const legacy = props as LegacyHeroPayload
+  const t = useT()
 
+  const titleText = t(title)
   const ctaLabel =
-    legacy.ctaLabel?.trim() || legacy.primaryCta?.label?.trim() || "Demo Gratis"
+    t(legacy.ctaLabel).trim() ||
+    t(legacy.primaryCta?.label).trim() ||
+    t({ es: "Demo Gratis", en: "Free Demo" })
   const ctaHref =
     legacy.ctaHref?.trim() || legacy.primaryCta?.href?.trim() || "#"
 
@@ -79,7 +84,7 @@ export default function HeroSection(props: Props) {
     >
       <header className="shrink-0 pt-10 text-center md:pt-14">
         <h1 className="mx-auto text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-7xl">
-          {title}
+          {titleText}
         </h1>
       </header>
 

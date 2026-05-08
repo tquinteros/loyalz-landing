@@ -1,5 +1,8 @@
+"use client"
+
 import { SectionWrapper } from "./section-wrapper"
 import type { StatsSectionProps } from "@/lib/types/Pages"
+import { useT } from "@/providers/language-provider"
 
 type Props = StatsSectionProps & {
   backgroundImage?: string | null
@@ -13,35 +16,42 @@ export default function StatsSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={className}
       innerClassName="max-w-5xl"
     >
-      {(title || subtitle) && (
+      {(titleText || subtitleText) && (
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          {title ? (
+          {titleText ? (
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
-          {subtitle ? (
-            <p className="mt-3 text-muted-foreground">{subtitle}</p>
+          {subtitleText ? (
+            <p className="mt-3 text-muted-foreground">{subtitleText}</p>
           ) : null}
         </div>
       )}
 
       <dl className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
-        {items.map((item, i) => (
-          <div key={`${item.label}-${i}`}>
-            <dt className="sr-only">{item.label}</dt>
-            <dd className="text-4xl font-bold tracking-tight sm:text-5xl">
-              {item.value}
-            </dd>
-            <p className="mt-2 text-sm text-muted-foreground">{item.label}</p>
-          </div>
-        ))}
+        {items.map((item, i) => {
+          const labelText = t(item.label)
+          return (
+            <div key={`${labelText}-${i}`}>
+              <dt className="sr-only">{labelText}</dt>
+              <dd className="text-4xl font-bold tracking-tight sm:text-5xl">
+                {item.value}
+              </dd>
+              <p className="mt-2 text-sm text-muted-foreground">{labelText}</p>
+            </div>
+          )
+        })}
       </dl>
     </SectionWrapper>
   )

@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import {
   ArrowRight,
@@ -11,6 +13,7 @@ import {
 } from "lucide-react"
 import { SectionWrapper } from "./section-wrapper"
 import type { FeatureLinksSectionProps } from "@/lib/types/Pages"
+import { useT } from "@/providers/language-provider"
 
 /**
  * Icons are referenced from the DB as strings (e.g. "users") and resolved
@@ -37,17 +40,21 @@ export default function FeatureLinksSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={className}>
-      {(title || subtitle) && (
+      {(titleText || subtitleText) && (
         <div className="mx-auto mb-12 container text-center">
-          {title ? (
+          {titleText ? (
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
-          {subtitle ? (
-            <p className="mt-3 text-muted-foreground">{subtitle}</p>
+          {subtitleText ? (
+            <p className="mt-3 text-muted-foreground">{subtitleText}</p>
           ) : null}
         </div>
       )}
@@ -55,6 +62,8 @@ export default function FeatureLinksSection({
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item, i) => {
           const Icon = item.icon ? ICONS[item.icon] : undefined
+          const itemTitle = t(item.title)
+          const itemDescription = t(item.description)
           const content = (
             <>
               {Icon ? (
@@ -62,15 +71,15 @@ export default function FeatureLinksSection({
                   <Icon className="size-5" />
                 </div>
               ) : null}
-              <h3 className="text-base font-semibold">{item.title}</h3>
-              {item.description ? (
+              <h3 className="text-base font-semibold">{itemTitle}</h3>
+              {itemDescription ? (
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {item.description}
+                  {itemDescription}
                 </p>
               ) : null}
               {item.href ? (
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                  Learn more
+                  {t({ es: "Saber más", en: "Learn more" })}
                   <ArrowRight className="size-4" />
                 </span>
               ) : null}
@@ -82,14 +91,14 @@ export default function FeatureLinksSection({
 
           return item.href ? (
             <Link
-              key={`${item.title}-${i}`}
+              key={`${itemTitle}-${i}`}
               href={item.href}
               className={className}
             >
               {content}
             </Link>
           ) : (
-            <div key={`${item.title}-${i}`} className={className}>
+            <div key={`${itemTitle}-${i}`} className={className}>
               {content}
             </div>
           )

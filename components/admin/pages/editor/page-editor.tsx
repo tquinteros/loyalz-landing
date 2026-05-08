@@ -281,7 +281,7 @@ export function PageEditor({
               <span className="hidden sm:inline">Abrir</span>
             </Link>
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowPreview((v) => !v)}
@@ -295,7 +295,7 @@ export function PageEditor({
             <span className="hidden sm:inline">
               {showPreview ? "Ocultar preview" : "Preview"}
             </span>
-          </Button>
+          </Button> */}
           <Button
             variant="outline"
             size="sm"
