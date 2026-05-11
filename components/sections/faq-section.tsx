@@ -41,12 +41,12 @@ export default function FAQSection({
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={className}
-      innerClassName="max-w-6xl mx-auto"
+      innerClassName=""
     >
-      <div className="grid gap-8 md:grid-cols-2 md:gap-10 lg:items-start">
-        <div>
-          {(titleText || subtitleText) && (
-            <div className="mb-8 text-left">
+      <div className="grid gap-8 md:grid-cols-2 md:gap-10 md:items-stretch">
+        <div className="flex h-full min-h-[768px] flex-col justify-between gap-8">
+          {(titleText || subtitleText) ? (
+            <div className="text-left">
               {titleText ? (
                 <h2 className="text-3xl font-bold tracking-tight text-background sm:text-5xl">
                   {titleText}
@@ -56,6 +56,8 @@ export default function FAQSection({
                 <p className="mt-4 text-background">{subtitleText}</p>
               ) : null}
             </div>
+          ) : (
+            <div aria-hidden />
           )}
 
           <Accordion type="single" collapsible className="w-full">
@@ -75,8 +77,8 @@ export default function FAQSection({
             })}
           </Accordion>
 
-          {(helpTitleText || helpDescriptionText || helpCtaLabelText) && (
-            <div className="mt-12 space-y-4">
+          {(helpTitleText || helpDescriptionText || helpCtaLabelText) ? (
+            <div className="space-y-4">
               {helpTitleText ? (
                 <h3 className="text-2xl font-bold tracking-tight text-background sm:text-3xl">
                   {helpTitleText}
@@ -94,20 +96,20 @@ export default function FAQSection({
                 </Link>
               ) : null}
             </div>
+          ) : (
+            <div aria-hidden />
           )}
         </div>
 
-        <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-muted md:aspect-5/6">
-          {image ? (
-            <Image
-              src={image}
-              alt={titleText || fallbackImageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          ) : null}
-        </div>
+        {image ? (
+          <Image
+            src={image}
+            alt={titleText || fallbackImageAlt}
+            className="object-cover w-full h-[768px] rounded-[32px]"
+            width={500}
+            height={500}
+          />
+        ) : null}
       </div>
     </SectionWrapper>
   )

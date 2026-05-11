@@ -1,6 +1,7 @@
 import { BlogPostCard } from "@/components/blogs/blog-post-card";
 import { Post } from "@/lib/types/Posts";
 import Link from "next/link";
+import { SectionWrapper } from "../sections/section-wrapper";
 
 type BlogsPageTemplateProps = {
   posts: Post[];
@@ -8,13 +9,13 @@ type BlogsPageTemplateProps = {
 
 const BlogsPageTemplate = ({ posts }: BlogsPageTemplateProps) => {
   return (
-    <div className="container mx-auto px-5 py-10 lg:px-8">
+    <SectionWrapper className="min-h-screen">
       <div className="mb-10 max-w-2xl">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Blogs</h1>
         <p className="mt-2 text-muted-foreground">
           Blogs y actualizaciones del equipo.
         </p>
-      </div>    
+      </div>
 
       {posts.length === 0 ? (
         <p className="text-muted-foreground">No hay blogs todavía.</p>
@@ -27,7 +28,7 @@ const BlogsPageTemplate = ({ posts }: BlogsPageTemplateProps) => {
           ))}
         </ul>
       )}
-    </div>
+    </SectionWrapper>
   );
 };
 

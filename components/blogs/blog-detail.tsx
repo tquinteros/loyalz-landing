@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { ContentRenderer } from "@/components/blogs/content-renderer"
 import type { FullPost } from "@/lib/types/Posts"
 import Image from "next/image"
+import { SectionWrapper } from "../sections/section-wrapper"
 
 function formatDate(iso: string | null) {
   if (!iso) return null
@@ -20,10 +21,10 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
   const publishedLabel = formatDate(post.published_at ?? post.created_at)
 
   return (
-    <article className="container mx-auto max-w-3xl px-5 py-10 lg:px-0">
+    <SectionWrapper className="min-h-screen max-w-5xl mx-auto">
       <Link
         href="/blogs"
-        className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+        className="inline-flex items-center gap-1 text-sm font-medium text-background underline-offset-4 hover:underline"
       >
         ← Todos los blogs
       </Link>
@@ -84,7 +85,7 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
           ← Volver al blog
         </Link>
       </footer>
-    </article>
+    </SectionWrapper>
   )
 }
 
