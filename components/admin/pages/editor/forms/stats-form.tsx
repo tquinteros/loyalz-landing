@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ItemsField } from "../items-field"
-import type { StatsSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type { StatsSectionProps, LocalizedString } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: StatsSectionProps
@@ -14,6 +15,8 @@ type Props = {
 }
 
 type StatItem = StatsSectionProps["items"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function StatsForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<StatsSectionProps>(value)
@@ -35,35 +38,35 @@ export function StatsForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="stats-title">Título</Label>
-        <Input
-          id="stats-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Título"
+        idPrefix="stats-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="stats-subtitle">Subtítulo</Label>
-        <Textarea
-          id="stats-subtitle"
-          rows={2}
-          value={local.subtitle ?? ""}
-          onChange={(e) => set("subtitle", e.target.value || undefined)}
-        />
-      </div>
+      <LocalizedField
+        label="Subtítulo"
+        idPrefix="stats-subtitle"
+        multiline
+        rows={2}
+        value={local.subtitle}
+        onChange={(next) => set("subtitle", next)}
+      />
 
       <div className="space-y-2">
         <Label>Métricas</Label>
         <ItemsField<StatItem>
           items={local.items ?? []}
           onChange={(items) => set("items", items)}
-          createItem={() => ({ value: "100+", label: "Clientes" })}
+          createItem={() => ({
+            value: "100+",
+            label: { es: "Clientes", en: "Customers" },
+          })}
           addLabel="Añadir métrica"
-          itemLabel={(it, i) => it.label || `Métrica ${i + 1}`}
+          itemLabel={(it, i) => translate(it.label) || `Métrica ${i + 1}`}
           renderItem={(item, update) => (
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="grid gap-3">
               <div className="space-y-1">
                 <Label className="text-xs">Valor *</Label>
                 <Input
@@ -72,14 +75,15 @@ export function StatsForm({ value, onChange }: Props) {
                   placeholder="2.5x"
                 />
               </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Etiqueta *</Label>
-                <Input
-                  value={item.label}
-                  onChange={(e) => update({ label: e.target.value })}
-                  placeholder="Repeat purchase rate"
-                />
-              </div>
+
+              <LocalizedField
+                label="Etiqueta"
+                required
+                value={item.label}
+                onChange={(next) => update({ label: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Tasa de recompra"
+                placeholderEn="Repeat purchase rate"
+              />
             </div>
           )}
         />

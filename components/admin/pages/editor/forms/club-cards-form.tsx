@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ItemsField } from "../items-field"
-import type { ClubCardsSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type { ClubCardsSectionProps, LocalizedString } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: ClubCardsSectionProps
@@ -14,6 +14,8 @@ type Props = {
 }
 
 type ClubCard = ClubCardsSectionProps["cards"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function ClubCardsForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<ClubCardsSectionProps>(value)
@@ -35,36 +37,34 @@ export function ClubCardsForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="club-cards-label">Label</Label>
-        <Input
-          id="club-cards-label"
-          value={local.label ?? ""}
-          onChange={(e) => set("label", e.target.value || undefined)}
-          placeholder="Loyalz Club"
-        />
-      </div>
+      <LocalizedField
+        label="Label"
+        idPrefix="club-cards-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Loyalz Club"
+        placeholderEn="Loyalz Club"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="club-cards-title">Title</Label>
-        <Input
-          id="club-cards-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value || undefined)}
-          placeholder="No es solo una tarjeta con puntos..."
-        />
-      </div>
+      <LocalizedField
+        label="Title"
+        idPrefix="club-cards-title"
+        value={local.title}
+        onChange={(next) => set("title", next)}
+        placeholderEs="No es solo una tarjeta con puntos..."
+        placeholderEn="It's not just a card with points..."
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="club-cards-subtitle">Subtitle</Label>
-        <Textarea
-          id="club-cards-subtitle"
-          rows={3}
-          value={local.subtitle ?? ""}
-          onChange={(e) => set("subtitle", e.target.value || undefined)}
-          placeholder="6 formas de hacer que vuelvan."
-        />
-      </div>
+      <LocalizedField
+        label="Subtitle"
+        idPrefix="club-cards-subtitle"
+        multiline
+        rows={3}
+        value={local.subtitle}
+        onChange={(next) => set("subtitle", next)}
+        placeholderEs="6 formas de hacer que vuelvan."
+        placeholderEn="6 ways to make them come back."
+      />
 
       <div className="space-y-2">
         <Label>Cards</Label>
@@ -72,33 +72,31 @@ export function ClubCardsForm({ value, onChange }: Props) {
           items={local.cards ?? []}
           onChange={(cards) => set("cards", cards)}
           createItem={() => ({
-            title: "Card title",
-            description: "Card description",
+            title: { es: "Título de tarjeta", en: "Card title" },
+            description: { es: "Descripción", en: "Description" },
           })}
           addLabel="Add card"
-          itemLabel={(it, i) => it.title || `Card ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Card ${i + 1}`}
           renderItem={(item, update) => (
-            <div className="grid gap-2">
-              <div className="space-y-1">
-                <Label className="text-xs">Title *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                  placeholder="Estampas"
-                />
-              </div>
+            <div className="grid gap-3">
+              <LocalizedField
+                label="Title"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Estampas"
+                placeholderEn="Stamps"
+              />
 
-              <div className="space-y-1">
-                <Label className="text-xs">Description</Label>
-                <Textarea
-                  rows={2}
-                  value={item.description ?? ""}
-                  onChange={(e) =>
-                    update({ description: e.target.value || undefined })
-                  }
-                  placeholder="Description for this card."
-                />
-              </div>
+              <LocalizedField
+                label="Description"
+                multiline
+                rows={2}
+                value={item.description}
+                onChange={(next) => update({ description: next })}
+                placeholderEs="Descripción de la tarjeta."
+                placeholderEn="Description for this card."
+              />
             </div>
           )}
         />

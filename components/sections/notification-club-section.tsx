@@ -4,6 +4,7 @@ import Image from "next/image"
 import type { NotificationClubSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
 import { cn } from "@/lib/utils"
+import { useT } from "@/providers/language-provider"
 
 type Props = NotificationClubSectionProps & {
   backgroundImage?: string | null
@@ -25,10 +26,12 @@ function GlassBadge({
   brand,
   message,
   positionClass,
+  nowLabel,
 }: {
   brand: string
   message: string
   positionClass: string
+  nowLabel: string
 }) {
   return (
     <div
@@ -47,7 +50,7 @@ function GlassBadge({
             {brand}
           </span>
         </div>
-        <span className="shrink-0 text-[10px] text-foreground">ahora</span>
+        <span className="shrink-0 text-[10px] text-foreground">{nowLabel}</span>
       </div>
       <p className="mt-2 text-left text-[13px] leading-snug text-foreground sm:text-sm">
         {message}
@@ -63,6 +66,11 @@ export default function NotificationClubSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const descriptionText = t(description)
+  const nowLabel = t({ es: "ahora", en: "now" })
+
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
@@ -75,14 +83,14 @@ export default function NotificationClubSection({
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-12 xl:gap-16">
           {/* Left: copy */}
           <div className="min-w-0 space-y-4 self-start lg:space-y-5">
-            {title ? (
+            {titleText ? (
               <h2 className="text-3xl font-bold leading-tight tracking-tight text-chart-5 sm:text-4xl lg:text-6xl">
-                {title}
+                {titleText}
               </h2>
             ) : null}
-            {description ? (
+            {descriptionText ? (
               <p className="max-w-xl text-base leading-relaxed text-chart-5 sm:text-lg">
-                {description}
+                {descriptionText}
               </p>
             ) : null}
           </div>
@@ -93,8 +101,9 @@ export default function NotificationClubSection({
                 <GlassBadge
                   key={`${badge.brand}-${index}`}
                   brand={badge.brand}
-                  message={badge.message}
+                  message={t(badge.message)}
                   positionClass={BADGE_POSITIONS[index % BADGE_POSITIONS.length]}
+                  nowLabel={nowLabel}
                 />
               ))}
 

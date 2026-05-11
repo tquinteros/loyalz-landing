@@ -8,8 +8,13 @@
  * narrow the shape of `props` based on which component it maps to.
  */
 
+export type LocalizedString = {
+  es?: string
+  en?: string
+}
+
 export type CTA = {
-  label: string
+  label: LocalizedString
   href: string
 }
 
@@ -30,137 +35,158 @@ type BaseSection<TType extends string, TProps> = {
 }
 
 export type HeroSectionProps = {
-  title: string
+  title: LocalizedString
   /** Carousel slides (URLs or paths). Five cells are shown; the center cell is visually emphasized. */
   images: string[]
-  ctaLabel: string
+  ctaLabel: LocalizedString
   ctaHref: string
 }
 
 export type HeroClubSectionProps = {
-  title: string
-  subtitle: string
+  title: LocalizedString
+  subtitle: LocalizedString
   image: string
   primaryCta: CTA
 }
 
 export type FeatureLinksSectionProps = {
-  title?: string
-  subtitle?: string
+  title?: LocalizedString
+  subtitle?: LocalizedString
   items: Array<{
     icon?: string
-    title: string
-    description?: string
+    title: LocalizedString
+    description?: LocalizedString
     href?: string
   }>
 }
 
 export type StatsSectionProps = {
-  title?: string
-  subtitle?: string
+  title?: LocalizedString
+  subtitle?: LocalizedString
   items: Array<{
+    /** Numeric / symbolic display value (e.g. "+4x"); not translated. */
     value: string
-    label: string
+    label: LocalizedString
   }>
 }
 
 export type TestimonialsSectionProps = {
-  title?: string
-  subtitle?: string
+  title?: LocalizedString
+  subtitle?: LocalizedString
   items: Array<{
-    summary: string
+    summary: LocalizedString
+    /** Author name — typically not translated. */
     author: string
-    place?: string
+    place?: LocalizedString
     avatar?: string
     logo?: string
-    badges?: string[]
+    badges?: LocalizedString[]
     /** Legacy fields kept so previously saved page JSON keeps rendering. */
-    quote?: string
-    role?: string
+    quote?: LocalizedString | string
+    role?: LocalizedString | string
   }>
 }
 
 export type FAQSectionProps = {
-  title?: string
-  subtitle?: string
+  title?: LocalizedString
+  subtitle?: LocalizedString
   image?: string
-  helpTitle?: string
-  helpDescription?: string
-  helpCtaLabel?: string
+  helpTitle?: LocalizedString
+  helpDescription?: LocalizedString
+  helpCtaLabel?: LocalizedString
   helpCtaHref?: string
   items: Array<{
-    question: string
-    answer: string
+    question: LocalizedString
+    answer: LocalizedString
   }>
 }
 
 export type ContactFormSectionProps = {
-  title?: string
-  subtitle?: string
-  submitLabel?: string
+  title?: LocalizedString
+  subtitle?: LocalizedString
+  submitLabel?: LocalizedString
 }
 
 export type CTASectionProps = {
-  title?: string
-  label?: string
+  title?: LocalizedString
+  label?: LocalizedString
 }
 
 export type PricingSectionProps = {
-  label?: string
-  title?: string
-  description?: string
-  bottomMessage?: string
+  label?: LocalizedString
+  title?: LocalizedString
+  description?: LocalizedString
+  bottomMessage?: LocalizedString
   cards: Array<{
-    title: string
+    title: LocalizedString
+    /** Display price string (e.g. "$79"); kept as plain string. */
     price: string
-    shops: string
+    shops: LocalizedString
+    /** Savings token (e.g. "19%"); kept as plain string. */
     savings: string
-    features: string[]
+    features: LocalizedString[]
   }>
 }
 
 export type ProductPricingSectionProps = {
-  label?: string
-  title?: string
-  description?: string
+  label?: LocalizedString
+  title?: LocalizedString
+  description?: LocalizedString
+
   cards: Array<{
     price: number
-    title: string
-    description: string
+
+    title: LocalizedString
+    description: LocalizedString
+    ctaLabel: LocalizedString
+
     href: string
-    ctaLabel: string
     color: string
   }>
 }
 
 export type ClubCardsSectionProps = {
-  label?: string
-  title?: string
-  subtitle?: string
+  label?: LocalizedString
+  title?: LocalizedString
+  subtitle?: LocalizedString
   cards: Array<{
-    title: string
-    description?: string
+    title: LocalizedString
+    description?: LocalizedString
   }>
 }
 
 export type HomeProductsSectionProps = {
-  label?: string
-  title: string
+  label?: LocalizedString
+  title: LocalizedString
   products: Array<{
-    title: string
-    subtitle: string
-    description: string
+    title: LocalizedString
+    subtitle: LocalizedString
+    description: LocalizedString
     color: string
     image: string
   }>
 }
 
+/** Home — solutions showcase: label + title, 3-col image grid with captions, two CTAs. */
+export type HomeSolutionsSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  images: Array<{
+    url: string
+    caption?: LocalizedString
+  }>
+  primaryCtaLabel: LocalizedString
+  primaryCtaHref: string
+  secondaryCtaLabel: LocalizedString
+  secondaryCtaHref: string
+}
+
 /** Product (Club) page — titled steps with image + copy per step. */
 export type StepsClubSectionProps = {
-  title: string
+  title: LocalizedString
   steps: Array<{
-    title: string
-    description: string
+    title: LocalizedString
+    description: LocalizedString
     image: string
   }>
 }
@@ -169,8 +195,8 @@ export type StepsClubSectionProps = {
 export type CommonCTASectionProps = {
   /** CSS color string, e.g. `#754390` or `rgb(117 67 144)`. */
   backgroundColor: string
-  title: string
-  description: string
+  title: LocalizedString
+  description: LocalizedString
   firstCta: CTA
   secondCta: CTA
   image: string
@@ -178,39 +204,43 @@ export type CommonCTASectionProps = {
 
 /** Club — activation grid cards with image backgrounds + overlay copy + footer label. */
 export type ClubActivationSectionProps = {
-  title: string
+  title: LocalizedString
   activationCards: Array<{
     image: string
+    /** Numeric display value (e.g. "+4x"); not translated. */
     stat: string
-    title: string
-    description?: string
+    title: LocalizedString
+    description?: LocalizedString
   }>
-  bottomLabel: string
+  bottomLabel: LocalizedString
 }
 
 /** Home — activation grid cards with image backgrounds + overlay copy + footer label. */
 export type HomeActivationSectionProps = {
-  title: string
+  title: LocalizedString
   activationCards: Array<{
     image: string
+    /** Numeric display value (e.g. "+4x"); not translated. */
     stat: string
-    title: string
-    description?: string
+    title: LocalizedString
+    description?: LocalizedString
   }>
   brands: Array<{
+    /** Brand display name — typically not translated. */
     name: string
     logo: string
   }>
-  bottomLabel: string
+  bottomLabel: LocalizedString
 }
 
 /** Club — push notifications showcase with phone mockup + glass badges. */
 export type NotificationClubSectionProps = {
-  title: string
-  description: string
+  title: LocalizedString
+  description: LocalizedString
   badges: Array<{
+    /** Brand display name — typically not translated. */
     brand: string
-    message: string
+    message: LocalizedString
   }>
 }
 
@@ -226,6 +256,7 @@ export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 export type ProductPricingSection = BaseSection<"productpricing", ProductPricingSectionProps>
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
 export type HomeProductsSection = BaseSection<"home_products", HomeProductsSectionProps>
+export type HomeSolutionsSection = BaseSection<"home_solutions", HomeSolutionsSectionProps>
 export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
@@ -246,6 +277,7 @@ export type PageSection =
   | ProductPricingSection
   | ClubCardsSection
   | HomeProductsSection
+  | HomeSolutionsSection
   | StepsClubSection
   | CommonCTASection
   | ClubActivationSection

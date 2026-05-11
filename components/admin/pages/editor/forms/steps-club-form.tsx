@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
-import type { StepsClubSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type { StepsClubSectionProps, LocalizedString } from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: StepsClubSectionProps
@@ -15,6 +15,8 @@ type Props = {
 }
 
 type Step = StepsClubSectionProps["steps"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function StepsClubForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<StepsClubSectionProps>(value)
@@ -36,15 +38,14 @@ export function StepsClubForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="steps-club-title">Título *</Label>
-        <Input
-          id="steps-club-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="Cómo funciona"
-        />
-      </div>
+      <LocalizedField
+        label="Título *"
+        idPrefix="steps-club-title"
+        value={local.title}
+        onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Cómo funciona"
+        placeholderEn="How it works"
+      />
 
       <div className="space-y-2">
         <Label>Pasos</Label>
@@ -52,32 +53,35 @@ export function StepsClubForm({ value, onChange }: Props) {
           items={local.steps ?? []}
           onChange={(steps) => set("steps", steps)}
           createItem={() => ({
-            title: "Nuevo paso",
-            description: "",
+            title: { es: "Nuevo paso", en: "New step" },
+            description: { es: "", en: "" },
             image: "",
           })}
           addLabel="Añadir paso"
-          itemLabel={(it, i) => it.title || `Paso ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Paso ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Título *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                  placeholder="Título del paso"
-                />
-              </div>
+              <LocalizedField
+                label="Título"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Título del paso"
+                placeholderEn="Step title"
+              />
 
-              <div className="space-y-1">
-                <Label className="text-xs">Descripción *</Label>
-                <Textarea
-                  rows={3}
-                  value={item.description}
-                  onChange={(e) => update({ description: e.target.value })}
-                  placeholder="Texto del paso"
-                />
-              </div>
+              <LocalizedField
+                label="Descripción"
+                required
+                multiline
+                rows={3}
+                value={item.description}
+                onChange={(next) =>
+                  update({ description: next ?? EMPTY_LOCALIZED })
+                }
+                placeholderEs="Texto del paso"
+                placeholderEn="Step copy"
+              />
 
               <div className="space-y-1">
                 <Label className="text-xs">Imagen</Label>

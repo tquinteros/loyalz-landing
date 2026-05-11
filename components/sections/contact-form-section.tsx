@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { SectionWrapper } from "./section-wrapper"
 import type { ContactFormSectionProps } from "@/lib/types/Pages"
+import { useT } from "@/providers/language-provider"
 
 type Props = ContactFormSectionProps & {
   backgroundImage?: string | null
@@ -21,10 +22,16 @@ type Props = ContactFormSectionProps & {
 export default function ContactFormSection({
   title,
   subtitle,
-  submitLabel = "Submit",
+  submitLabel,
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const titleText = t(title)
+  const subtitleText = t(subtitle)
+  const submitLabelText =
+    t(submitLabel) || t({ es: "Enviar", en: "Submit" })
+
   const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle")
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -40,22 +47,27 @@ export default function ContactFormSection({
       className={className}
       innerClassName="max-w-2xl"
     >
-      {(title || subtitle) && (
+      {(titleText || subtitleText) && (
         <div className="mb-8 text-center">
-          {title ? (
+          {titleText ? (
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {title}
+              {titleText}
             </h2>
           ) : null}
-          {subtitle ? (
-            <p className="mt-3 text-muted-foreground">{subtitle}</p>
+          {subtitleText ? (
+            <p className="mt-3 text-muted-foreground">{subtitleText}</p>
           ) : null}
         </div>
       )}
 
       {status === "done" ? (
         <div className="rounded-lg border bg-card p-6 text-center">
-          <p className="text-base font-medium">Thanks — we’ll be in touch.</p>
+          <p className="text-base font-medium">
+            {t({
+              es: "Gracias — te vamos a contactar pronto.",
+              en: "Thanks — we’ll be in touch.",
+            })}
+          </p>
         </div>
       ) : (
         <form
@@ -63,19 +75,23 @@ export default function ContactFormSection({
           className="grid grid-cols-1 gap-4 rounded-xl border bg-card p-6 sm:grid-cols-2"
         >
           <div className="flex flex-col gap-2">
-            <Label htmlFor="cf-name">Name</Label>
+            <Label htmlFor="cf-name">{t({ es: "Nombre", en: "Name" })}</Label>
             <Input id="cf-name" name="name" required />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="cf-email">Email</Label>
+            <Label htmlFor="cf-email">{t({ es: "Email", en: "Email" })}</Label>
             <Input id="cf-email" name="email" type="email" required />
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label htmlFor="cf-company">Company</Label>
+            <Label htmlFor="cf-company">
+              {t({ es: "Empresa", en: "Company" })}
+            </Label>
             <Input id="cf-company" name="company" />
           </div>
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label htmlFor="cf-message">Message</Label>
+            <Label htmlFor="cf-message">
+              {t({ es: "Mensaje", en: "Message" })}
+            </Label>
             <Textarea id="cf-message" name="message" rows={4} />
           </div>
           <div className="sm:col-span-2">
@@ -85,7 +101,9 @@ export default function ContactFormSection({
               className="w-full"
               disabled={status === "submitting"}
             >
-              {status === "submitting" ? "Sending…" : submitLabel}
+              {status === "submitting"
+                ? t({ es: "Enviando…", en: "Sending…" })
+                : submitLabelText}
             </Button>
           </div>
         </form>

@@ -4,10 +4,14 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
-import type { ClubActivationSectionProps } from "@/lib/types/Pages"
+import { LocalizedField } from "./localized-field"
+import type {
+  ClubActivationSectionProps,
+  LocalizedString,
+} from "@/lib/types/Pages"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: ClubActivationSectionProps
@@ -15,6 +19,8 @@ type Props = {
 }
 
 type Card = ClubActivationSectionProps["activationCards"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function ClubActivationForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<ClubActivationSectionProps>(value)
@@ -36,15 +42,14 @@ export function ClubActivationForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="club-activation-title">Título *</Label>
-        <Input
-          id="club-activation-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="Activaciones"
-        />
-      </div>
+      <LocalizedField
+        label="Título *"
+        idPrefix="club-activation-title"
+        value={local.title}
+        onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Activaciones"
+        placeholderEn="Activations"
+      />
 
       <div className="space-y-2">
         <Label>Tarjetas de activación</Label>
@@ -54,11 +59,11 @@ export function ClubActivationForm({ value, onChange }: Props) {
           createItem={() => ({
             image: "",
             stat: "+12%",
-            title: "Título de la tarjeta",
-            description: "",
+            title: { es: "Título de la tarjeta", en: "Card title" },
+            description: { es: "", en: "" },
           })}
           addLabel="Añadir tarjeta"
-          itemLabel={(it, i) => it.title || `Tarjeta ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Tarjeta ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
               <div className="space-y-1">
@@ -76,37 +81,34 @@ export function ClubActivationForm({ value, onChange }: Props) {
                   placeholder="+4x"
                 />
               </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Título *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Descripción</Label>
-                <Textarea
-                  rows={2}
-                  value={item.description ?? ""}
-                  onChange={(e) =>
-                    update({ description: e.target.value || undefined })
-                  }
-                />
-              </div>
+
+              <LocalizedField
+                label="Título"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+              />
+
+              <LocalizedField
+                label="Descripción"
+                multiline
+                rows={2}
+                value={item.description}
+                onChange={(next) => update({ description: next })}
+              />
             </div>
           )}
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="club-activation-bottom">Texto inferior *</Label>
-        <Input
-          id="club-activation-bottom"
-          value={local.bottomLabel ?? ""}
-          onChange={(e) => set("bottomLabel", e.target.value)}
-          placeholder="Etiqueta bajo la grilla"
-        />
-      </div>
+      <LocalizedField
+        label="Texto inferior *"
+        idPrefix="club-activation-bottom"
+        value={local.bottomLabel}
+        onChange={(next) => set("bottomLabel", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Etiqueta bajo la grilla"
+        placeholderEn="Label below the grid"
+      />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { useState } from "react"
 import type { HomeProductsSectionProps } from "@/lib/types/Pages"
 import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
+import { useT } from "@/providers/language-provider"
 
 type Props = HomeProductsSectionProps & {
   backgroundImage?: string | null
@@ -19,43 +20,56 @@ export default function HomeProductsSection({
   backgroundImage,
   className,
 }: Props) {
+  const t = useT()
+  const labelText = t(label)
+  const titleText = t(title)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   if (!products.length) {
     return (
       <SectionWrapper backgroundImage={backgroundImage} className={className}>
-        {title ? <h2 className="text-2xl font-bold sm:text-4xl">{title}</h2> : null}
+        {titleText ? <h2 className="text-2xl font-bold sm:text-4xl">{titleText}</h2> : null}
       </SectionWrapper>
     )
   }
 
   const activeIndex = hoveredIndex ?? 0
   const active = products[Math.min(activeIndex, products.length - 1)]
+  const activeTitle = t(active?.title)
 
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={cn(className, "")}>
+      {(labelText || titleText) && (
+        <div className="mb-8 space-y-3">
+          {labelText ? (
+            <div className="flex items-center gap-3 border border-black/10  w-fit p-2 px-3 rounded">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" rx="2" fill="black" />
+              </svg>
+              <p className="text-xs tracking-widest text-muted-foreground">
+                {labelText}
+              </p>
+
+            </div>
+          ) : null}
+          {titleText ? (
+            <h2 className="max-w-5xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-6xl">
+              {titleText}
+            </h2>
+          ) : null}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
         <div className="flex min-w-0 flex-col">
-          {(label || title) && (
-            <div className="mb-8 space-y-3">
-              {label ? (
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  {label}
-                </p>
-              ) : null}
-              {title ? (
-                <h2 className="max-w-md text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-4xl">
-                  {title}
-                </h2>
-              ) : null}
-            </div>
-          )}
-
           <ol className="space-y-3" onMouseLeave={() => setHoveredIndex(null)}>
             {products.map((product, index) => {
               const isActive = hoveredIndex === index
+              const productTitle = t(product.title)
+              const productSubtitle = t(product.subtitle)
+              const productDescription = t(product.description)
               return (
-                <li key={`${product.title}-${index}`}>
+                <li key={`${productTitle}-${index}`}>
                   <button
                     type="button"
                     className={cn(
@@ -95,12 +109,12 @@ export default function HomeProductsSection({
                         </motion.div>
                       ) : null}
                     </AnimatePresence>
-                    
+
                     <div className="flex h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5">
-                      
-                      <h3 className="text-lg font-bold text-background sm:text-xl">
+
+                      <h3 className="text-lg font-bold text-background sm:text-3xl">
                         {(() => {
-                          const words = product.title.split(/\s+/).filter(Boolean)
+                          const words = productTitle.split(/\s+/).filter(Boolean)
                           return words.map((word, i) => (
                             <span
                               key={`${word}-${i}`}
@@ -116,10 +130,10 @@ export default function HomeProductsSection({
                         className="inline-flex w-fit font-bold"
                         style={{ color: product.color }}
                       >
-                        {product.subtitle}
+                        {productSubtitle}
                       </span>
                       <p className="text-sm leading-relaxed text-background sm:text-base">
-                        {product.description}
+                        {productDescription}
                       </p>
                     </div>
                   </button>
@@ -141,7 +155,7 @@ export default function HomeProductsSection({
               >
                 <Image
                   src={active.image}
-                  alt={active.title}
+                  alt={activeTitle}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -157,7 +171,7 @@ export default function HomeProductsSection({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
               >
-                No hay imagen disponible.
+                {t({ es: "No hay imagen disponible.", en: "No image available." })}
               </motion.div>
             )}
           </AnimatePresence>

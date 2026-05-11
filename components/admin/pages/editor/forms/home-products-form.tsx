@@ -5,9 +5,10 @@ import { useDebouncedCallback } from "use-debounce"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import type { HomeProductsSectionProps } from "@/lib/types/Pages"
+import type { HomeProductsSectionProps, LocalizedString } from "@/lib/types/Pages"
 import { ItemsField } from "../items-field"
+import { LocalizedField } from "./localized-field"
+import { t as translate } from "@/lib/utils"
 
 type Props = {
   value: HomeProductsSectionProps
@@ -15,6 +16,8 @@ type Props = {
 }
 
 type Product = HomeProductsSectionProps["products"][number]
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
 
 export function HomeProductsForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<HomeProductsSectionProps>(value)
@@ -36,25 +39,23 @@ export function HomeProductsForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Label htmlFor="home-products-label">Label</Label>
-        <Input
-          id="home-products-label"
-          value={local.label ?? ""}
-          onChange={(e) => set("label", e.target.value || undefined)}
-          placeholder="Productos"
-        />
-      </div>
+      <LocalizedField
+        label="Label"
+        idPrefix="home-products-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Productos"
+        placeholderEn="Products"
+      />
 
-      <div className="space-y-1.5">
-        <Label htmlFor="home-products-title">Título *</Label>
-        <Input
-          id="home-products-title"
-          value={local.title ?? ""}
-          onChange={(e) => set("title", e.target.value)}
-          placeholder="Todo lo que necesitás para vender más"
-        />
-      </div>
+      <LocalizedField
+        label="Título *"
+        idPrefix="home-products-title"
+        value={local.title}
+        onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Todo lo que necesitás para vender más"
+        placeholderEn="Everything you need to sell more"
+      />
 
       <div className="space-y-2">
         <Label>Productos</Label>
@@ -62,43 +63,51 @@ export function HomeProductsForm({ value, onChange }: Props) {
           items={local.products ?? []}
           onChange={(products) => set("products", products)}
           createItem={() => ({
-            title: "Nuevo producto",
-            subtitle: "Subtítulo",
-            description: "Descripción del producto.",
+            title: { es: "Nuevo producto", en: "New product" },
+            subtitle: { es: "Subtítulo", en: "Subtitle" },
+            description: {
+              es: "Descripción del producto.",
+              en: "Product description.",
+            },
             color: "#754390",
             image: "",
           })}
           addLabel="Añadir producto"
-          itemLabel={(it, i) => it.title || `Producto ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Producto ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Título *</Label>
-                <Input
-                  value={item.title}
-                  onChange={(e) => update({ title: e.target.value })}
-                  placeholder="Loyalz Club"
-                />
-              </div>
+              <LocalizedField
+                label="Título"
+                required
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
+                placeholderEs="Loyalz Club"
+                placeholderEn="Loyalz Club"
+              />
 
-              <div className="space-y-1">
-                <Label className="text-xs">Subtítulo *</Label>
-                <Input
-                  value={item.subtitle}
-                  onChange={(e) => update({ subtitle: e.target.value })}
-                  placeholder="Fidelización"
-                />
-              </div>
+              <LocalizedField
+                label="Subtítulo"
+                required
+                value={item.subtitle}
+                onChange={(next) =>
+                  update({ subtitle: next ?? EMPTY_LOCALIZED })
+                }
+                placeholderEs="Fidelización"
+                placeholderEn="Loyalty"
+              />
 
-              <div className="space-y-1">
-                <Label className="text-xs">Descripción *</Label>
-                <Textarea
-                  rows={3}
-                  value={item.description}
-                  onChange={(e) => update({ description: e.target.value })}
-                  placeholder="Explicá cómo ayuda este producto."
-                />
-              </div>
+              <LocalizedField
+                label="Descripción"
+                required
+                multiline
+                rows={3}
+                value={item.description}
+                onChange={(next) =>
+                  update({ description: next ?? EMPTY_LOCALIZED })
+                }
+                placeholderEs="Explicá cómo ayuda este producto."
+                placeholderEn="Explain how this product helps."
+              />
 
               <div className="space-y-1">
                 <Label className="text-xs">Color (hex) *</Label>
