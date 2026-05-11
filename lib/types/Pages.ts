@@ -167,6 +167,20 @@ export type HomeProductsSectionProps = {
   }>
 }
 
+/** Home — solutions showcase: label + title, 3-col image grid with captions, two CTAs. */
+export type HomeSolutionsSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  images: Array<{
+    url: string
+    caption?: LocalizedString
+  }>
+  primaryCtaLabel: LocalizedString
+  primaryCtaHref: string
+  secondaryCtaLabel: LocalizedString
+  secondaryCtaHref: string
+}
+
 /** Product (Club) page — titled steps with image + copy per step. */
 export type StepsClubSectionProps = {
   title: LocalizedString
@@ -242,6 +256,7 @@ export type PricingSection = BaseSection<"pricing", PricingSectionProps>
 export type ProductPricingSection = BaseSection<"productpricing", ProductPricingSectionProps>
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
 export type HomeProductsSection = BaseSection<"home_products", HomeProductsSectionProps>
+export type HomeSolutionsSection = BaseSection<"home_solutions", HomeSolutionsSectionProps>
 export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
@@ -262,6 +277,7 @@ export type PageSection =
   | ProductPricingSection
   | ClubCardsSection
   | HomeProductsSection
+  | HomeSolutionsSection
   | StepsClubSection
   | CommonCTASection
   | ClubActivationSection

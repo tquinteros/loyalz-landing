@@ -12,6 +12,7 @@ import PricingSection from "./pricing-section"
 import ProductPricingSection from "./product-pricing-section"
 import ClubCardsSection from "./club-cards-section"
 import HomeProductsSection from "./home-products-section"
+import HomeSolutionsSection from "./home-solutions-section"
 import StepsClubSection from "./steps-club-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
@@ -345,6 +346,45 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "home_solutions":
+      return {
+        ...base,
+        type: "home_solutions",
+        props: {
+          label: { es: "Soluciones", en: "Solutions" },
+          title: {
+            es: "¿Cómo funcionan nuestras soluciones?",
+            en: "How do our solutions work?",
+          },
+          images: [
+            {
+              url: "",
+              caption: {
+                es: "Tan solo escaneando el QR",
+                en: "Just by scanning the QR",
+              },
+            },
+            {
+              url: "",
+              caption: {
+                es: "Crecé en retención hasta un 30%",
+                en: "Grow retention by up to 30%",
+              },
+            },
+            {
+              url: "",
+              caption: {
+                es: "Escaneá la tarjeta",
+                en: "Scan the card",
+              },
+            },
+          ],
+          primaryCtaLabel: { es: "Prueba GRATIS", en: "Try for FREE" },
+          primaryCtaHref: "/contact",
+          secondaryCtaLabel: { es: "Agendar DEMO", en: "Book a DEMO" },
+          secondaryCtaHref: "/contact",
+        },
+      } as SectionFor<T>
     case "steps_club":
       return {
         ...base,
@@ -596,6 +636,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Home Products",
     description: "Label, title and hoverable products with image preview.",
     component: HomeProductsSection,
+  },
+  home_solutions: {
+    type: "home_solutions",
+    label: "Home Solutions",
+    description: "Label, title, image gallery and primary + secondary CTAs.",
+    component: HomeSolutionsSection,
   },
   steps_club: {
     type: "steps_club",

@@ -42,12 +42,18 @@ export default function HomeProductsSection({
       {(labelText || titleText) && (
         <div className="mb-8 space-y-3">
           {labelText ? (
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              {labelText}
-            </p>
+            <div className="flex items-center gap-3 border border-black/10  w-fit p-2 px-3 rounded">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="10" height="10" rx="2" fill="black" />
+              </svg>
+              <p className="text-xs tracking-widest text-muted-foreground">
+                {labelText}
+              </p>
+
+            </div>
           ) : null}
           {titleText ? (
-            <h2 className="maw-w-lg text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-6xl">
+            <h2 className="max-w-5xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-6xl">
               {titleText}
             </h2>
           ) : null}
@@ -106,7 +112,7 @@ export default function HomeProductsSection({
 
                     <div className="flex h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5">
 
-                      <h3 className="text-lg font-bold text-background sm:text-xl">
+                      <h3 className="text-lg font-bold text-background sm:text-3xl">
                         {(() => {
                           const words = productTitle.split(/\s+/).filter(Boolean)
                           return words.map((word, i) => (

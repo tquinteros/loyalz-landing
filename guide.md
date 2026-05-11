@@ -185,7 +185,157 @@ The `default` branch uses `never` — TypeScript will error until every union me
 
 ---
 
-## 8. Files you normally do **not** touch
+## 8. Internationalization (i18n)
+
+All public-facing copy is **localized**. The CMS stores translatable strings
+as a `LocalizedString` (`{ es?: string; en?: string }`), and the active
+locale is resolved at runtime by the `LanguageProvider`.
+
+### 8.1 Choose the right shape in `lib/types/Pages.ts`
+
+- **Translatable copy** → `LocalizedString` (titles, labels, descriptions,
+  CTA labels, FAQ answers, badges, etc.).
+- **Brand / proper nouns** → plain `string` (e.g. testimonial `author`,
+  brand `name`).
+- **Hrefs, hex colors, numeric/display tokens** (`"+4x"`, `"$79"`) → plain
+  `string` (they don't change per locale).
+- **Composite CTAs** with both label + href → use the shared `CTA` type
+  (`{ label: LocalizedString; href: string }`).
+
+```ts
+export type MySectionProps = {
+  label?: LocalizedString          // optional translated tag
+  title: LocalizedString           // required translated copy
+  cards: Array<{
+    title: LocalizedString
+    image: string                  // URL, not translated
+  }>
+  primaryCta: CTA                  // label is localized, href is not
+}
+```
+
+### 8.2 Public component: resolve text with `useT`
+
+In every section component, import the translation helper and call it for
+**any** `LocalizedString` (or legacy plain string) field before rendering.
+
+```tsx
+"use client"
+
+import { useT } from "@/providers/language-provider"
+import type { MySectionProps } from "@/lib/types/Pages"
+
+type Props = MySectionProps & {
+  backgroundImage?: string | null
+  className?: string | null
+}
+
+export default function MySection({ title, label, primaryCta }: Props) {
+  const t = useT()
+  const titleText = t(title)            // -> string in current locale
+  const labelText = t(label)            // safe with undefined
+  const ctaLabel = t(primaryCta?.label)
+  // ...
+}
+```
+
+Notes:
+
+- `useT()` must be called inside the `LanguageProvider` tree, so the
+  section component must be a Client Component (`"use client"`) when it
+  calls hooks.
+- `t(undefined)` returns `""` — you can guard with `titleText ? ... : null`.
+- For inline copy that the editor cannot author (placeholders, alt text,
+  empty-state strings), pass a `LocalizedString` literal:
+  ```tsx
+  t({ es: "Sin imágenes.", en: "No images." })
+  ```
+
+### 8.3 Admin form: edit translations with `LocalizedField`
+
+In `components/admin/pages/editor/forms/<name>-form.tsx`, use
+`LocalizedField` (from `./localized-field`) for every `LocalizedString`
+prop. It renders stacked ES + EN inputs and handles the empty-collapse
+logic (`{ es: "", en: "" }` becomes `undefined`).
+
+```tsx
+import { LocalizedField } from "./localized-field"
+import type { LocalizedString } from "@/lib/types/Pages"
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
+
+<LocalizedField
+  label="Título *"
+  idPrefix="my-section-title"
+  value={local.title}
+  // Required field: coerce undefined back to an empty object
+  onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
+  placeholderEs="Título por defecto"
+  placeholderEn="Default title"
+/>
+
+<LocalizedField
+  label="Label"
+  idPrefix="my-section-label"
+  value={local.label}
+  // Optional field: forward undefined as-is so it can be cleared
+  onChange={(next) => set("label", next)}
+/>
+```
+
+For long copy, opt into `multiline` (renders `<Textarea>`):
+
+```tsx
+<LocalizedField multiline rows={3} value={local.description} onChange={...} />
+```
+
+### 8.4 Defaults in `createDefaultSection`
+
+Always seed both locales in `component-map.ts` so newly created sections
+are usable in either language out of the box.
+
+```ts
+case "my_section":
+  return {
+    ...base,
+    type: "my_section",
+    props: {
+      label: { es: "Etiqueta", en: "Label" },
+      title: { es: "Título por defecto", en: "Default title" },
+      // images / hrefs / colors stay as plain strings
+      primaryCtaHref: "/contact",
+      primaryCtaLabel: { es: "Empezar", en: "Get started" },
+    },
+  } as SectionFor<T>
+```
+
+### 8.5 Item labels in `ItemsField`
+
+When listing array items in the admin, derive a human label from the
+**current** locale so each card is recognizable. Use the plain `t`
+translator from `@/lib/utils` (no React hook) for synchronous list
+labels:
+
+```ts
+import { t as translate } from "@/lib/utils"
+
+itemLabel={(it, i) => translate(it.title) || `Producto ${i + 1}`}
+```
+
+### 8.6 i18n checklist
+
+- [ ] Every translatable prop in `lib/types/Pages.ts` is `LocalizedString`.
+- [ ] Section component imports `useT` and wraps **every** translatable
+      field in `t(...)` (including fallbacks via `t({ es, en })` literals).
+- [ ] Admin form uses `LocalizedField` (with `idPrefix` and placeholders)
+      for every `LocalizedString`.
+- [ ] `createDefaultSection` seeds **both** `es` and `en` for all
+      localized strings.
+- [ ] Don't translate brand names, hex colors, hrefs, or numeric tokens.
+
+---
+
+## 9. Files you normally do **not** touch
 
 | File | Why |
 |------|-----|
@@ -196,7 +346,7 @@ The `default` branch uses `never` — TypeScript will error until every union me
 
 ---
 
-## 9. Checklist (copy-paste)
+## 10. Checklist (copy-paste)
 
 - [ ] `lib/types/Pages.ts` — `*SectionProps`, `*Section`, extend `PageSection` union.
 - [ ] `components/sections/<name>-section.tsx` — UI + `SectionWrapper` + prop spread pattern.
@@ -204,12 +354,13 @@ The `default` branch uses `never` — TypeScript will error until every union me
 - [ ] `home-renderer.tsx` and/or `product-renderer.tsx` — `switch` case(s).
 - [ ] `components/admin/pages/editor/forms/<name>-form.tsx` — edit props.
 - [ ] `section-form.tsx` — import + `TypedSectionBody` case.
+- [ ] All translatable strings use `LocalizedString` + `useT()` + `LocalizedField` (see §8).
 - [ ] Run TypeScript / linter — exhaustive `switch` should pass.
 - [ ] Manually test: admin “Añadir” → pick section → edit → Guardar → open public page.
 
 ---
 
-## 10. Troubleshooting
+## 11. Troubleshooting
 
 | Symptom | Likely cause |
 |---------|----------------|
@@ -221,7 +372,7 @@ The `default` branch uses `never` — TypeScript will error until every union me
 
 ---
 
-## 11. Reference: related paths
+## 12. Reference: related paths
 
 | Concern | Path |
 |---------|------|
@@ -233,7 +384,10 @@ The `default` branch uses `never` — TypeScript will error until every union me
 | Section shell | `components/sections/section-wrapper.tsx` |
 | Admin form router | `components/admin/pages/editor/section-form.tsx` |
 | List/array editor | `components/admin/pages/editor/items-field.tsx` |
+| Localized input (i18n) | `components/admin/pages/editor/forms/localized-field.tsx` |
+| Language provider / `useT` | `providers/language-provider.tsx` |
 | Example multi-card form | `components/admin/pages/editor/forms/pricing-form.tsx` |
 | Example custom section | `components/sections/club-cards-section.tsx` + `forms/club-cards-form.tsx` |
+| Example with images + two CTAs | `components/sections/home-solutions-section.tsx` + `forms/home-solutions-form.tsx` |
 
 This document should be updated when new renderers or page types are added so future sections stay consistent end-to-end.
