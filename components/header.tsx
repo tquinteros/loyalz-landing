@@ -1,7 +1,9 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRightIcon, GlobeIcon, MenuIcon } from "lucide-react"
+import { ArrowRightIcon, GlobeIcon, MenuIcon, ChevronDownIcon } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardDescription, CardTitle } from "./ui/card"
@@ -12,17 +14,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "./ui/navigation-menu"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet"
 import { useLanguage, useT, type Locale } from "@/providers/language-provider"
 import type { LocalizedString } from "@/lib/types/Pages"
+import HeaderAdminLink from "@/components/admin/header-admin"
 
 const LANGUAGE_OPTIONS: ReadonlyArray<{ value: Locale; label: string; short: string }> = [
   { value: "es", label: "Español", short: "ES" },
@@ -44,7 +39,6 @@ const HEADER_COPY = {
 } satisfies Record<string, LocalizedString>
 
 type HeaderProductCard = {
-  /** Stable key for React lists (does not change with locale). */
   id: string
   title: LocalizedString
   description: LocalizedString
@@ -105,6 +99,34 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
   },
 ]
 
+// Framer Motion variants
+const megamenuVariants = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+    transition: { duration: 0.2, ease: "easeInOut" as const },
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.25, ease: "easeOut" as const },
+  },
+  exit: {
+    opacity: 0,
+    y: -8,
+    transition: { duration: 0.18, ease: "easeInOut" as const },
+  },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.22, ease: "easeOut" as const },
+  }),
+}
+
 function LanguageSwitcher({ className }: { className?: string }) {
   const { locale, setLocale, t } = useLanguage()
   const current = LANGUAGE_OPTIONS.find((opt) => opt.value === locale) ?? LANGUAGE_OPTIONS[0]
@@ -115,7 +137,7 @@ function LanguageSwitcher({ className }: { className?: string }) {
         <Button
           variant="ghost"
           size="sm"
-          className={`h-9 gap-2 px-2 text-sm font-semibold text-black hover:bg-black/5 ${className ?? ""}`}
+          className={`h-9 gap-2 px-2 text-sm font-semibold text-black hover:bg-black/5 focus-visible:ring-black/20 ${className ?? ""}`}
           aria-label={t(HEADER_COPY.changeLanguage)}
         >
           <GlobeIcon className="h-4 w-4" />
@@ -128,7 +150,11 @@ function LanguageSwitcher({ className }: { className?: string }) {
           onValueChange={(value) => setLocale(value as Locale)}
         >
           {LANGUAGE_OPTIONS.map((opt) => (
-            <DropdownMenuRadioItem key={opt.value} value={opt.value} className="gap-2 hover:bg-transparent! hover:text-background!">
+            <DropdownMenuRadioItem
+              key={opt.value}
+              value={opt.value}
+              className="gap-2 hover:bg-transparent! hover:text-background!"
+            >
               <span className="text-xs font-semibold text-muted-foreground">{opt.short}</span>
               <span>{opt.label}</span>
             </DropdownMenuRadioItem>
@@ -139,99 +165,190 @@ function LanguageSwitcher({ className }: { className?: string }) {
   )
 }
 
-const Header = () => {
+// ─── Custom Megamenu ────────────────────────────────────────────────────────
+
+function MegaMenu({ onClose }: { onClose: () => void }) {
   const t = useT()
 
   return (
-    <header className="sticky top-0 z-50 h-20 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black">
-      <div className="flex h-full w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
+    <motion.div
+      key="megamenu"
+      variants={megamenuVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="absolute left-0 top-full w-full border-b border-border/30 bg-[#F8F5EF] shadow-sm"
+    >
+      <div className="grid grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-2 lg:px-16 xl:grid-cols-4">
+        {PRODUCT_CARDS.map((card, i) => {
+          const cardTitle = t(card.title)
+          const [mainWord, ...secondaryWords] = cardTitle.split(" ")
+
+          return (
+            <motion.div
+              key={card.id}
+              custom={i}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <Link href={card.href} onClick={onClose} className="block h-full">
+                <Card className="flex h-full flex-col overflow-hidden rounded-2xl border-0 shadow-none transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
+                  <div className="relative aspect-video w-full">
+                    <Image
+                      src={card.image}
+                      alt={cardTitle}
+                      fill
+                      priority
+                      loading="eager"
+                      sizes="(max-width: 1024px) 100vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <CardContent
+                    className="flex flex-1 flex-col gap-4 p-6 text-foreground"
+                    style={{ backgroundColor: card.bgColor }}
+                  >
+                    <CardTitle className="text-3xl font-semibold leading-none tracking-tight">
+                      <span>{mainWord}</span>
+                      {secondaryWords.length > 0 ? (
+                        <span className="opacity-50"> {secondaryWords.join(" ")}</span>
+                      ) : null}
+                    </CardTitle>
+                    <CardDescription className="flex-1 text-base leading-snug text-foreground/95">
+                      {t(card.description)}
+                    </CardDescription>
+                    <span className="inline-flex h-auto w-fit rounded-lg border border-foreground/60 bg-transparent px-5 py-2 text-sm font-semibold text-foreground">
+                      {t(card.cta)}
+                    </span>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
+          )
+        })}
+      </div>
+    </motion.div>
+  )
+}
+
+// ─── Header ─────────────────────────────────────────────────────────────────
+
+const MEGA_CLOSE_DELAY_MS = 150
+
+const Header = () => {
+  const t = useT()
+  const [megaOpen, setMegaOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const megaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const clearMegaCloseTimer = () => {
+    if (megaCloseTimerRef.current) {
+      clearTimeout(megaCloseTimerRef.current)
+      megaCloseTimerRef.current = null
+    }
+  }
+
+  const openMegaMenu = () => {
+    clearMegaCloseTimer()
+    setMegaOpen(true)
+  }
+
+  const scheduleCloseMegaMenu = () => {
+    clearMegaCloseTimer()
+    megaCloseTimerRef.current = setTimeout(() => {
+      setMegaOpen(false)
+      megaCloseTimerRef.current = null
+    }, MEGA_CLOSE_DELAY_MS)
+  }
+
+  useEffect(() => () => clearMegaCloseTimer(), [])
+
+  // Close megamenu when clicking outside
+  useEffect(() => {
+    if (!megaOpen) return
+    const handleClick = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        clearMegaCloseTimer()
+        setMegaOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [megaOpen])
+
+  // Close on Escape
+  useEffect(() => {
+    if (!megaOpen) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        clearMegaCloseTimer()
+        setMegaOpen(false)
+      }
+    }
+    document.addEventListener("keydown", handleKey)
+    return () => document.removeEventListener("keydown", handleKey)
+  }, [megaOpen])
+
+  return (
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black"
+    >
+      {/* Main bar */}
+      <div className="flex h-20 w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
+        {/* Left */}
         <div className="flex items-center gap-5">
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
           </Link>
 
-          <div className="hidden items-center gap-5 font-semibold md:flex">
-            <Link href="/">{t(HEADER_COPY.company)}</Link>
-
-            <NavigationMenu
-              className="z-50"
-              viewportWrapperClassName="fixed top-20 left-0 right-0 z-[60] w-full max-w-[100vw] justify-center"
-              viewportClassName="mt-0 h-[var(--radix-navigation-menu-viewport-height)] w-full max-w-[100vw] overflow-hidden rounded-none border-x-0 border-b border-t-0 border-border/30 bg-background shadow-none md:mt-0 md:w-screen md:max-w-none"
-            >
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="h-auto bg-transparent px-0 py-0 text-sm font-semibold hover:bg-transparent focus:bg-transparent data-[state=open]:text-black data-[state=open]:bg-transparent">
-                    {t(HEADER_COPY.products)}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-full max-w-none rounded-none border-0 bg-transparent p-0 md:left-0 md:w-full">
-                    <div className="grid auto-rows-fr grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-2 lg:px-16 xl:grid-cols-4">
-                      {PRODUCT_CARDS.map((card) => {
-                        const cardTitle = t(card.title)
-                        const [mainWord, ...secondaryWords] = cardTitle.split(" ")
-                        return (
-                          <NavigationMenuLink
-                            key={card.id}
-                            asChild
-                            className="h-full rounded-xl p-0 transition-none hover:bg-transparent hover:text-inherit focus:bg-transparent focus:text-inherit"
-                          >
-                            <Link href={card.href}>
-                              <Card className="flex h-full flex-col overflow-hidden rounded-2xl border-0 shadow-none">
-                                <div className="relative aspect-video w-full">
-                                  <Image
-                                    src={card.image}
-                                    alt={cardTitle}
-                                    fill
-                                    priority
-                                    loading="eager"
-                                    sizes="(max-width: 1024px) 100vw, 25vw"
-                                    className="object-cover"
-                                  />
-                                </div>
-                                <CardContent
-                                  className="flex flex-1 flex-col gap-4 p-6 text-foreground"
-                                  style={{ backgroundColor: card.bgColor }}
-                                >
-                                  <CardTitle className="text-3xl font-semibold leading-none tracking-tight">
-                                    <span>{mainWord}</span>
-                                    {secondaryWords.length > 0 ? (
-                                      <span className="opacity-50">
-                                        {" "}
-                                        {secondaryWords.join(" ")}
-                                      </span>
-                                    ) : null}
-                                  </CardTitle>
-                                    <CardDescription className="flex-1 text-base leading-snug text-foreground/95">
-                                    {t(card.description)}
-                                  </CardDescription>
-                                  <span className="inline-flex h-auto w-fit rounded-lg border border-foreground/60 bg-transparent px-5 py-2 text-sm font-semibold text-foreground">
-                                    {t(card.cta)}
-                                  </span>
-                                </CardContent>
-                              </Card>
-                            </Link>
-                          </NavigationMenuLink>
-                        )
-                      })}
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
-            <Link href="/blogs">{t(HEADER_COPY.businessTypes)}</Link>
-            <Link href="/admin" prefetch={false}>
-              {t(HEADER_COPY.admin)}
+          <nav className="hidden items-center gap-5 font-semibold md:flex">
+            <Link href="/" className="transition-opacity hover:opacity-70">
+              {t(HEADER_COPY.company)}
             </Link>
-          </div>
+
+            {/* Products trigger (hover opens megamenu) */}
+            <div
+              className="relative"
+              onMouseEnter={openMegaMenu}
+              onMouseLeave={scheduleCloseMegaMenu}
+            >
+              <button
+                type="button"
+                className="flex items-center gap-1 transition-opacity hover:opacity-70 focus:outline-none"
+                aria-expanded={megaOpen}
+                aria-haspopup="true"
+              >
+                {t(HEADER_COPY.products)}
+                <motion.span
+                  animate={{ rotate: megaOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="inline-flex"
+                >
+                  <ChevronDownIcon className="h-4 w-4" />
+                </motion.span>
+              </button>
+            </div>
+
+            <Link href="/blogs" className="transition-opacity hover:opacity-70">
+              {t(HEADER_COPY.businessTypes)}
+            </Link>
+            <HeaderAdminLink className="transition-opacity hover:opacity-70">
+              {t(HEADER_COPY.admin)}
+            </HeaderAdminLink>
+          </nav>
         </div>
 
+        {/* Right */}
         <div className="hidden items-center gap-2 md:flex">
           <LanguageSwitcher />
-          <Button  className="py-5">
+          <Button className="py-5">
             {t(HEADER_COPY.ctaConsult)} <ArrowRightIcon className="h-4 w-4" />
           </Button>
         </div>
 
+        {/* Mobile */}
         <div className="flex items-center gap-1 md:hidden">
           <LanguageSwitcher />
           <Sheet>
@@ -286,11 +403,9 @@ const Header = () => {
                         {t(HEADER_COPY.businessTypes)}
                       </Link>
                     </SheetClose>
-                    <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/admin" prefetch={false}>
-                        {t(HEADER_COPY.admin)}
-                      </Link>
-                    </SheetClose>
+                    <HeaderAdminLink variant="sheet" className="block rounded-md px-2 py-2 hover:bg-black/5">
+                      {t(HEADER_COPY.admin)}
+                    </HeaderAdminLink>
                   </nav>
                 </div>
 
@@ -305,6 +420,24 @@ const Header = () => {
             </SheetContent>
           </Sheet>
         </div>
+      </div>
+
+      {/* Megamenu (desktop only) */}
+      <div
+        className="relative hidden md:block"
+        onMouseEnter={openMegaMenu}
+        onMouseLeave={scheduleCloseMegaMenu}
+      >
+        <AnimatePresence>
+          {megaOpen && (
+            <MegaMenu
+              onClose={() => {
+                clearMegaCloseTimer()
+                setMegaOpen(false)
+              }}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </header>
   )

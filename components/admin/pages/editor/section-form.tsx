@@ -29,6 +29,7 @@ import { ProductPricingForm } from "./forms/product-pricing-form"
 import { ClubCardsForm } from "./forms/club-cards-form"
 import { HomeProductsForm } from "./forms/home-products-form"
 import { HomeSolutionsForm } from "./forms/home-solutions-form"
+import { BrandMarqueeForm } from "./forms/brand-marquee-form"
 import { StepsClubForm } from "./forms/steps-club-form"
 import { CommonCtaForm } from "./forms/common-cta-form"
 import { ClubActivationForm } from "./forms/club-activation-form"
@@ -161,6 +162,10 @@ function TypedSectionBody({
     case "home_solutions":
       return (
         <HomeSolutionsForm value={section.props} onChange={onPropsChange} />
+      )
+    case "brand_marquee":
+      return (
+        <BrandMarqueeForm value={section.props} onChange={onPropsChange} />
       )
     case "steps_club":
       return <StepsClubForm value={section.props} onChange={onPropsChange} />

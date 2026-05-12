@@ -10,6 +10,7 @@ import ProductPricingSection from "./product-pricing-section"
 import ClubCardsSection from "./club-cards-section"
 import HomeProductsSection from "./home-products-section"
 import HomeSolutionsSection from "./home-solutions-section"
+import BrandMarqueeSection from "./brand-marquee-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
@@ -64,6 +65,8 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <HomeProductsSection {...section.props} {...common} />
     case "home_solutions":
       return <HomeSolutionsSection {...section.props} {...common} />
+    case "brand_marquee":
+      return <BrandMarqueeSection {...section.props} {...common} />
     case "common_cta":
       return <CommonCTASection {...section.props} {...common} />
     case "club_activation":

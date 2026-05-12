@@ -167,6 +167,16 @@ export type HomeProductsSectionProps = {
   }>
 }
 
+/** Home — infinite horizontal marquee of partner / customer brand logos. */
+export type BrandMarqueeSectionProps = {
+  title?: LocalizedString
+  brands: Array<{
+    /** Brand display name. Not translated; used as `alt` and admin label. */
+    name?: string
+    logo: string
+  }>
+}
+
 /** Home — solutions showcase: label + title, 3-col image grid with captions, two CTAs. */
 export type HomeSolutionsSectionProps = {
   label?: LocalizedString
@@ -257,6 +267,7 @@ export type ProductPricingSection = BaseSection<"productpricing", ProductPricing
 export type ClubCardsSection = BaseSection<"club_cards", ClubCardsSectionProps>
 export type HomeProductsSection = BaseSection<"home_products", HomeProductsSectionProps>
 export type HomeSolutionsSection = BaseSection<"home_solutions", HomeSolutionsSectionProps>
+export type BrandMarqueeSection = BaseSection<"brand_marquee", BrandMarqueeSectionProps>
 export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
@@ -278,6 +289,7 @@ export type PageSection =
   | ClubCardsSection
   | HomeProductsSection
   | HomeSolutionsSection
+  | BrandMarqueeSection
   | StepsClubSection
   | CommonCTASection
   | ClubActivationSection

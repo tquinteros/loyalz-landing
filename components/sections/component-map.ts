@@ -13,6 +13,7 @@ import ProductPricingSection from "./product-pricing-section"
 import ClubCardsSection from "./club-cards-section"
 import HomeProductsSection from "./home-products-section"
 import HomeSolutionsSection from "./home-solutions-section"
+import BrandMarqueeSection from "./brand-marquee-section"
 import StepsClubSection from "./steps-club-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
@@ -385,6 +386,24 @@ export function createDefaultSection<T extends PageSection["type"]>(
           secondaryCtaHref: "/contact",
         },
       } as SectionFor<T>
+    case "brand_marquee":
+      return {
+        ...base,
+        type: "brand_marquee",
+        props: {
+          title: {
+            es: "Marcas que confían en nosotros",
+            en: "Brands that trust us",
+          },
+          brands: [
+            { name: "Marca 1", logo: "" },
+            { name: "Marca 2", logo: "" },
+            { name: "Marca 3", logo: "" },
+            { name: "Marca 4", logo: "" },
+            { name: "Marca 5", logo: "" },
+          ],
+        },
+      } as SectionFor<T>
     case "steps_club":
       return {
         ...base,
@@ -642,6 +661,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Home Solutions",
     description: "Label, title, image gallery and primary + secondary CTAs.",
     component: HomeSolutionsSection,
+  },
+  brand_marquee: {
+    type: "brand_marquee",
+    label: "Brand Marquee",
+    description: "Title and an infinite horizontal marquee of brand logos.",
+    component: BrandMarqueeSection,
   },
   steps_club: {
     type: "steps_club",

@@ -61,20 +61,27 @@ export default function HomeProductsSection({
       )}
 
       <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
-        <div className="flex min-w-0 flex-col">
-          <ol className="space-y-3" onMouseLeave={() => setHoveredIndex(null)}>
+        <div className="flex min-h-0 min-w-0 flex-col lg:h-full">
+          <ol
+            className="flex flex-col space-y-3 lg:h-full lg:min-h-0 lg:grid lg:grid-cols-1 lg:gap-3 lg:space-y-0"
+            style={{
+              gridTemplateRows: `repeat(${products.length}, minmax(0, 1fr))`,
+            }}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
             {products.map((product, index) => {
               const isActive = hoveredIndex === index
               const productTitle = t(product.title)
               const productSubtitle = t(product.subtitle)
               const productDescription = t(product.description)
               return (
-                <li key={`${productTitle}-${index}`}>
+                <li key={`${productTitle}-${index}`} className="flex min-h-0 flex-col lg:min-h-0 lg:h-full">
                   <button
                     type="button"
                     className={cn(
-                      "group relative flex w-full items-stretch overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
+                      "group relative flex w-full min-h-28 items-stretch overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
                       "focus-visible:outline-none",
+                      "lg:h-full lg:min-h-0",
                       isActive
                         ? "bg-card shadow-xl shadow-black/10"
                         : "bg-transparent shadow-none",
@@ -96,7 +103,7 @@ export default function HomeProductsSection({
                           animate={{ width: "7rem", opacity: 1 }}
                           exit={{ width: 0, opacity: 0 }}
                           transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                          className="relative flex h-28 shrink-0 items-center justify-center"
+                          className="relative flex h-28 shrink-0 items-center justify-center self-stretch lg:h-full lg:min-h-28"
                           style={{ backgroundColor: product.color }}
                         >
                           <Image
@@ -110,7 +117,7 @@ export default function HomeProductsSection({
                       ) : null}
                     </AnimatePresence>
 
-                    <div className="flex h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5">
+                    <div className="flex min-h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5 lg:h-full lg:min-h-0">
 
                       <h3 className="text-lg font-bold text-background sm:text-3xl">
                         {(() => {
@@ -142,7 +149,7 @@ export default function HomeProductsSection({
             })}
           </ol>
         </div>
-        <div className="relative min-h-[260px] min-w-0 overflow-hidden rounded-[24px] lg:min-h-[420px]">
+        <div className="relative min-h-[260px] min-w-0 overflow-hidden rounded-[24px] lg:h-full lg:min-h-[568px]">
           <AnimatePresence mode="sync" initial={false}>
             {active?.image ? (
               <motion.div
@@ -156,9 +163,9 @@ export default function HomeProductsSection({
                 <Image
                   src={active.image}
                   alt={activeTitle}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover w-full h-full"
+                  width={500}
+                  height={500}
                   priority={activeIndex === 0}
                 />
               </motion.div>
