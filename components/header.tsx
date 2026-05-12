@@ -59,7 +59,7 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/club",
     bgColor: "#754390",
-    image: "/club.png",
+    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557263292-g41wuvp9gvr.png",
   },
   {
     id: "reviews",
@@ -71,7 +71,7 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
     bgColor: "#EC491E",
-    image: "/club.png",
+    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557584034-92crq1z7zcs.png",
   },
   {
     id: "pos",
@@ -83,7 +83,7 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
     bgColor: "#8C7F1F",
-    image: "/club.png",
+    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557325992-vpkvf5fftz.png",
   },
   {
     id: "ai",
@@ -95,11 +95,10 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
     bgColor: "#013662",
-    image: "/club.png",
+    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557551558-1mi70bu528ai.png",
   },
 ]
 
-// Framer Motion variants
 const megamenuVariants = {
   hidden: {
     opacity: 0,
@@ -165,7 +164,6 @@ function LanguageSwitcher({ className }: { className?: string }) {
   )
 }
 
-// ─── Custom Megamenu ────────────────────────────────────────────────────────
 
 function MegaMenu({ onClose }: { onClose: () => void }) {
   const t = useT()
@@ -177,7 +175,7 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="absolute left-0 top-full w-full border-b border-border/30 bg-[#F8F5EF] shadow-sm"
+      className="absolute left-0 top-full w-full border-b border-border/30 bg-background shadow-sm"
     >
       <div className="grid grid-cols-1 gap-5 px-5 py-7 sm:grid-cols-2 lg:px-16 xl:grid-cols-4">
         {PRODUCT_CARDS.map((card, i) => {

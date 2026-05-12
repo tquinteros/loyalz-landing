@@ -117,10 +117,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
           items: [
             {
               logo: "",
-              badges: [
-                { es: "+6.000 miembros", en: "+6,000 members" },
-                { es: "+30% crecimiento", en: "+30% growth" },
-              ],
+              backgroundImage: "",
               summary: {
                 es: "Un producto increíble.",
                 en: "An amazing product.",

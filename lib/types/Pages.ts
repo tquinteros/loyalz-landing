@@ -80,7 +80,8 @@ export type TestimonialsSectionProps = {
     place?: LocalizedString
     avatar?: string
     logo?: string
-    badges?: LocalizedString[]
+    /** Optional image painted behind the testimonial card content. */
+    backgroundImage?: string
     /** Legacy fields kept so previously saved page JSON keeps rendering. */
     quote?: LocalizedString | string
     role?: LocalizedString | string

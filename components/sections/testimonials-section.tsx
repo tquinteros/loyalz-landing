@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import { ArrowLeft, ArrowRight, Quote } from "lucide-react"
 import type { CarouselApi } from "@/components/ui/carousel"
 import {
@@ -9,9 +10,9 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
 import type { TestimonialsSectionProps } from "@/lib/types/Pages"
 import { useT } from "@/providers/language-provider"
@@ -90,14 +91,42 @@ export default function TestimonialsSection({
             const summary = t(item.summary) || t(item.quote)
             const place = t(item.place) || t(item.role)
             const firstName = item.author.split(" ")[0] || item.author
+            const hasBg = !!item.backgroundImage?.trim()
 
             return (
               <CarouselItem
                 key={`${item.author}-${i}`}
                 className="pl-5 md:basis-[48%]"
               >
-                <Card className="h-full rounded-2xl border-4 border-transparent bg-card shadow-sm transition-colors duration-200 hover:border-accent">
-                  <CardContent className="flex min-h-[500px] flex-col justify-between p-7 sm:p-8">
+                <Card
+                  className={cn(
+                    "relative h-full overflow-hidden rounded-2xl border-10 border-transparent transition-colors duration-200 hover:border-accent",
+                    !hasBg && "bg-card",
+                  )}
+                >
+                  {hasBg ? (
+                    <>
+                      <Image
+                        src={item.backgroundImage as string}
+                        alt=""
+                        fill
+                        aria-hidden
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-linear-to-b from-black/30 via-black/50 to-black/70"
+                      />
+                    </>
+                  ) : null}
+
+                  <CardContent
+                    className={cn(
+                      "relative flex min-h-[500px] flex-col justify-between p-7 sm:p-8",
+                      hasBg && "text-foreground",
+                    )}
+                  >
                     <div>
                       <div className="mb-10 flex min-h-14 items-start justify-between gap-4">
                         {item.logo ? (
@@ -108,29 +137,22 @@ export default function TestimonialsSection({
                             className="max-h-20 max-w-40 object-contain"
                           />
                         ) : (
-                          <Quote className="size-8 text-background" />
+                          <Quote
+                            className={cn(
+                              "size-8",
+                              hasBg ? "text-foreground" : "text-background",
+                            )}
+                          />
                         )}
                       </div>
 
-                      {item.badges?.length ? (
-                        <div className="mb-7 flex flex-wrap gap-2">
-                          {item.badges.map((badge, index) => {
-                            const badgeText = t(badge)
-                            return (
-                              <Badge
-                                key={`${badgeText}-${index}`}
-                                variant="secondary"
-                                className="rounded-md border-none bg-black/5 hover:bg-black/5 px-2.5 py-1 text-[11px] font-bold text-background"
-                              >
-                                {badgeText}
-                              </Badge>
-                            )
-                          })}
-                        </div>
-                      ) : null}
-
                       {summary ? (
-                        <blockquote className="text-3xl font-semibold leading-[1.05] tracking-tight text-background">
+                        <blockquote
+                          className={cn(
+                            "text-3xl font-semibold leading-[1.05] tracking-tight",
+                            hasBg ? "text-foreground" : "text-background",
+                          )}
+                        >
                           “{summary}”
                         </blockquote>
                       ) : null}
@@ -146,11 +168,21 @@ export default function TestimonialsSection({
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="text-sm font-bold text-background">
+                        <div
+                          className={cn(
+                            "text-sm font-bold",
+                            hasBg ? "text-foreground" : "text-background",
+                          )}
+                        >
                           {firstName}
                         </div>
                         {place ? (
-                          <div className="text-xs font-medium text-muted-foreground">
+                          <div
+                            className={cn(
+                              "text-xs font-medium",
+                              hasBg ? "text-foreground/80" : "text-muted-foreground",
+                            )}
+                          >
                             {place}
                           </div>
                         ) : null}

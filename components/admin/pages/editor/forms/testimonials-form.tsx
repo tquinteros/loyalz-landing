@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { X } from "lucide-react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
 import { LocalizedField } from "./localized-field"
 import type {
@@ -19,99 +19,7 @@ type Props = {
 
 type TestimonialItem = TestimonialsSectionProps["items"][number]
 
-type LocalizedBadgeInputProps = {
-  label: string
-  value?: LocalizedString[]
-  onChange: (next: LocalizedString[]) => void
-  placeholder?: string
-}
-
 const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
-
-/**
- * Tag-style editor for `LocalizedString[]`. Editing happens per-locale via two
- * input strips (ES / EN) so each tag is fully translatable. Tags are matched
- * by index between the two strips.
- */
-function LocalizedBadgeInput({
-  label,
-  value,
-  onChange,
-  placeholder,
-}: LocalizedBadgeInputProps) {
-  const tags: LocalizedString[] = Array.isArray(value) ? value : []
-
-  function patch(index: number, locale: "es" | "en", text: string) {
-    const next = tags.map((t, i) =>
-      i === index ? { ...t, [locale]: text } : t,
-    )
-    onChange(next)
-  }
-
-  function remove(index: number) {
-    onChange(tags.filter((_, i) => i !== index))
-  }
-
-  function add() {
-    onChange([...tags, { es: "", en: "" }])
-  }
-
-  return (
-    <div className="space-y-2">
-      <Label className="text-xs">{label}</Label>
-      {tags.length === 0 ? (
-        <p className="rounded-md border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
-          Sin badges.
-        </p>
-      ) : (
-        <ul className="space-y-2">
-          {tags.map((tag, i) => (
-            <li
-              key={i}
-              className="grid items-end gap-2 rounded-md border bg-card p-2 sm:grid-cols-[1fr_1fr_auto]"
-            >
-              <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  ES
-                </Label>
-                <Input
-                  value={tag.es ?? ""}
-                  onChange={(e) => patch(i, "es", e.target.value)}
-                  placeholder={placeholder}
-                />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  EN
-                </Label>
-                <Input
-                  value={tag.en ?? ""}
-                  onChange={(e) => patch(i, "en", e.target.value)}
-                  placeholder={placeholder}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => remove(i)}
-                className="flex size-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-destructive"
-                aria-label="Eliminar badge"
-              >
-                <X className="size-4" />
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-      <button
-        type="button"
-        onClick={add}
-        className="rounded-md border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted"
-      >
-        Añadir badge
-      </button>
-    </div>
-  )
-}
 
 export function TestimonialsForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<TestimonialsSectionProps>(value)
@@ -156,7 +64,7 @@ export function TestimonialsForm({ value, onChange }: Props) {
           onChange={(items) => set("items", items)}
           createItem={() => ({
             logo: "",
-            badges: [],
+            backgroundImage: "",
             summary: { es: "", en: "" },
             author: "",
             place: { es: "", en: "" },
@@ -175,12 +83,17 @@ export function TestimonialsForm({ value, onChange }: Props) {
                 />
               </div>
 
-              <LocalizedBadgeInput
-                label="Badges"
-                value={item.badges}
-                onChange={(badges) => update({ badges })}
-                placeholder="+6.000 miembros / +6,000 members"
-              />
+              <div className="space-y-1">
+                <Label className="text-xs">Imagen de fondo</Label>
+                <ImagePicker
+                  value={item.backgroundImage || null}
+                  onChange={(url) => update({ backgroundImage: url ?? "" })}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Se muestra detrás del contenido de la tarjeta con una capa
+                  oscura para que el texto siga siendo legible.
+                </p>
+              </div>
 
               <LocalizedField
                 label="Resumen"
@@ -188,7 +101,6 @@ export function TestimonialsForm({ value, onChange }: Props) {
                 multiline
                 rows={3}
                 value={
-                  // Migrate legacy `quote` if present
                   typeof item.summary === "string"
                     ? { es: item.summary, en: "" }
                     : (item.summary as LocalizedString | undefined) ??

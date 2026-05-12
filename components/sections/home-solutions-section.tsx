@@ -93,7 +93,7 @@ export default function HomeSolutionsSection({
                       aria-hidden
                       className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/70 via-black/40 to-transparent"
                     />
-                    <p className="absolute inset-x-0 bottom-0 px-5 pb-5 text-left text-lg font-bold leading-snug text-white sm:px-6 sm:pb-6 sm:text-xl">
+                    <p className="absolute inset-x-0 bottom-0 px-5 pb-5 text-left text-lg font-bold leading-snug text-foreground sm:px-6 sm:pb-6 sm:text-xl">
                       {captionText}
                     </p>
                   </>
