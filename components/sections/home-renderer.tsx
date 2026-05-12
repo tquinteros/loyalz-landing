@@ -15,6 +15,7 @@ import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
+import HomeBusinessSection from "./home-business-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 
@@ -75,6 +76,8 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <HomeActivationSection {...section.props} {...common} />
     case "notification_club":
       return <NotificationClubSection {...section.props} {...common} />
+    case "home_business":
+      return <HomeBusinessSection {...section.props} {...common} />
     default:
       return null
   }

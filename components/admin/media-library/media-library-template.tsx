@@ -245,14 +245,13 @@ export default function MediaLibraryTemplate({
                     key={item.path}
                     className="group relative overflow-hidden rounded-lg border bg-muted/30"
                   >
-                    <div className="relative aspect-square w-full overflow-hidden bg-muted">
+                    <div className="relative aspect-square w-full h-[200px] overflow-hidden bg-muted">
                       <Image
                         src={item.url}
                         alt={item.name}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                        className="object-cover transition-transform group-hover:scale-105"
-                        unoptimized
+                        className="object-cover transition-transform group-hover:scale-105 h-[200px]"
+                        width={1024}
+                        height={1024}
                       />
                     </div>
 

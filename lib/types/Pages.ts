@@ -244,6 +244,28 @@ export type HomeActivationSectionProps = {
   bottomLabel: LocalizedString
 }
 
+/** Home — business types showcase: label + title + description, business cards grid, CTAs, stats grid. */
+export type HomeBusinessSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description?: LocalizedString
+  businessCards: Array<{
+    image: string
+    title: LocalizedString
+    description: LocalizedString
+  }>
+  primaryCta: CTA
+  secondaryCta: CTA
+  stats: Array<{
+    image: string
+    title: LocalizedString
+    /** Display stat token (e.g. "+30%", "4x"); not translated. */
+    stat: string
+    /** CSS color string for the stat band background, e.g. "#754390". */
+    backgroundColorCard: string
+  }>
+}
+
 /** Club — push notifications showcase with phone mockup + glass badges. */
 export type NotificationClubSectionProps = {
   title: LocalizedString
@@ -273,6 +295,7 @@ export type StepsClubSection = BaseSection<"steps_club", StepsClubSectionProps>
 export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
 export type HomeActivationSection = BaseSection<"home_activation", HomeActivationSectionProps>
+export type HomeBusinessSection = BaseSection<"home_business", HomeBusinessSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
@@ -296,6 +319,7 @@ export type PageSection =
   | ClubActivationSection
   | HomeActivationSection
   | NotificationClubSection
+  | HomeBusinessSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

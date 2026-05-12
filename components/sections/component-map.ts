@@ -19,6 +19,7 @@ import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
+import HomeBusinessSection from "./home-business-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -552,6 +553,55 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "home_business":
+      return {
+        ...base,
+        type: "home_business",
+        props: {
+          label: { es: "Negocios", en: "Business" },
+          title: { es: "No importa el tamaño de tu negocio, estamos para hacerlo crecer.", en: "No matter the size of your business, we're here to help it grow." },
+          description: { es: "Llevá tu negocio al siguiente nivel con funciones creadas a medida.", en: "Take your business to the next level with tailor-made features." },
+          businessCards: [
+            {
+              image: "",
+              title: { es: "Restaurantes", en: "Restaurants" },
+              description: { es: "Gestioná picos de demanda con una interfaz ágil que no detiene tu servicio.", en: "Manage demand peaks with an agile interface that keeps your service running." },
+            },
+            {
+              image: "",
+              title: { es: "Cafés", en: "Cafés" },
+              description: { es: "Convertí el café de la mañana en un hábito diario.", en: "Turn the morning coffee into a daily habit." },
+            },
+            {
+              image: "",
+              title: { es: "Delivery-first", en: "Delivery-first" },
+              description: { es: "Recuperá el control y transformá cada pedido en una relación directa, sin intermediarios.", en: "Regain control and turn every order into a direct relationship, no middlemen." },
+            },
+          ],
+          primaryCta: { label: { es: "Prueba Gratis", en: "Free Trial" }, href: "/contact" },
+          secondaryCta: { label: { es: "Agendar Demo", en: "Book a Demo" }, href: "/contact" },
+          stats: [
+            {
+              image: "",
+              title: { es: "Usuarios Registrados", en: "Registered Users" },
+              stat: "+100k",
+              backgroundColorCard: "#F8F5EF",
+            },
+            {
+              image: "",
+              title: { es: "Presencia en países", en: "Countries" },
+              stat: "+13",
+              backgroundColorCard: "#F8F5EF",
+            },
+            {
+              image: "",
+              title: { es: "de experiencia", en: "of experience" },
+              stat: "+3 Años",
+              backgroundColorCard: "#F8F5EF",
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -694,6 +744,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Notification Club",
     description: "Push notifications — copy left, phone + glass badges right.",
     component: NotificationClubSection,
+  },
+  home_business: {
+    type: "home_business",
+    label: "Home Business",
+    description: "Label, title, description, business cards grid and colored stats grid.",
+    component: HomeBusinessSection,
   },
 }
 

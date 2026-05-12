@@ -164,8 +164,8 @@ export default function HomeProductsSection({
                   src={active.image}
                   alt={activeTitle}
                   className="object-cover w-full h-full"
-                  width={500}
-                  height={500}
+                  width={1024}
+                  height={1024}
                   priority={activeIndex === 0}
                 />
               </motion.div>

@@ -83,7 +83,7 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
     bgColor: "#8C7F1F",
-    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557325992-vpkvf5fftz.png",
+    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778558783917-67yl2yx7m1f.png",
   },
   {
     id: "ai",
@@ -192,8 +192,8 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
             >
               <Link href={card.href} onClick={onClose} className="block h-full">
                 <Card className="flex h-full flex-col overflow-hidden rounded-2xl border-0 shadow-none transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
-                  <div className="relative aspect-video w-full">
-                    <Image
+                  <div className="relative aspect-video w-full h-[200px]">
+                    {/* <Image
                       src={card.image}
                       alt={cardTitle}
                       fill
@@ -201,6 +201,14 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
                       loading="eager"
                       sizes="(max-width: 1024px) 100vw, 25vw"
                       className="object-cover"
+                    /> */}
+                    <Image
+                      src={card.image}
+                      alt={cardTitle}
+                      width={1024}
+                      height={1024}
+                      className="object-cover h-[200px]"
+                      priority={i === 0}
                     />
                   </div>
                   <CardContent

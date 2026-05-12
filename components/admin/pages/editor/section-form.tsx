@@ -35,6 +35,7 @@ import { CommonCtaForm } from "./forms/common-cta-form"
 import { ClubActivationForm } from "./forms/club-activation-form"
 import { HomeActivationForm } from "./forms/home-activation-form"
 import { NotificationClubForm } from "./forms/notification-club-form"
+import { HomeBusinessForm } from "./forms/home-business-form"
 
 type Props = {
   section: AnyPageSection
@@ -183,6 +184,8 @@ function TypedSectionBody({
       return (
         <NotificationClubForm value={section.props} onChange={onPropsChange} />
       )
+    case "home_business":
+      return <HomeBusinessForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive
