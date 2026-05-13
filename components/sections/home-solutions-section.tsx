@@ -56,7 +56,7 @@ export default function HomeSolutionsSection({
             </div>
           ) : null}
           {titleText ? (
-            <h2 className="max-w-4xl text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-6xl">
+            <h2 className="max-w-4xl text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-[56px]">
               {titleText}
             </h2>
           ) : null}

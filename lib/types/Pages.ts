@@ -244,6 +244,16 @@ export type HomeActivationSectionProps = {
   bottomLabel: LocalizedString
 }
 
+/** Home — iPad mockup with floating stat cards at corners + title band below. */
+export type HomeAutonomySectionProps = {
+  title: LocalizedString
+  stats: Array<{
+    title: LocalizedString
+    description?: LocalizedString
+    statText: LocalizedString
+  }>
+}
+
 /** Home — business types showcase: label + title + description, business cards grid, CTAs, stats grid. */
 export type HomeBusinessSectionProps = {
   label?: LocalizedString
@@ -296,6 +306,7 @@ export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
 export type HomeActivationSection = BaseSection<"home_activation", HomeActivationSectionProps>
 export type HomeBusinessSection = BaseSection<"home_business", HomeBusinessSectionProps>
+export type HomeAutonomySection = BaseSection<"home_autonomy", HomeAutonomySectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
@@ -320,6 +331,7 @@ export type PageSection =
   | HomeActivationSection
   | NotificationClubSection
   | HomeBusinessSection
+  | HomeAutonomySection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

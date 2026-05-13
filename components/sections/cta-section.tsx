@@ -19,7 +19,7 @@ const CTASection = ({ title, label, backgroundImage, className }: Props) => {
     return (
         <SectionWrapper
             backgroundImage={backgroundImage}
-            className={`${className} bg-[#F8F5EF]`}
+            className={`${className} bg-[#F8F5EF] pt-0!`}
         >
             <div className="px-16 py-16 bg-black rounded-4xl flex flex-col gap-3">
                 <div className="flex items-center gap-2">

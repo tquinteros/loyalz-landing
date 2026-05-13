@@ -66,7 +66,7 @@ export default function HomeBusinessSection({
           ) : null}
 
           {descriptionText ? (
-            <p className="max-w-xl text-sm leading-relaxed text-foreground sm:text-base">
+            <p className="max-w-xl text-sm leading-relaxed text-foreground sm:text-lg">
               {descriptionText}
             </p>
           ) : null}
@@ -84,7 +84,7 @@ export default function HomeBusinessSection({
             return (
               <motion.div
                 key={`${cardTitle}-${i}`}
-                className="relative h-[320px] overflow-hidden rounded-2xl sm:h-[380px] lg:h-[420px]"
+                className="relative h-[320px] overflow-hidden rounded-2xl bg-background sm:h-[380px] lg:h-[420px]"
                 onMouseEnter={() => setHoveredCard(i)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -92,7 +92,7 @@ export default function HomeBusinessSection({
                 <motion.div
                   className="absolute inset-x-0 top-0 overflow-hidden rounded-2xl"
                   animate={{ height: isHovered ? "100%" : "62%" }}
-                  transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                  transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1], delay: isHovered ? 0.15 : 0 }}
                 >
                   {card.image ? (
                     <Image
@@ -118,7 +118,7 @@ export default function HomeBusinessSection({
                         "linear-gradient(to top, black 35%, transparent 100%)",
                     }}
                     animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
                   />
                 </motion.div>
 

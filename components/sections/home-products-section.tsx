@@ -46,7 +46,7 @@ export default function HomeProductsSection({
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="10" height="10" rx="2" fill="black" />
               </svg>
-              <p className="text-xs tracking-widest text-muted-foreground">
+              <p className="text-xs sm:text-[14px] tracking-widest text-muted-foreground">
                 {labelText}
               </p>
 

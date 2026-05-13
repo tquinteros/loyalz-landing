@@ -67,13 +67,13 @@ export default function BrandMarqueeSection({
             {loop.map((brand, i) => (
               <li
                 key={`${brand.logo}-${i}`}
-                className="relative flex h-12 shrink-0 items-center justify-center pr-12 sm:h-16 sm:pr-16 lg:pr-20"
+                className="relative flex h-12 shrink-0 items-center justify-center pr-12 sm:h-24 sm:pr-16 lg:pr-20"
                 aria-hidden={i >= items.length ? true : undefined}
               >
                 <Image
                   src={brand.logo}
                   alt={brand.name ?? ""}
-                  width={180}
+                  width={256}
                   height={64}
                   className="h-full w-auto object-contain"
                 />

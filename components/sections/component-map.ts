@@ -20,6 +20,7 @@ import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
+import HomeAutonomySection from "./home-autonomy-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -553,6 +554,37 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "home_autonomy":
+      return {
+        ...base,
+        type: "home_autonomy",
+        props: {
+          title: {
+            es: "Más autonomía y personalización para tomar decisiones.",
+            en: "More autonomy and personalization to make decisions.",
+          },
+          stats: [
+            {
+              title: { es: "Reservas", en: "Reservations" },
+              statText: { es: "7 mesas", en: "7 tables" },
+            },
+            {
+              title: { es: "Consultas resueltas", en: "Resolved inquiries" },
+              description: { es: "20 pendientes", en: "20 pending" },
+              statText: { es: "1536", en: "1536" },
+            },
+            {
+              title: { es: "Consultas resueltas", en: "Resolved inquiries" },
+              description: { es: "20 pendientes", en: "20 pending" },
+              statText: { es: "1536", en: "1536" },
+            },
+            {
+              title: { es: "Reservas", en: "Reservations" },
+              statText: { es: "7 mesas", en: "7 tables" },
+            },
+          ],
+        },
+      } as SectionFor<T>
     case "home_business":
       return {
         ...base,
@@ -750,6 +782,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Home Business",
     description: "Label, title, description, business cards grid and colored stats grid.",
     component: HomeBusinessSection,
+  },
+  home_autonomy: {
+    type: "home_autonomy",
+    label: "Home Autonomy",
+    description: "iPad mockup with floating stats at the corners and a title band below.",
+    component: HomeAutonomySection,
   },
 }
 
