@@ -129,13 +129,16 @@ export default function TestimonialsSection({
                   >
                     <div>
                       <div className="mb-10 flex min-h-14 items-start justify-between gap-4">
-                        {item.logo ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={item.logo}
-                            alt={`${place || item.author} logo`}
-                            className="max-h-20 max-w-40 object-contain"
-                          />
+                        {item.logo?.trim() ? (
+                          <div className="relative h-16 w-36 shrink-0 sm:h-20 sm:w-44">
+                            <Image
+                              src={item.logo}
+                              alt={`${place || item.author} logo`}
+                              fill
+                              sizes="(max-width: 640px) 144px, 176px"
+                              className="object-contain object-left"
+                            />
+                          </div>
                         ) : (
                           <Quote
                             className={cn(

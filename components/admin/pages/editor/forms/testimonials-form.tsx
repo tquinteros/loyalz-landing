@@ -75,12 +75,15 @@ export function TestimonialsForm({ value, onChange }: Props) {
           renderItem={(item, update) => (
             <div className="grid gap-3">
               <div className="space-y-1">
-                <Label className="text-xs">Logo (URL)</Label>
-                <Input
-                  value={item.logo ?? ""}
-                  onChange={(e) => update({ logo: e.target.value || undefined })}
-                  placeholder="https://..."
+                <Label className="text-xs">Logo</Label>
+                <ImagePicker
+                  aspect="square"
+                  value={item.logo?.trim() ? item.logo : null}
+                  onChange={(url) => update({ logo: url ?? "" })}
                 />
+                <p className="text-[11px] text-muted-foreground">
+                  Sube o elige una imagen del mismo almacén que el resto del sitio.
+                </p>
               </div>
 
               <div className="space-y-1">
