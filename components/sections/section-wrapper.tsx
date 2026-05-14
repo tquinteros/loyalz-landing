@@ -13,6 +13,11 @@ type Props = {
   className?: string | null
   /** Inner container className (used for padding / max-width tweaks). */
   innerClassName?: string
+  /**
+   * When `backgroundImage` is set, this class is applied to the full-bleed
+   * scrim above the photo. Defaults to `bg-black/60`.
+   */
+  backgroundOverlayClassName?: string | null
 }
 
 /**
@@ -26,9 +31,12 @@ export function SectionWrapper({
   surfaceColor,
   className,
   innerClassName,
+  backgroundOverlayClassName,
 }: Props) {
   const hasBg = !!backgroundImage
   const hasSurface = !!surfaceColor?.trim()
+  const overlayClass =
+    backgroundOverlayClassName?.trim() || "bg-black/60"
 
   return (
     <section
@@ -53,7 +61,7 @@ export function SectionWrapper({
       {hasBg && (
         <div
           aria-hidden
-          className="absolute inset-0 bg-black/60"
+          className={cn("absolute inset-0", overlayClass)}
         />
       )}
       <div

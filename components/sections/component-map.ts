@@ -21,6 +21,7 @@ import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
 import HomeAutonomySection from "./home-autonomy-section"
+import HomeSupportSection from "./home-support-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -634,6 +635,53 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "home_support":
+      return {
+        ...base,
+        type: "home_support",
+        props: {
+          title: {
+            es: "Arrancás con todo el soporte. Sin costo extra.",
+            en: "You start with full support. At no extra cost.",
+          },
+          subtitle: {
+            es: "Equipo dedicado, material listo y capacitación incluida.",
+            en: "Dedicated team, ready-made assets, and training included.",
+          },
+          supports: [
+            {
+              title: {
+                es: "Armamos tu kit digital.",
+                en: "We build your digital kit.",
+              },
+              description: {
+                es: "Flyers, QR, material para redes, todo listo para que lances tu programa desde el día uno.",
+                en: "Flyers, QR, social assets — everything ready so you can launch your program from day one.",
+              },
+            },
+            {
+              title: {
+                es: "Entrenamos a tus empleados.",
+                en: "We train your team.",
+              },
+              description: {
+                es: "Capacitación rápida para que tu equipo sepa usar el scanner y gestionar el programa sin complicaciones.",
+                en: "Quick training so your staff knows how to use the scanner and run the program without hassle.",
+              },
+            },
+            {
+              title: {
+                es: "Consultoría para crecer.",
+                en: "Growth consulting.",
+              },
+              description: {
+                es: "Te asesoramos sobre cómo escalar tu programa, activar nuevas mecánicas y sacarle más jugo a tus datos.",
+                en: "We advise you on scaling your program, activating new mechanics, and getting more from your data.",
+              },
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -788,6 +836,13 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Home Autonomy",
     description: "iPad mockup with floating stats at the corners and a title band below.",
     component: HomeAutonomySection,
+  },
+  home_support: {
+    type: "home_support",
+    label: "Home Support",
+    description:
+      "Full-bleed background, title + optional subtitle left, infinite vertical marquee of support cards.",
+    component: HomeSupportSection,
   },
 }
 

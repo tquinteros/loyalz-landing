@@ -29,6 +29,9 @@ export type AdminPostRow = {
   slug: string
   excerpt: string | null
   status: string | null
+  featured?: boolean | null
+  category?: string | null
+  reading_time?: number | null
   published_at: string | null
   created_at: string | null
   updated_at: string | null

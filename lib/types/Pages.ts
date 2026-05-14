@@ -254,6 +254,16 @@ export type HomeAutonomySectionProps = {
   }>
 }
 
+/** Home — full-bleed background, headline left, infinite vertical marquee of support cards right. */
+export type HomeSupportSectionProps = {
+  title: LocalizedString
+  subtitle?: LocalizedString
+  supports: Array<{
+    title: LocalizedString
+    description: LocalizedString
+  }>
+}
+
 /** Home — business types showcase: label + title + description, business cards grid, CTAs, stats grid. */
 export type HomeBusinessSectionProps = {
   label?: LocalizedString
@@ -307,6 +317,7 @@ export type ClubActivationSection = BaseSection<"club_activation", ClubActivatio
 export type HomeActivationSection = BaseSection<"home_activation", HomeActivationSectionProps>
 export type HomeBusinessSection = BaseSection<"home_business", HomeBusinessSectionProps>
 export type HomeAutonomySection = BaseSection<"home_autonomy", HomeAutonomySectionProps>
+export type HomeSupportSection = BaseSection<"home_support", HomeSupportSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
@@ -332,6 +343,7 @@ export type PageSection =
   | NotificationClubSection
   | HomeBusinessSection
   | HomeAutonomySection
+  | HomeSupportSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

@@ -72,6 +72,9 @@ export async function createPost(values: PostFormValues) {
       cover_image: values.cover_image || null,
       status: values.status,
       published_at: values.status === "published" ? now : null,
+      featured: values.featured ?? false,
+      category: values.category || null,
+      reading_time: values.reading_time ?? null,
       seo_title: values.seo_title || null,
       seo_description: values.seo_description || null,
       content: values.content ?? null,
@@ -126,6 +129,9 @@ export async function updatePost(id: string, values: PostFormValues) {
       published_at: beingPublished
         ? new Date().toISOString()
         : (existing?.published_at ?? null),
+      featured: values.featured ?? false,
+      category: values.category || null,
+      reading_time: values.reading_time ?? null,
       seo_title: values.seo_title || null,
       seo_description: values.seo_description || null,
       content: values.content ?? null,
@@ -196,7 +202,7 @@ export async function getPost(id: string) {
   const { data, error } = await supabase
     .from("posts")
     .select(
-      "id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at",
+      "id, title, slug, excerpt, content, cover_image, status, featured, category, reading_time, published_at, seo_title, seo_description, created_at, updated_at",
     )
     .eq("id", id)
     .single()
@@ -210,7 +216,7 @@ export const getAdminPosts = async () => {
 
   const { data, error } = await supabase
     .from("posts")
-    .select("id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at")
+    .select("id, title, slug, excerpt, content, cover_image, status, featured, category, reading_time, published_at, seo_title, seo_description, created_at, updated_at")
     .order("created_at", { ascending: false })
 
   if (error) return { error: error.message }

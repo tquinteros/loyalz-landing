@@ -19,7 +19,7 @@ export async function fetchPublicPosts(): Promise<Post[]> {
   const { data, error } = await supabase
     .from("posts")
     .select(
-      "id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at",
+      "id, title, slug, excerpt, content, cover_image, status, featured, category, reading_time, published_at, seo_title, seo_description, created_at, updated_at",
     )
     .eq("status", "published")
     .order("published_at", { ascending: false })
@@ -43,7 +43,7 @@ export async function fetchPublicPostBySlug(
   const { data, error } = await supabase
     .from("posts")
     .select(
-      "id, title, slug, excerpt, content, cover_image, status, published_at, seo_title, seo_description, created_at, updated_at",
+      "id, title, slug, excerpt, content, cover_image, status, featured, category, reading_time, published_at, seo_title, seo_description, created_at, updated_at",
     )
     .eq("slug", slug)
     .eq("status", "published")

@@ -29,6 +29,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Switch } from "@/components/ui/switch"
 import { BlogEditor } from "./blog-editor"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { createPost, updatePost } from "@/lib/actions/blog"
@@ -52,6 +53,9 @@ const EMPTY_FORM: PostFormValues = {
   excerpt: "",
   cover_image: "",
   status: "draft",
+  featured: false,
+  category: "",
+  reading_time: null,
   seo_title: "",
   seo_description: "",
   content: null,
@@ -85,6 +89,9 @@ const postSchema = z.object({
   excerpt: z.string().trim().min(1, "El resumen es obligatorio."),
   cover_image: z.string().trim().min(1, "La imagen de portada es obligatoria."),
   status: z.enum(["draft", "published"]),
+  featured: z.boolean(),
+  category: z.string(),
+  reading_time: z.number().int().positive().nullable(),
   seo_title: z.string(),
   seo_description: z.string(),
   content: z
@@ -134,6 +141,9 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
         excerpt: post.excerpt ?? "",
         cover_image: (post as { cover_image?: string | null }).cover_image ?? "",
         status: (post.status as "draft" | "published") ?? "draft",
+        featured: (post as { featured?: boolean | null }).featured ?? false,
+        category: (post as { category?: string | null }).category ?? "",
+        reading_time: (post as { reading_time?: number | null }).reading_time ?? null,
         seo_title: (post as { seo_title?: string | null }).seo_title ?? "",
         seo_description:
           (post as { seo_description?: string | null }).seo_description ?? "",
@@ -238,6 +248,59 @@ export function PostDialog({ open, onOpenChange, post }: PostDialogProps) {
                     <SelectItem value="published">Publicado</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="pd-category">Categoría</Label>
+                <Input
+                  id="pd-category"
+                  {...register("category")}
+                  value={form.category ?? ""}
+                  onChange={(e) => setValue("category", e.target.value)}
+                  placeholder="p. ej. Noticias, Tips…"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="pd-reading-time">Tiempo de lectura (min)</Label>
+                <Input
+                  id="pd-reading-time"
+                  type="number"
+                  min={1}
+                  value={form.reading_time ?? ""}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setValue(
+                      "reading_time",
+                      val === "" ? null : Number(val),
+                      { shouldValidate: true },
+                    )
+                  }}
+                  placeholder="5"
+                />
+                {errors.reading_time?.message && (
+                  <p className="text-sm text-destructive">
+                    {errors.reading_time.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between rounded-lg border p-3 sm:col-span-2">
+                <div className="space-y-0.5">
+                  <Label htmlFor="pd-featured" className="text-sm font-medium">
+                    Destacado
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Marca este blog como destacado en la página de blogs.
+                  </p>
+                </div>
+                <Switch
+                  id="pd-featured"
+                  checked={form.featured ?? false}
+                  onCheckedChange={(checked) =>
+                    setValue("featured", checked, { shouldValidate: true })
+                  }
+                />
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">

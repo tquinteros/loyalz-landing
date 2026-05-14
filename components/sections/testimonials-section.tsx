@@ -207,15 +207,14 @@ export default function TestimonialsSection({
                     en: `Go to testimonial ${index + 1}`,
                   })}
                   className={`h-1.5 rounded-full transition-all ${selectedIndex === index
-                    ? "w-8 bg-foreground"
-                    : "w-8 bg-foreground/20"
+                    ? "w-8 bg-background"
+                    : "w-8 bg-background/20"
                     }`}
                   onClick={() => api?.scrollTo(index)}
                 />
               ),
             )}
           </div>
-
           <div className="flex items-center gap-3">
             <Button
               type="button"

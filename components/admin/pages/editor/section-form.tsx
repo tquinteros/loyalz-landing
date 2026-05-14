@@ -37,6 +37,7 @@ import { HomeActivationForm } from "./forms/home-activation-form"
 import { NotificationClubForm } from "./forms/notification-club-form"
 import { HomeBusinessForm } from "./forms/home-business-form"
 import { HomeAutonomyForm } from "./forms/home-autonomy-form"
+import { HomeSupportForm } from "./forms/home-support-form"
 
 type Props = {
   section: AnyPageSection
@@ -189,6 +190,8 @@ function TypedSectionBody({
       return <HomeBusinessForm value={section.props} onChange={onPropsChange} />
     case "home_autonomy":
       return <HomeAutonomyForm value={section.props} onChange={onPropsChange} />
+    case "home_support":
+      return <HomeSupportForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive
