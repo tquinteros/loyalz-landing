@@ -308,7 +308,7 @@ const Header = () => {
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
           </Link>
-
+          <Link href="/terms">Terminos</Link>
           <nav className="hidden items-center gap-5 font-semibold md:flex">
             <Link href="/" className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.company)}

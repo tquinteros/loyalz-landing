@@ -1,3 +1,5 @@
+import type { TipTapDocument } from "@/lib/types/content"
+
 /**
  * Page / Section types for the DB-driven page renderer.
  *
@@ -297,6 +299,19 @@ export type NotificationClubSectionProps = {
   }>
 }
 
+/**
+ * Shared layout for policy pages (terms, privacy, cookies): localized title
+ * and intro, plus TipTap JSON per locale (same shape as blog `content`).
+ */
+export type LegalDocumentSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  body: {
+    es?: TipTapDocument | null
+    en?: TipTapDocument | null
+  }
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -319,6 +334,7 @@ export type HomeBusinessSection = BaseSection<"home_business", HomeBusinessSecti
 export type HomeAutonomySection = BaseSection<"home_autonomy", HomeAutonomySectionProps>
 export type HomeSupportSection = BaseSection<"home_support", HomeSupportSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
+export type LegalDocumentSection = BaseSection<"legal_document", LegalDocumentSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -344,6 +360,7 @@ export type PageSection =
   | HomeBusinessSection
   | HomeAutonomySection
   | HomeSupportSection
+  | LegalDocumentSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

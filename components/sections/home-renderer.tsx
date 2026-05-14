@@ -18,6 +18,7 @@ import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
 import HomeAutonomySection from "./home-autonomy-section"
 import HomeSupportSection from "./home-support-section"
+import LegalDocumentSection from "./legal-document-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 
@@ -84,6 +85,8 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <HomeAutonomySection {...section.props} {...common} />
     case "home_support":
       return <HomeSupportSection {...section.props} {...common} />
+    case "legal_document":
+      return <LegalDocumentSection {...section.props} {...common} />
     default:
       return null
   }

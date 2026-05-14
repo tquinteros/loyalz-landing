@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { useT } from "@/providers/language-provider"
 import type { LocalizedString } from "@/lib/types/Pages"
 
-/** Footer-only copy — resolved with `useT()` from `LanguageProvider`. */
 const FOOTER: Record<string, LocalizedString> = {
     newsletterLead: {
         es: "Suscríbete a nuestro boletín para mantenerte al día con las novedades y lanzamientos.",
@@ -28,28 +27,35 @@ const FOOTER: Record<string, LocalizedString> = {
     restaurants: { es: "Restaurantes", en: "Restaurants" },
     cafes: { es: "Cafés", en: "Cafés" },
     deliveryFirst: { es: "Delivery-first", en: "Delivery-first" },
+    rightsReserved: {
+        es: "Todos los derechos reservados.",
+        en: "All rights reserved.",
+    },
 }
 
 export default function Footer() {
     const t = useT()
 
     return (
-        <footer className="bg-background flex flex-col gap-10 px-5 py-16 text-foreground lg:px-16">
-            <div className="flex items-center justify-between">
-                <div className="flex flex-col gap-6">
-                    <span className="text-base">{t(FOOTER.newsletterLead)}</span>
-                    <div className="flex items-center gap-2">
+        <footer className="bg-background flex w-full max-w-full flex-col gap-10 overflow-x-hidden px-4 py-12 text-foreground sm:px-5 sm:py-16 lg:px-16">
+            <div className="flex w-full min-w-0 flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
+                <div className="flex min-w-0 w-full max-w-xl flex-col gap-6">
+                    <span className="text-base leading-relaxed">{t(FOOTER.newsletterLead)}</span>
+                    <div className="flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-2">
                         <Input
                             type="email"
                             placeholder={t(FOOTER.emailPlaceholder)}
-                            className="px-4 py-6 focus-visible:border-foreground/50 placeholder:text-foreground/50 focus-visible:ring-foreground/20"
+                            className="min-h-12 w-full min-w-0 flex-1 px-4 py-3 focus-visible:border-foreground/50 placeholder:text-foreground/50 focus-visible:ring-foreground/20 sm:py-6"
                         />
-                        <Button type="button" className="border border-foreground px-4 py-6">
+                        <Button
+                            type="button"
+                            className="w-full shrink-0 border border-foreground px-4 py-3 sm:w-auto sm:self-stretch sm:py-6"
+                        >
                             {t(FOOTER.subscribe)}
                         </Button>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-10">
+                <div className="grid w-full min-w-0 grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 md:gap-10 xl:w-auto xl:shrink-0">
                     <div className="flex flex-col gap-4">
                         <Link className="text-lg font-bold" href="/">
                             {t(FOOTER.navHome)}
@@ -76,7 +82,7 @@ export default function Footer() {
                             AI
                         </Link>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 sm:col-span-2 md:col-span-1">
                         <span className="text-lg font-bold">{t(FOOTER.businessesTitle)}</span>
                         <Link className="text-sm" href="/">
                             {t(FOOTER.restaurants)}
@@ -90,8 +96,15 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-between">
-                <svg width="737" height="175" viewBox="0 0 737 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex w-full min-w-0 flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+                <svg
+                    className="h-auto w-full max-w-full shrink-0 lg:max-w-[min(100%,42rem)] xl:max-w-[min(100%,46rem)]"
+                    viewBox="0 0 737 175"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="xMinYMid meet"
+                    aria-hidden
+                >
                     <g clipPath="url(#clip0_3_4048)">
                         <path d="M633.875 132.878C633.875 135.169 632.017 137.027 629.726 137.027H609.446C607.155 137.027 605.297 135.169 605.297 132.878V4.16123C605.297 1.86995 607.155 0.0125029 609.446 0.0125031L629.726 0.0125049C632.017 0.0125051 633.875 1.86995 633.875 4.16124V132.878Z" fill="#F8F5EF" />
                         <path d="M192.741 0C195.033 1.17206e-06 196.89 1.85745 196.89 4.14873L196.89 104.17C196.89 107.851 199.874 110.835 203.554 110.835H257.289C259.581 110.835 261.438 112.692 261.438 114.984V132.88C261.438 135.172 259.581 137.029 257.289 137.029H171.28C168.989 137.029 167.132 135.172 167.132 132.88L167.132 4.14873C167.132 1.85745 168.989 1.33682e-07 171.28 0H192.741Z" fill="#F8F5EF" />
@@ -107,9 +120,10 @@ export default function Footer() {
                         </clipPath>
                     </defs>
                 </svg>
-                <div className="flex flex-col items-start justify-between">
-                   <div>asd</div>
-                   <div>asd</div>
+                <div className="flex w-full min-w-0 flex-col gap-4 text-sm text-foreground/70 lg:max-w-xs lg:items-end lg:text-right">
+                    <p>
+                        © {2026} Loyalz. {t(FOOTER.rightsReserved)}
+                    </p>
                 </div>
             </div>
         </footer>

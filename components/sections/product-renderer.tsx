@@ -5,6 +5,7 @@ import StepsClubSection from "./steps-club-section"
 import CommonCTASection from "./common-cta-section"
 import ClubActivationSection from "./club-activation-section"
 import NotificationClubSection from "./notification-club-section"
+import LegalDocumentSection from "./legal-document-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 
@@ -50,6 +51,8 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
       return <ClubActivationSection {...section.props} {...common} />
     case "notification_club":
       return <NotificationClubSection {...section.props} {...common} />
+    case "legal_document":
+      return <LegalDocumentSection {...section.props} {...common} />
     default:
       return null
   }

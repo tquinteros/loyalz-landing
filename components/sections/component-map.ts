@@ -22,6 +22,7 @@ import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
 import HomeAutonomySection from "./home-autonomy-section"
 import HomeSupportSection from "./home-support-section"
+import LegalDocumentSection from "./legal-document-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -682,6 +683,19 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "legal_document":
+      return {
+        ...base,
+        type: "legal_document",
+        props: {
+          title: { es: "Términos y condiciones", en: "Terms and conditions" },
+          description: {
+            es: "Última actualización y alcance de estos términos.",
+            en: "Last updated and scope of these terms.",
+          },
+          body: { es: null, en: null },
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -843,6 +857,13 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description:
       "Full-bleed background, title + optional subtitle left, infinite vertical marquee of support cards.",
     component: HomeSupportSection,
+  },
+  legal_document: {
+    type: "legal_document",
+    label: "Legal document",
+    description:
+      "Policy-style page: localized title and description, rich text (TipTap) per language — use on Terms, Privacy, or Cookies pages.",
+    component: LegalDocumentSection,
   },
 }
 
