@@ -64,7 +64,7 @@ export default function HomeSolutionsSection({
       )}
 
       {tiles.length > 0 && (
-        <div className="mx-auto grid w-full max-w-[90%] grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+        <div className="mx-auto grid w-full max-w-[90%] grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-20">
           {tiles.map((tile, i) => {
             const captionText = t(tile.caption)
             return (

@@ -81,7 +81,7 @@ export default function HomeSupportSection({
                     >
                       <div className="rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7 md:min-h-46 md:p-8">
                         {cardTitle ? (
-                          <h3 className="text-lg font-bold leading-snug sm:text-xl">
+                          <h3 className="text-lg font-bold leading-snug sm:text-2xl">
                             {cardTitle}
                           </h3>
                         ) : null}

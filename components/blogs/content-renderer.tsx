@@ -187,7 +187,7 @@ export function ContentRenderer({ content, className }: ContentRendererProps) {
   }
 
   return (
-    <div className={cn("text-foreground", className)}>
+    <div className={cn("text-background", className)}>
       {renderNode(content, 0)}
     </div>
   )

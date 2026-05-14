@@ -29,21 +29,8 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
         ← Todos los blogs
       </Link>
 
-      {post.cover_image ? (
-        <div className="mt-8 overflow-hidden rounded-xl">
-          <Image
-            width={1000}
-            height={1000}
-            src={post.cover_image}
-            loading="eager"
-            alt={post.title}
-            className="aspect-video w-full bg-accent object-cover"
-          />
-        </div>
-      ) : null}
-
-      <header className="mt-8 space-y-3 border-b pb-8">
-        <div className="flex flex-wrap items-center gap-2">
+      <header className="mt-8 space-y-3 pb-8">
+        {/* <div className="flex flex-wrap items-center gap-2">
           {post.status === "published" ? (
             <Badge variant="default">Publicado</Badge>
           ) : (
@@ -54,18 +41,33 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
               {publishedLabel}
             </span>
           ) : null}
-        </div>
+        </div> */}
 
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight sm:text-[56px]">
           {post.title}
         </h1>
-
-        {post.excerpt ? (
+        <span className="text-[16px] font-bold text-background/30">
+          {publishedLabel} • Lectura de {post.reading_time} Min
+        </span>
+        {/* {post.excerpt ? (
           <p className="text-lg text-muted-foreground leading-relaxed">
             {post.excerpt}
           </p>
-        ) : null}
+        ) : null} */}
       </header>
+
+      {post.cover_image ? (
+        <div className="mt-8 overflow-hidden rounded-xl">
+          <Image
+            width={1000}
+            height={1000}
+            src={post.cover_image}
+            loading="eager"
+            alt={post.title}
+            className="aspect-video w-full bg-background/10 object-cover"
+          />
+        </div>
+      ) : null}
 
       {post.content ? (
         <div className="mt-8">
