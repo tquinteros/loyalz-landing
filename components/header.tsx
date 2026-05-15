@@ -245,7 +245,6 @@ const MEGA_CLOSE_DELAY_MS = 150
 const Header = () => {
   const t = useT()
   const [megaOpen, setMegaOpen] = useState(false)
-  const headerRef = useRef<HTMLElement>(null)
   const megaCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const clearMegaCloseTimer = () => {
@@ -270,51 +269,18 @@ const Header = () => {
 
   useEffect(() => () => clearMegaCloseTimer(), [])
 
-  // Close megamenu when clicking outside
-  useEffect(() => {
-    if (!megaOpen) return
-    const handleClick = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        clearMegaCloseTimer()
-        setMegaOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClick)
-    return () => document.removeEventListener("mousedown", handleClick)
-  }, [megaOpen])
-
-  // Close on Escape
-  useEffect(() => {
-    if (!megaOpen) return
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        clearMegaCloseTimer()
-        setMegaOpen(false)
-      }
-    }
-    document.addEventListener("keydown", handleKey)
-    return () => document.removeEventListener("keydown", handleKey)
-  }, [megaOpen])
-
   return (
-    <header
-      ref={headerRef}
-      className="sticky top-0 z-50 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black"
-    >
-      {/* Main bar */}
+    <header className="sticky top-0 z-50 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black">
       <div className="flex h-20 w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
-        {/* Left */}
         <div className="flex items-center gap-5">
           <Link href="/">
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
           </Link>
-          <Link href="/terms">Terminos</Link>
           <nav className="hidden items-center gap-5 font-semibold md:flex">
             <Link href="/" className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.company)}
             </Link>
 
-            {/* Products trigger (hover opens megamenu) */}
             <div
               className="relative"
               onMouseEnter={openMegaMenu}

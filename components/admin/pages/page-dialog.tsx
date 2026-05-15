@@ -182,9 +182,13 @@ export function PageDialog({ open, onOpenChange, page }: PageDialogProps) {
                 {errors.slug?.message && (
                   <p className="text-sm text-destructive">{errors.slug.message}</p>
                 )}
-                <p className="text-xs text-muted-foreground">
-                  La página <code className="font-mono">home</code> no puede ser editada.
-                </p>
+                {
+                  form.slug === "home" && (
+                    <p className="text-xs text-muted-foreground">
+                      La página <code className="font-mono">home</code> no puede ser editada.
+                    </p>
+                  )
+                }
               </div>
 
               <div className="space-y-1.5">
