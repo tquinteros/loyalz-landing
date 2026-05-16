@@ -1,10 +1,12 @@
 "use client"
 
-import { useRef, useTransition } from "react"
+import { useRef } from "react"
+import { useMutation } from "@tanstack/react-query"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { subscribeToNewsletter } from "@/lib/actions/newsletter"
+import { useLanguage, type Locale } from "@/providers/language-provider"
 
 type NewsletterSubscribeFormProps = {
   placeholder: string
@@ -12,31 +14,39 @@ type NewsletterSubscribeFormProps = {
   className?: string
 }
 
+const UNEXPECTED_ERROR: Record<Locale, string> = {
+  es: "Ocurrió un error. Intenta de nuevo.",
+  en: "Something went wrong. Please try again.",
+}
+
 export function NewsletterSubscribeForm({
   placeholder,
   buttonLabel,
   className,
 }: NewsletterSubscribeFormProps) {
-  const [isPending, startTransition] = useTransition()
   const inputRef = useRef<HTMLInputElement>(null)
+  const { locale } = useLanguage()
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (formData: FormData) => subscribeToNewsletter(formData),
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+      toast.success(result.message!)
+      if (inputRef.current) inputRef.current.value = ""
+    },
+    onError: () => {
+      toast.error(UNEXPECTED_ERROR[locale])
+    },
+  })
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-
-    startTransition(async () => {
-      try {
-        const result = await subscribeToNewsletter(formData)
-        if (result.error) {
-          toast.error(result.error)
-          return
-        }
-        toast.success("¡Gracias por suscribirte!")
-        if (inputRef.current) inputRef.current.value = ""
-      } catch {
-        toast.error("Ocurrió un error. Intenta de nuevo.")
-      }
-    })
+    formData.set("locale", locale)
+    mutate(formData)
   }
 
   return (

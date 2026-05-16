@@ -1,10 +1,11 @@
 "use client"
 
-import { useEffect, useTransition, useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
   Dialog,
   DialogContent,
@@ -99,9 +100,9 @@ export function CampaignEditorModal({
   onOpenChange,
   campaign,
 }: CampaignEditorModalProps) {
-  const [isPending, startTransition] = useTransition()
   const [sendConfirmOpen, setSendConfirmOpen] = useState(false)
   const [showPreview, setShowPreview] = useState(true)
+  const queryClient = useQueryClient()
 
   const form = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignSchema),
@@ -119,31 +120,31 @@ export function CampaignEditorModal({
   })
 
   useEffect(() => {
-    if (campaign) {
-      form.reset({
-        subject: campaign.subject ?? "",
-        preview_text: campaign.preview_text ?? "",
-        title: campaign.title ?? "",
-        description: campaign.description ?? "",
-        image_url: campaign.image_url ?? "",
-        cta_label: campaign.cta_label ?? "",
-        cta_href: campaign.cta_href ?? "",
-        locale: campaign.locale ?? "es",
-        audience: campaign.audience ?? "all",
-      })
-    } else {
-      form.reset({
-        subject: "",
-        preview_text: "",
-        title: "",
-        description: "",
-        image_url: "",
-        cta_label: "",
-        cta_href: "",
-        locale: "es",
-        audience: "all",
-      })
-    }
+    form.reset(
+      campaign
+        ? {
+            subject: campaign.subject ?? "",
+            preview_text: campaign.preview_text ?? "",
+            title: campaign.title ?? "",
+            description: campaign.description ?? "",
+            image_url: campaign.image_url ?? "",
+            cta_label: campaign.cta_label ?? "",
+            cta_href: campaign.cta_href ?? "",
+            locale: campaign.locale ?? "es",
+            audience: campaign.audience ?? "all",
+          }
+        : {
+            subject: "",
+            preview_text: "",
+            title: "",
+            description: "",
+            image_url: "",
+            cta_label: "",
+            cta_href: "",
+            locale: "es",
+            audience: "all",
+          },
+    )
   }, [campaign, form])
 
   const watchedValues = form.watch()
@@ -151,51 +152,51 @@ export function CampaignEditorModal({
   const isSending = campaign?.status === "sending"
   const isReadOnly = isSent || isSending
 
-  function handleSaveDraft(values: CampaignFormValues) {
-    startTransition(async () => {
-      try {
-        const result = campaign
-          ? await updateCampaign(campaign.id, values)
-          : await createCampaign(values)
-
-        if (result.error) {
-          toast.error(result.error)
-          return
-        }
-        toast.success(campaign ? "Campaña actualizada" : "Campaña creada como borrador")
-        onOpenChange(false)
-      } catch {
-        toast.error("Ocurrió un error inesperado.")
+  const saveMutation = useMutation({
+    mutationFn: (values: CampaignFormValues) =>
+      campaign ? updateCampaign(campaign.id, values) : createCampaign(values),
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error(result.error)
+        return
       }
-    })
-  }
+      toast.success(campaign ? "Campaña actualizada" : "Campaña creada como borrador")
+      queryClient.invalidateQueries({ queryKey: ["newsletter-campaigns"] })
+      onOpenChange(false)
+    },
+    onError: () => toast.error("Ocurrió un error inesperado."),
+  })
+
+  const sendMutation = useMutation({
+    mutationFn: (id: string) => sendCampaign(id),
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+      if ("warning" in result && result.warning) {
+        toast.warning(result.warning as string)
+      } else {
+        toast.success(`Campaña enviada a ${result.sentCount} suscriptores`)
+      }
+      queryClient.invalidateQueries({ queryKey: ["newsletter-campaigns"] })
+      onOpenChange(false)
+    },
+    onError: () => toast.error("Ocurrió un error inesperado al enviar."),
+  })
+
+  const isPending = saveMutation.isPending || sendMutation.isPending
 
   function handleSendConfirm() {
     if (!campaign) return
     setSendConfirmOpen(false)
-    startTransition(async () => {
-      try {
-        const result = await sendCampaign(campaign.id)
-        if (result.error) {
-          toast.error(result.error)
-          return
-        }
-        if ("warning" in result && result.warning) {
-          toast.warning(result.warning as string)
-        } else {
-          toast.success(`Campaña enviada a ${result.sentCount} suscriptores`)
-        }
-        onOpenChange(false)
-      } catch {
-        toast.error("Ocurrió un error inesperado al enviar.")
-      }
-    })
+    sendMutation.mutate(campaign.id)
   }
 
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-h-[92vh] max-w-6xl! overflow-hidden p-0 flex flex-col">
+        <DialogContent className="max-h-[92vh] max-w-7xl! overflow-hidden p-0 flex flex-col">
           <DialogHeader className="shrink-0 flex flex-row items-center justify-between gap-4 px-6 pt-6 pb-4 border-b">
             <div className="flex items-center gap-3">
               <DialogTitle className="text-lg font-semibold">
@@ -228,7 +229,7 @@ export function CampaignEditorModal({
             {/* Form */}
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(handleSaveDraft)}
+                onSubmit={form.handleSubmit((v) => saveMutation.mutate(v))}
                 className="flex flex-col w-full max-w-md border-r overflow-y-auto"
               >
                 <div className="flex-1 space-y-4 p-6">
@@ -433,7 +434,7 @@ export function CampaignEditorModal({
                       disabled={isPending}
                     >
                       <Save className="size-4 mr-1" />
-                      {isPending ? "Guardando…" : "Guardar borrador"}
+                      {saveMutation.isPending ? "Guardando…" : "Guardar borrador"}
                     </Button>
                   )}
                   {campaign && !isReadOnly && (
@@ -485,7 +486,7 @@ export function CampaignEditorModal({
             <AlertDialogCancel disabled={isPending}>Cancelar</AlertDialogCancel>
             <AlertDialogAction onClick={handleSendConfirm} disabled={isPending}>
               <Send className="size-4 mr-1" />
-              {isPending ? "Enviando…" : "Sí, enviar"}
+              {sendMutation.isPending ? "Enviando…" : "Sí, enviar"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

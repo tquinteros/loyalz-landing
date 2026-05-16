@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { createPublicClient } from "@/lib/supabase/public"
+import { requireAdmin } from "@/lib/actions/admin-guard"
 import { Resend } from "resend"
 import { render } from "react-email"
 import NewsletterCampaignEmail from "@/emails/newsletter-campaign"
@@ -16,6 +18,7 @@ export type Subscriber = {
   status: string
   subscribed_at: string | null
   unsubscribed_at: string | null
+  unsubscribe_token: string
 }
 
 export type Campaign = {
@@ -49,59 +52,89 @@ export type CampaignFormValues = {
   audience?: string
 }
 
-// ─── Public subscribe action (called from footer) ─────────────────────────────
+// ─── Public subscribe ─────────────────────────────────────────────────────────
+
+export type NewsletterSubscribeLocale = "es" | "en"
+
+const SUBSCRIBE_MESSAGES: Record<
+  NewsletterSubscribeLocale,
+  { invalidEmail: string; alreadySubscribed: string; genericError: string; success: string }
+> = {
+  es: {
+    invalidEmail: "Por favor ingresá un email válido.",
+    alreadySubscribed: "Este email ya está suscrito.",
+    genericError: "No se pudo procesar tu solicitud. Intenta de nuevo.",
+    success: "¡Gracias por suscribirte!",
+  },
+  en: {
+    invalidEmail: "Please enter a valid email address.",
+    alreadySubscribed: "This email is already subscribed.",
+    genericError: "We couldn't process your request. Please try again.",
+    success: "Thanks for subscribing!",
+  },
+}
+
+function resolveSubscribeLocale(value: unknown): NewsletterSubscribeLocale {
+  return value === "en" ? "en" : "es"
+}
 
 export async function subscribeToNewsletter(formData: FormData) {
+  const locale = resolveSubscribeLocale(formData.get("locale"))
+  const messages = SUBSCRIBE_MESSAGES[locale]
   const email = (formData.get("email") as string | null)?.trim().toLowerCase()
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { error: "Por favor ingresá un email válido." }
+    return { error: messages.invalidEmail }
   }
 
-  const supabase = createAdminClient()
-
-  const { data: existing } = await supabase
-    .from("newsletter_subscribers")
-    .select("id, status")
-    .eq("email", email)
-    .maybeSingle()
-
-  if (existing) {
-    if (existing.status === "active") {
-      return { error: "Este email ya está suscrito." }
-    }
-    // Re-subscribe if unsubscribed
-    const { error } = await supabase
-      .from("newsletter_subscribers")
-      .update({ status: "active", unsubscribed_at: null })
-      .eq("id", existing.id)
-
-    if (error) return { error: "No se pudo procesar tu solicitud. Intenta de nuevo." }
-    return { success: true }
-  }
+  // Uses anon client + RLS INSERT policy (see SQL commands below).
+  // The admin client is intentionally NOT used here so this public endpoint
+  // is constrained by RLS even if the action is called directly.
+  const supabase = createPublicClient()
 
   const { error } = await supabase.from("newsletter_subscribers").insert({
     email,
-    locale: "es",
+    locale,
     status: "active",
   })
 
   if (error) {
-    if (error.code === "23505") return { error: "Este email ya está suscrito." }
-    return { error: "No se pudo procesar tu solicitud. Intenta de nuevo." }
+    // Unique violation → already subscribed
+    if (error.code === "23505") return { error: messages.alreadySubscribed }
+    return { error: messages.genericError }
   }
 
+  return { success: true, message: messages.success }
+}
+
+// ─── Public unsubscribe (token-based, linked from every email) ────────────────
+
+export async function unsubscribeByToken(token: string) {
+  if (!token) return { error: "Token inválido." }
+
+  const supabase = createAdminClient()
+
+  const { error } = await supabase
+    .from("newsletter_subscribers")
+    .update({ status: "unsubscribed", unsubscribed_at: new Date().toISOString() })
+    .eq("unsubscribe_token", token)
+    .eq("status", "active")
+
+  if (error) return { error: error.message }
   return { success: true }
 }
 
 // ─── Admin: Subscribers ───────────────────────────────────────────────────────
 
 export async function getSubscribers() {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
     .from("newsletter_subscribers")
-    .select("id, email, name, locale, status, subscribed_at, unsubscribed_at")
+    .select("id, email, name, locale, status, subscribed_at, unsubscribed_at, unsubscribe_token")
     .order("subscribed_at", { ascending: false })
 
   if (error) return { error: error.message }
@@ -109,6 +142,9 @@ export async function getSubscribers() {
 }
 
 export async function unsubscribeUser(id: string) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { error } = await supabase
@@ -123,6 +159,9 @@ export async function unsubscribeUser(id: string) {
 }
 
 export async function deleteSubscriber(id: string) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { error } = await supabase
@@ -139,6 +178,9 @@ export async function deleteSubscriber(id: string) {
 // ─── Admin: Campaigns ─────────────────────────────────────────────────────────
 
 export async function getCampaigns() {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
@@ -151,6 +193,9 @@ export async function getCampaigns() {
 }
 
 export async function getCampaign(id: string) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
@@ -164,6 +209,9 @@ export async function getCampaign(id: string) {
 }
 
 export async function createCampaign(values: CampaignFormValues) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
@@ -190,6 +238,9 @@ export async function createCampaign(values: CampaignFormValues) {
 }
 
 export async function updateCampaign(id: string, values: CampaignFormValues) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
@@ -217,6 +268,9 @@ export async function updateCampaign(id: string, values: CampaignFormValues) {
 }
 
 export async function deleteCampaign(id: string) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const supabase = createAdminClient()
 
   const { error } = await supabase
@@ -233,12 +287,18 @@ export async function deleteCampaign(id: string) {
 // ─── Admin: Send Campaign ─────────────────────────────────────────────────────
 
 export async function sendCampaign(id: string) {
+  const guard = await requireAdmin()
+  if (guard.error) return { error: guard.error }
+
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) return { error: "RESEND_API_KEY no está configurado." }
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.NODE_ENV === "production" ? "https://loyalz.ar" : "http://localhost:3000")
+
   const supabase = createAdminClient()
 
-  // Fetch campaign
   const { data: campaign, error: campaignError } = await supabase
     .from("newsletter_campaigns")
     .select("*")
@@ -249,10 +309,9 @@ export async function sendCampaign(id: string) {
   if (campaign.status === "sent") return { error: "Esta campaña ya fue enviada." }
   if (campaign.status === "sending") return { error: "Esta campaña ya está siendo enviada." }
 
-  // Fetch active subscribers filtered by audience
   let query = supabase
     .from("newsletter_subscribers")
-    .select("id, email, name, locale")
+    .select("id, email, name, locale, unsubscribe_token")
     .eq("status", "active")
 
   if (campaign.audience !== "all") {
@@ -266,19 +325,19 @@ export async function sendCampaign(id: string) {
     return { error: "No hay suscriptores activos para este público." }
   }
 
-  // Mark as sending
   await supabase
     .from("newsletter_campaigns")
     .update({ status: "sending" })
     .eq("id", id)
 
   const resend = new Resend(apiKey)
-
   let sentCount = 0
   const errors: string[] = []
 
   for (const subscriber of subscribers) {
     try {
+      const unsubscribeUrl = `${baseUrl}/unsubscribe?token=${subscriber.unsubscribe_token}`
+
       const html = await render(
         NewsletterCampaignEmail({
           subject: campaign.subject,
@@ -289,6 +348,8 @@ export async function sendCampaign(id: string) {
           ctaLabel: campaign.cta_label ?? undefined,
           ctaHref: campaign.cta_href ?? undefined,
           recipientName: subscriber.name ?? undefined,
+          unsubscribeUrl,
+          locale: (subscriber.locale === "en" ? "en" : "es") as "es" | "en",
         }),
       )
 
@@ -297,11 +358,18 @@ export async function sendCampaign(id: string) {
         to: subscriber.email,
         subject: campaign.subject,
         html,
+        headers: {
+          // RFC 8058 one-click unsubscribe header (recognized by Gmail, Apple Mail)
+          "List-Unsubscribe": `<${unsubscribeUrl}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
       })
 
       sentCount++
     } catch (err) {
-      errors.push(`${subscriber.email}: ${err instanceof Error ? err.message : "Error desconocido"}`)
+      errors.push(
+        `${subscriber.email}: ${err instanceof Error ? err.message : "Error desconocido"}`,
+      )
     }
   }
 
@@ -309,11 +377,7 @@ export async function sendCampaign(id: string) {
 
   await supabase
     .from("newsletter_campaigns")
-    .update({
-      status: finalStatus,
-      sent_at: new Date().toISOString(),
-      sent_count: sentCount,
-    })
+    .update({ status: finalStatus, sent_at: new Date().toISOString(), sent_count: sentCount })
     .eq("id", id)
 
   revalidatePath("/admin/newsletter")

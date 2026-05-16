@@ -7,11 +7,29 @@ import {
   Hr,
   Html,
   Img,
+  Link,
   Preview,
   Section,
   Text,
 } from "react-email"
 import * as React from "react"
+
+type Locale = "es" | "en"
+
+const i18n: Record<Locale, { greeting: (name: string) => string; rights: string; reason: string; unsubscribe: string }> = {
+  es: {
+    greeting: (name) => `Hola ${name},`,
+    rights: `© ${new Date().getFullYear()} LoyalZ. Todos los derechos reservados.`,
+    reason: "Recibiste este email porque te suscribiste al boletín de LoyalZ.",
+    unsubscribe: "Desuscribirse",
+  },
+  en: {
+    greeting: (name) => `Hi ${name},`,
+    rights: `© ${new Date().getFullYear()} LoyalZ. All rights reserved.`,
+    reason: "You received this email because you subscribed to the LoyalZ newsletter.",
+    unsubscribe: "Unsubscribe",
+  },
+}
 
 type NewsletterCampaignEmailProps = {
   subject?: string
@@ -22,6 +40,8 @@ type NewsletterCampaignEmailProps = {
   ctaLabel?: string
   ctaHref?: string
   recipientName?: string
+  unsubscribeUrl?: string
+  locale?: Locale
 }
 
 export default function NewsletterCampaignEmail({
@@ -32,9 +52,13 @@ export default function NewsletterCampaignEmail({
   ctaLabel,
   ctaHref,
   recipientName,
+  unsubscribeUrl,
+  locale = "es",
 }: NewsletterCampaignEmailProps) {
+  const t = i18n[locale] ?? i18n.es
+
   return (
-    <Html lang="es">
+    <Html lang={locale}>
       <Head />
       {previewText ? <Preview>{previewText}</Preview> : null}
       <Body style={body}>
@@ -47,19 +71,14 @@ export default function NewsletterCampaignEmail({
           {/* Hero image */}
           {imageUrl ? (
             <Section style={{ padding: "0" }}>
-              <Img
-                src={imageUrl}
-                alt={title}
-                width="600"
-                style={heroImage}
-              />
+              <Img src={imageUrl} alt={title} width="600" style={heroImage} />
             </Section>
           ) : null}
 
           {/* Content */}
           <Section style={content}>
             {recipientName ? (
-              <Text style={greeting}>Hola {recipientName},</Text>
+              <Text style={greeting}>{t.greeting(recipientName)}</Text>
             ) : null}
 
             <Heading style={heading}>{title}</Heading>
@@ -81,12 +100,15 @@ export default function NewsletterCampaignEmail({
 
           {/* Footer */}
           <Section style={footer}>
-            <Text style={footerText}>
-              © {new Date().getFullYear()} LoyalZ. Todos los derechos reservados.
-            </Text>
-            <Text style={footerText}>
-              Recibiste este email porque te suscribiste al boletín de LoyalZ.
-            </Text>
+            <Text style={footerText}>{t.rights}</Text>
+            <Text style={footerText}>{t.reason}</Text>
+            {unsubscribeUrl ? (
+              <Text style={footerText}>
+                <Link href={unsubscribeUrl} style={unsubscribeLink}>
+                  {t.unsubscribe}
+                </Link>
+              </Text>
+            ) : null}
           </Section>
         </Container>
       </Body>
@@ -184,4 +206,9 @@ const footerText: React.CSSProperties = {
   lineHeight: "1.5",
   margin: "0 0 4px 0",
   textAlign: "center",
+}
+
+const unsubscribeLink: React.CSSProperties = {
+  color: "#a1a1aa",
+  textDecoration: "underline",
 }

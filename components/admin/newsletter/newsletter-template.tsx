@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { getSubscribers, getCampaigns } from "@/lib/actions/newsletter"
 import {
   Card,
   CardContent,
@@ -85,25 +87,29 @@ type SubscribersTabProps = {
 
 function SubscribersTab({ subscribers, error }: SubscribersTabProps) {
   const [deleteTarget, setDeleteTarget] = useState<Subscriber | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const queryClient = useQueryClient()
 
   const activeCount = subscribers.filter((s) => s.status === "active").length
 
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteSubscriber(id),
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+      toast.success("Suscriptor eliminado")
+      queryClient.invalidateQueries({ queryKey: ["newsletter-subscribers"] })
+      setDeleteTarget(null)
+    },
+    onError: () => toast.error("Ocurrió un error inesperado."),
+  })
+
+  const isPending = deleteMutation.isPending
+
   function handleDelete() {
     if (!deleteTarget) return
-    startTransition(async () => {
-      try {
-        const result = await deleteSubscriber(deleteTarget.id)
-        if (result.error) {
-          toast.error(result.error)
-          return
-        }
-        toast.success("Suscriptor eliminado")
-        setDeleteTarget(null)
-      } catch {
-        toast.error("Ocurrió un error inesperado.")
-      }
-    })
+    deleteMutation.mutate(deleteTarget.id)
   }
 
   return (
@@ -227,7 +233,23 @@ function CampaignsTab({ campaigns, error }: CampaignsTabProps) {
   const [editorOpen, setEditorOpen] = useState(false)
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Campaign | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteCampaign(id),
+    onSuccess: (result) => {
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+      toast.success("Campaña eliminada")
+      queryClient.invalidateQueries({ queryKey: ["newsletter-campaigns"] })
+      setDeleteTarget(null)
+    },
+    onError: () => toast.error("Ocurrió un error inesperado."),
+  })
+
+  const isPending = deleteMutation.isPending
 
   function openCreate() {
     setEditingCampaign(null)
@@ -241,19 +263,7 @@ function CampaignsTab({ campaigns, error }: CampaignsTabProps) {
 
   function handleDelete() {
     if (!deleteTarget) return
-    startTransition(async () => {
-      try {
-        const result = await deleteCampaign(deleteTarget.id)
-        if (result.error) {
-          toast.error(result.error)
-          return
-        }
-        toast.success("Campaña eliminada")
-        setDeleteTarget(null)
-      } catch {
-        toast.error("Ocurrió un error inesperado.")
-      }
-    })
+    deleteMutation.mutate(deleteTarget.id)
   }
 
   return (
@@ -410,11 +420,44 @@ export type NewsletterTemplateProps = {
 }
 
 export default function NewsletterTemplate({
-  subscribers,
-  campaigns,
-  subscribersError,
-  campaignsError,
+  subscribers: initialSubscribers,
+  campaigns: initialCampaigns,
+  subscribersError: initialSubscribersError,
+  campaignsError: initialCampaignsError,
 }: NewsletterTemplateProps) {
+  const {
+    data: subscribers = initialSubscribers,
+    error: subscribersQueryError,
+  } = useQuery({
+    queryKey: ["newsletter-subscribers"],
+    queryFn: async () => {
+      const result = await getSubscribers()
+      if (result.error) throw new Error(result.error)
+      return result.data ?? []
+    },
+    initialData: initialSubscribers,
+  })
+
+  const {
+    data: campaigns = initialCampaigns,
+    error: campaignsQueryError,
+  } = useQuery({
+    queryKey: ["newsletter-campaigns"],
+    queryFn: async () => {
+      const result = await getCampaigns()
+      if (result.error) throw new Error(result.error)
+      return result.data ?? []
+    },
+    initialData: initialCampaigns,
+  })
+
+  const subscribersError =
+    (subscribersQueryError as Error | null)?.message ?? initialSubscribersError ?? null
+  const campaignsError =
+    (campaignsQueryError as Error | null)?.message ?? initialCampaignsError ?? null
+
+  const activeCount = subscribers.filter((s) => s.status === "active").length
+
   return (
     <section className="space-y-6">
       <div>
@@ -429,9 +472,9 @@ export default function NewsletterTemplate({
           <TabsTrigger value="campaigns">Campañas</TabsTrigger>
           <TabsTrigger value="subscribers">
             Suscriptores
-            {subscribers.filter((s) => s.status === "active").length > 0 && (
+            {activeCount > 0 && (
               <span className="ml-1.5 rounded-full bg-primary text-primary-foreground text-[10px] px-1.5 py-px font-medium">
-                {subscribers.filter((s) => s.status === "active").length}
+                {activeCount}
               </span>
             )}
           </TabsTrigger>
