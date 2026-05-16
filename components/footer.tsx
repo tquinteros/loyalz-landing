@@ -1,10 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { useT } from "@/providers/language-provider"
 import type { LocalizedString } from "@/lib/types/Pages"
+import { NewsletterSubscribeForm } from "@/components/newsletter-subscribe-form"
 
 const FOOTER: Record<string, LocalizedString> = {
     newsletterLead: {
@@ -107,19 +106,11 @@ export default function Footer() {
             <div className="flex w-full min-w-0 flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
                 <div className="flex w-full min-w-0 max-w-xl flex-col gap-6">
                     <span className="text-base leading-relaxed">{t(FOOTER.newsletterLead)}</span>
-                    <div className="flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-stretch sm:gap-2">
-                        <Input
-                            type="email"
-                            placeholder={t(FOOTER.emailPlaceholder)}
-                            className="min-h-12 w-full min-w-0 flex-1 px-4 py-3 focus-visible:border-foreground/50 placeholder:text-foreground/50 focus-visible:ring-foreground/20 sm:py-6"
-                        />
-                        <Button
-                            type="button"
-                            className="w-full shrink-0 border border-foreground px-4 py-3 sm:w-auto sm:self-stretch sm:py-6"
-                        >
-                            {t(FOOTER.subscribe)}
-                        </Button>
-                    </div>
+                    <NewsletterSubscribeForm
+                        placeholder={t(FOOTER.emailPlaceholder)}
+                        buttonLabel={t(FOOTER.subscribe)}
+                        className="w-full"
+                    />
                 </div>
 
                 <nav className={`${FOOTER_COLS} ${FOOTER_ASIDE}`} aria-label="Footer">

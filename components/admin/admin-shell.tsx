@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { type ReactNode } from "react"
-import { FileText, Images, Layers, LayoutDashboard, Settings } from "lucide-react"
+import { FileText, Images, Layers, LayoutDashboard, Mail, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -42,6 +42,7 @@ const mainNavItems = [
   { title: "Páginas", href: "/admin/pages", icon: Layers },
   { title: "Blogs", href: "/admin/blogs", icon: FileText },
   { title: "Imágenes", href: "/admin/media-library", icon: Images },
+  { title: "Newsletter", href: "/admin/newsletter", icon: Mail },
 ] as const
 
 const settingsNavItems = [
