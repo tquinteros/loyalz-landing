@@ -418,7 +418,7 @@ export function CampaignEditorModal({
                   </div>
                 </div>
 
-                <DialogFooter className="shrink-0 border-t px-6 py-4 flex flex-row gap-2">
+                <DialogFooter className="shrink-0 border-t px-6 py-4 flex flex-row flex-wrap gap-2">
                   <Button
                     type="button"
                     variant="outline"
