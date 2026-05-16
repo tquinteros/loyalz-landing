@@ -149,7 +149,7 @@ function SubscribersTab({ subscribers, error }: SubscribersTabProps) {
               <TableHeader>
                 <TableRow>
                   <TableHead className="min-w-[200px]">Email</TableHead>
-                  <TableHead>Nombre</TableHead>
+                  {/* <TableHead>Nombre</TableHead> */}
                   <TableHead>Idioma</TableHead>
                   <TableHead>Estado</TableHead>
                   <TableHead className="min-w-[160px]">Suscripto</TableHead>
@@ -160,9 +160,9 @@ function SubscribersTab({ subscribers, error }: SubscribersTabProps) {
                 {subscribers.map((sub) => (
                   <TableRow key={sub.id}>
                     <TableCell className="font-medium">{sub.email}</TableCell>
-                    <TableCell className="text-muted-foreground">
+                    {/* <TableCell className="text-muted-foreground">
                       {sub.name ?? "—"}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell className="text-muted-foreground uppercase text-xs">
                       {sub.locale}
                     </TableCell>

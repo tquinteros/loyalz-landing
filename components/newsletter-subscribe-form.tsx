@@ -2,6 +2,7 @@
 
 import { useRef } from "react"
 import { useMutation } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
@@ -64,9 +65,14 @@ export function NewsletterSubscribeForm({
         <Button
           type="submit"
           disabled={isPending}
+          aria-busy={isPending}
           className="w-full shrink-0 border border-foreground px-4 py-3 sm:w-auto sm:self-stretch sm:py-6"
         >
-          {isPending ? "…" : buttonLabel}
+          {isPending ? (
+            <Loader2 className="size-5 animate-spin" aria-hidden />
+          ) : (
+            buttonLabel
+          )}
         </Button>
       </div>
     </form>
