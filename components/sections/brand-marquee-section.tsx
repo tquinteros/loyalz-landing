@@ -42,8 +42,8 @@ export default function BrandMarqueeSection({
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
-      className={cn("overflow-hidden", className)}
-      innerClassName="px-0! lg:px-0!"
+      className={cn("overflow-hidden rounded-full!", className)}
+      innerClassName="px-0! lg:px-0! rounded-full!"
     >
       {titleText ? (
         <div className="mb-10 text-center sm:mb-14">

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
 import { LocalizedField } from "./localized-field"
-import type { HeroSectionProps } from "@/lib/types/Pages"
+import type { CTA, HeroSectionProps, LocalizedString } from "@/lib/types/Pages"
 
 type Props = {
   value: HeroSectionProps
@@ -15,6 +15,9 @@ type Props = {
 }
 
 type ImageRow = { url: string }
+
+const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
+const EMPTY_CTA: CTA = { label: EMPTY_LOCALIZED, href: "" }
 
 export function HeroForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<HeroSectionProps>(value)
@@ -71,23 +74,64 @@ export function HeroForm({ value, onChange }: Props) {
         />
       </div>
 
-      <LocalizedField
-        label="Texto del CTA *"
-        idPrefix="hero-cta-label"
-        value={local.ctaLabel}
-        onChange={(next) => set("ctaLabel", next ?? { es: "", en: "" })}
-        placeholderEs="Demo Gratis"
-        placeholderEn="Free Demo"
-      />
-
-      <div className="space-y-1.5">
-        <Label htmlFor="hero-cta-href">Enlace del CTA *</Label>
-        <Input
-          id="hero-cta-href"
-          value={local.ctaHref ?? ""}
-          onChange={(e) => set("ctaHref", e.target.value)}
-          placeholder="/contacto"
+      <div className="space-y-2 rounded-md border p-3">
+        <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          CTA principal
+        </Label>
+        <LocalizedField
+          label="Texto del botón *"
+          idPrefix="hero-cta-label"
+          value={local.ctaLabel}
+          onChange={(next) => set("ctaLabel", next ?? EMPTY_LOCALIZED)}
+          placeholderEs="Demo Gratis"
+          placeholderEn="Free Demo"
         />
+        <div className="space-y-1">
+          <Label className="text-xs" htmlFor="hero-cta-href">
+            URL *
+          </Label>
+          <Input
+            id="hero-cta-href"
+            value={local.ctaHref ?? ""}
+            onChange={(e) => set("ctaHref", e.target.value)}
+            placeholder="/contacto"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2 rounded-md border p-3">
+        <Label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          CTA secundario
+        </Label>
+        <LocalizedField
+          label="Texto del botón"
+          idPrefix="hero-secondary-cta-label"
+          value={local.secondaryCta?.label ?? EMPTY_LOCALIZED}
+          onChange={(next) =>
+            set("secondaryCta", {
+              ...(local.secondaryCta ?? EMPTY_CTA),
+              label: next ?? EMPTY_LOCALIZED,
+            })
+          }
+          placeholderEs="Agendar Demo"
+          placeholderEn="Book a Demo"
+        />
+        <div className="space-y-1">
+          <Label className="text-xs" htmlFor="hero-secondary-cta-href">
+            URL
+          </Label>
+          <Input
+            id="hero-secondary-cta-href"
+            value={local.secondaryCta?.href ?? ""}
+            onChange={(e) =>
+              set("secondaryCta", {
+                ...(local.secondaryCta ?? EMPTY_CTA),
+                href: e.target.value,
+              })
+            }
+            placeholder="/contacto"
+          />
+        </div>
       </div>
     </div>
   )

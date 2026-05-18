@@ -42,6 +42,7 @@ export type HeroSectionProps = {
   images: string[]
   ctaLabel: LocalizedString
   ctaHref: string
+  secondaryCta?: CTA
 }
 
 export type HeroClubSectionProps = {
@@ -167,6 +168,8 @@ export type HomeProductsSectionProps = {
     description: LocalizedString
     color: string
     image: string
+    /** Internal page slug or path (e.g. `club` → `/club`). */
+    href?: string
   }>
 }
 

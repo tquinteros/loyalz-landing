@@ -44,6 +44,7 @@ type Props = {
   pageType?: string | null
   initialSections: AnyPageSection[]
   initialVersions: PageVersion[]
+  initialSelectedId?: string | null
 }
 
 function publicHref(slug: string) {
@@ -67,6 +68,7 @@ export function PageEditor({
   pageType,
   initialSections,
   initialVersions,
+  initialSelectedId,
 }: Props) {
   const [sections, setSections] = useState<AnyPageSection[]>(initialSections)
   const [savedSections, setSavedSections] =
@@ -74,7 +76,7 @@ export function PageEditor({
   const [versions, setVersions] = useState<PageVersion[]>(initialVersions)
   const [selectedVersionId, setSelectedVersionId] = useState<string>()
   const [selectedId, setSelectedId] = useState<string | null>(
-    initialSections[0]?.id ?? null,
+    initialSelectedId ?? initialSections[0]?.id ?? null,
   )
   const [showPreview, setShowPreview] = useState(true)
   const [isPending, startTransition] = useTransition()

@@ -4,9 +4,11 @@ import type {
   LegalDocumentSection as LegalDocumentSectionData,
 } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
+import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
 
 type Props = {
   sections: AnyPageSection[]
+  pageId: string
 }
 
 /**
@@ -14,7 +16,7 @@ type Props = {
  * `legal_document` sections are shown; other section types are ignored so
  * editors can keep a single-purpose layout.
  */
-export default function LegalPageRenderer({ sections }: Props) {
+export default function LegalPageRenderer({ sections, pageId }: Props) {
   return (
     <>
       {sections.map((section) => {
@@ -27,7 +29,9 @@ export default function LegalPageRenderer({ sections }: Props) {
           className: s.className ?? null,
         }
         return (
-          <LegalDocumentSection key={s.id} {...s.props} {...common} />
+          <AdminSectionOverlay key={s.id} pageId={pageId} sectionId={s.id}>
+            <LegalDocumentSection {...s.props} {...common} />
+          </AdminSectionOverlay>
         )
       })}
     </>

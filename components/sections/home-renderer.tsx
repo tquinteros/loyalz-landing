@@ -21,18 +21,24 @@ import HomeSupportSection from "./home-support-section"
 import LegalDocumentSection from "./legal-document-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
+import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
 
 type Props = {
   sections: AnyPageSection[]
+  pageId: string
 }
 
-export default function HomeRenderer({ sections }: Props) {
+export default function HomeRenderer({ sections, pageId }: Props) {
   return (
     <>
       {sections.map((section) => {
         if (!section.enabled) return null
         if (!isKnownSectionType(section.type)) return null
-        return <HomeSectionSwitch key={section.id} section={section as PageSection} />
+        return (
+          <AdminSectionOverlay key={section.id} pageId={pageId} sectionId={section.id}>
+            <HomeSectionSwitch section={section as PageSection} />
+          </AdminSectionOverlay>
+        )
       })}
     </>
   )

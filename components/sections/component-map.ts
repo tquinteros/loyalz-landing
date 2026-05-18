@@ -60,6 +60,10 @@ export function createDefaultSection<T extends PageSection["type"]>(
           images: ["/club.png", "/club.png", "/club.png", "/club.png", "/club.png"],
           ctaLabel: { es: "Demo Gratis", en: "Free Demo" },
           ctaHref: "/contact",
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
         },
       } as SectionFor<T>
     case "hero_club":
@@ -334,6 +338,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
               },
               color: "#754390",
               image: "",
+              href: "club",
             },
             {
               title: { es: "Loyalz Reviews", en: "Loyalz Reviews" },
@@ -344,6 +349,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
               },
               color: "#EC491E",
               image: "",
+              href: "reviews",
             },
           ],
         },

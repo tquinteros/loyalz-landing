@@ -5,9 +5,11 @@ import { PageEditor } from "@/components/admin/pages/editor/page-editor"
 import type { AnyPageSection } from "@/lib/types/Pages"
 import { PageEditorSkeleton } from "@/components/admin/pages/editor/page-editor-skeleton"
 type Params = { id: string }
+type SearchParams = { section?: string }
 
 type Props = {
   params: Promise<Params>
+  searchParams: Promise<SearchParams>
 }
 
 /**
@@ -18,16 +20,22 @@ type Props = {
  * All uncached work — resolving `params` and loading the page row — lives
  * inside `EditorLoader`, which is rendered behind the Suspense boundary.
  */
-export default function AdminPageEditorRoute({ params }: Props) {
+export default function AdminPageEditorRoute({ params, searchParams }: Props) {
   return (
     <Suspense fallback={<PageEditorSkeleton />}>
-      <EditorLoader params={params} />
+      <EditorLoader params={params} searchParams={searchParams} />
     </Suspense>
   )
 }
 
-async function EditorLoader({ params }: { params: Promise<Params> }) {
-  const { id } = await params
+async function EditorLoader({
+  params,
+  searchParams,
+}: {
+  params: Promise<Params>
+  searchParams: Promise<SearchParams>
+}) {
+  const [{ id }, { section }] = await Promise.all([params, searchParams])
   const [{ data, error }, historyResult] = await Promise.all([
     getPage(id),
     getPageVersions(id),
@@ -51,6 +59,7 @@ async function EditorLoader({ params }: { params: Promise<Params> }) {
       pageType={page.type}
       initialSections={Array.isArray(page.sections) ? page.sections : []}
       initialVersions={historyResult.data ?? []}
+      initialSelectedId={section ?? null}
     />
   )
 }

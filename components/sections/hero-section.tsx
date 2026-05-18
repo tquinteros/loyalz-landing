@@ -9,8 +9,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
@@ -49,6 +47,10 @@ export default function HeroSection(props: Props) {
   const ctaHref =
     legacy.ctaHref?.trim() || legacy.primaryCta?.href?.trim() || "#"
 
+  const secondaryCtaLabel = t(legacy.secondaryCta?.label).trim()
+  const secondaryCtaHref = legacy.secondaryCta?.href?.trim() ?? ""
+  const showSecondaryCta = Boolean(secondaryCtaLabel && secondaryCtaHref)
+
   const urls = useMemo(() => {
     const list = Array.isArray(legacy.images)
       ? legacy.images.map((s) => String(s).trim()).filter(Boolean)
@@ -77,18 +79,20 @@ export default function HeroSection(props: Props) {
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={cn(
-        "flex h-[calc(100dvh-5rem)] min-h-[calc(100dvh-5rem)] max-h-[calc(100dvh-5rem)] flex-col overflow-hidden bg-background py-0 text-foreground sm:py-0",
+        "flex h-[calc(113dvh-5rem)] min-h-[calc(113dvh-5rem)] max-h-[calc(113dvh-5rem)] flex-col overflow-hidden bg-background py-0 text-foreground sm:py-0",
         className,
       )}
       innerClassName="flex h-full min-h-0 flex-1 flex-col px-5 lg:px-16"
     >
-      <header className="shrink-0 pt-10 text-center md:pt-14">
-        <h1 className="mx-auto text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-7xl">
+      {/* Title */}
+      <header className="shrink-0 pt-8 text-center max-w-7xl mx-auto md:pt-12">
+        <h1 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-7xl">
           {titleText}
         </h1>
       </header>
 
-      <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center py-6 md:py-10">
+      {/* Carousel */}
+      <div className="relative shrink-0 flex items-center justify-center py-4 md:py-6">
         <Carousel
           setApi={setApi}
           opts={{
@@ -96,68 +100,78 @@ export default function HeroSection(props: Props) {
             loop: true,
             containScroll: false,
             dragFree: false,
-            startIndex: Math.min(2, Math.max(0, n - 1)),
+            startIndex: n > 0 ? Math.floor((n - 1) / 2) : 0,
           }}
-          className="w-full max-w-none px-0"
+          className="w-full overflow-visible"
         >
-          <CarouselContent className="ml-0">
+          <CarouselContent className="ml-0 items-center [&>*]:-ml-8 md:[&>*]:-ml-14 lg:[&>*]:-ml-16">
             {urls.map((src, i) => {
               const delta = signedDistance(i, center, n)
               const absDelta = Math.abs(delta)
               const isCenter = absDelta === 0
 
-              const scale = isCenter ? 1.25 : absDelta === 1 ? 0.625 : 0.52
-              const rotate = isCenter ? 0 : delta < 0 ? -9 : 9
-              const opacity = isCenter ? 1 : absDelta === 1 ? 0.9 : 0.66
+              const scale = isCenter ? 1.08 : absDelta === 1 ? 0.8 : 0.64
+              const rotate = isCenter ? 0 : delta < 0 ? -6 : 6
+              const opacity = isCenter ? 1 : absDelta === 1 ? 0.85 : 0.5
 
               return (
                 <CarouselItem
                   key={`${src}-${i}`}
-                  className="basis-1/5 pl-0"
+                  className="basis-[38%] md:basis-[26%] lg:basis-[22%] pl-0 flex items-center justify-center"
                 >
-                  <motion.button
-                    type="button"
+                  <motion.div
                     onClick={() => api?.scrollTo(i)}
                     initial={{ opacity: 0, y: 20, scale: 0.78 }}
                     animate={{ opacity, y: 0, scale, rotate }}
                     transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                     className={cn(
-                      "relative mx-auto aspect-3/4 w-full max-w-none overflow-hidden rounded-2xl border border-white/10 bg-white/6",
+                      "relative w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/6",
+                      // 2:3 ratio via aspect-ratio — height comes from width
+                      "aspect-[2/3]",
                       isCenter
                         ? "z-30 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.9)]"
-                        : "z-10",
+                        : absDelta === 1
+                          ? "z-20"
+                          : "z-10",
                     )}
                   >
                     <Image
                       src={src}
                       alt=""
                       priority={isCenter}
-                      width={470}
-                      height={470}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width: 768px) 38vw, (max-width: 1024px) 26vw, 22vw"
+                      className="object-cover"
                     />
-                  </motion.button>
+                  </motion.div>
                 </CarouselItem>
               )
             })}
           </CarouselContent>
-          {/* {n > 1 ? (
-            <>
-              <CarouselPrevious className="left-1 top-1/2 z-30 hidden -translate-y-1/2 border-white/20 bg-white/10 text-white hover:bg-white/20 md:flex" />
-              <CarouselNext className="right-1 top-1/2 z-30 hidden -translate-y-1/2 border-white/20 bg-white/10 text-white hover:bg-white/20 md:flex" />
-            </>
-          ) : null} */}
         </Carousel>
       </div>
 
-      <footer className="flex shrink-0 justify-center pb-10 pt-2 md:pb-14">
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* CTAs */}
+      <footer className="flex shrink-0 flex-wrap items-center justify-center gap-3 pb-10 pt-2 md:gap-4 md:pb-14">
         <Button
           asChild
           variant="secondary"
-          className="h-auto rounded-full border-0 bg-white px-10 py-3.5 text-base font-semibold text-black shadow-none hover:bg-white/90"
+          className="h-auto rounded-[10px] border-0 bg-foreground px-10 py-3.5 text-base font-semibold text-background shadow-none hover:bg-foreground/90"
         >
           <Link href={ctaHref}>{ctaLabel}</Link>
         </Button>
+        {showSecondaryCta ? (
+          <Button
+            asChild
+            variant="outline"
+            className="h-auto rounded-[10px] border border-foreground bg-transparent px-10 py-3.5 text-base font-semibold text-foreground shadow-none hover:bg-foreground/10"
+          >
+            <Link href={secondaryCtaHref}>{secondaryCtaLabel}</Link>
+          </Button>
+        ) : null}
       </footer>
     </SectionWrapper>
   )

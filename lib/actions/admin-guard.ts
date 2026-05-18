@@ -37,3 +37,12 @@ export async function requireAdmin(): Promise<AdminGuardResult> {
 
   return { userId }
 }
+
+/**
+ * Lightweight check for use in server components and layouts.
+ * Returns `true` if the current user is an authenticated admin.
+ */
+export async function checkIsAdmin(): Promise<boolean> {
+  const result = await requireAdmin()
+  return !result.error
+}
