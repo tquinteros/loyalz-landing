@@ -42,6 +42,7 @@ export type HeroSectionProps = {
   images: string[]
   ctaLabel: LocalizedString
   ctaHref: string
+  secondaryCta?: CTA
 }
 
 export type HeroClubSectionProps = {
@@ -167,6 +168,8 @@ export type HomeProductsSectionProps = {
     description: LocalizedString
     color: string
     image: string
+    /** Internal page slug or path (e.g. `club` → `/club`). */
+    href?: string
   }>
 }
 
@@ -312,6 +315,53 @@ export type LegalDocumentSectionProps = {
   }
 }
 
+/** About page — hero with title, description and image carousel. */
+export type AboutHeroSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  images: string[]
+}
+
+/** About page — visual separator with a single title. */
+export type AboutSeparatorSectionProps = {
+  title: LocalizedString
+}
+
+/** About page — "us" block: copy, quoted articles, image grid. */
+export type AboutUsSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  /** Short pull-quotes or article blurbs (one per locale). */
+  articles: LocalizedString[]
+  bottomLabel: LocalizedString
+  images: string[]
+}
+
+/** About page — stats with a single supporting image. */
+export type AboutStatsSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  image: string
+  stats: Array<{
+    /** Display value (e.g. "+100k"); not translated. */
+    stat: string
+    statLabel: LocalizedString
+  }>
+}
+
+/** About page — team members grid. */
+export type AboutTeamSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  team: Array<{
+    avatarImage: string
+    /** Proper noun — not translated. */
+    fullName: string
+    role: LocalizedString
+    description: LocalizedString
+  }>
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -335,6 +385,11 @@ export type HomeAutonomySection = BaseSection<"home_autonomy", HomeAutonomySecti
 export type HomeSupportSection = BaseSection<"home_support", HomeSupportSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
 export type LegalDocumentSection = BaseSection<"legal_document", LegalDocumentSectionProps>
+export type AboutHeroSection = BaseSection<"about_hero", AboutHeroSectionProps>
+export type AboutSeparatorSection = BaseSection<"about_separator", AboutSeparatorSectionProps>
+export type AboutUsSection = BaseSection<"about_us", AboutUsSectionProps>
+export type AboutStatsSection = BaseSection<"about_stats", AboutStatsSectionProps>
+export type AboutTeamSection = BaseSection<"about_team", AboutTeamSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -361,6 +416,11 @@ export type PageSection =
   | HomeAutonomySection
   | HomeSupportSection
   | LegalDocumentSection
+  | AboutHeroSection
+  | AboutSeparatorSection
+  | AboutUsSection
+  | AboutStatsSection
+  | AboutTeamSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

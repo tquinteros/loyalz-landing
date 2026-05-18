@@ -71,6 +71,7 @@ export function HomeProductsForm({ value, onChange }: Props) {
             },
             color: "#754390",
             image: "",
+            href: "",
           })}
           addLabel="Añadir producto"
           itemLabel={(it, i) => translate(it.title) || `Producto ${i + 1}`}
@@ -95,7 +96,6 @@ export function HomeProductsForm({ value, onChange }: Props) {
                 placeholderEs="Fidelización"
                 placeholderEn="Loyalty"
               />
-
               <LocalizedField
                 label="Descripción"
                 required
@@ -124,6 +124,18 @@ export function HomeProductsForm({ value, onChange }: Props) {
                     placeholder="#754390"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs">Enlace interno</Label>
+                <Input
+                  value={item.href ?? ""}
+                  onChange={(e) => update({ href: e.target.value })}
+                  placeholder="club"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Ruta interna sin dominio (ej. club → /club).
+                </p>
               </div>
 
               <div className="space-y-1">

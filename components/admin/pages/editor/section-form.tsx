@@ -39,6 +39,11 @@ import { HomeBusinessForm } from "./forms/home-business-form"
 import { HomeAutonomyForm } from "./forms/home-autonomy-form"
 import { HomeSupportForm } from "./forms/home-support-form"
 import { LegalDocumentForm } from "./forms/legal-document-form"
+import { AboutHeroForm } from "./forms/about-hero-form"
+import { AboutSeparatorForm } from "./forms/about-separator-form"
+import { AboutUsForm } from "./forms/about-us-form"
+import { AboutStatsForm } from "./forms/about-stats-form"
+import { AboutTeamForm } from "./forms/about-team-form"
 
 type Props = {
   section: AnyPageSection
@@ -195,6 +200,16 @@ function TypedSectionBody({
       return <HomeSupportForm value={section.props} onChange={onPropsChange} />
     case "legal_document":
       return <LegalDocumentForm value={section.props} onChange={onPropsChange} />
+    case "about_hero":
+      return <AboutHeroForm value={section.props} onChange={onPropsChange} />
+    case "about_separator":
+      return <AboutSeparatorForm value={section.props} onChange={onPropsChange} />
+    case "about_us":
+      return <AboutUsForm value={section.props} onChange={onPropsChange} />
+    case "about_stats":
+      return <AboutStatsForm value={section.props} onChange={onPropsChange} />
+    case "about_team":
+      return <AboutTeamForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

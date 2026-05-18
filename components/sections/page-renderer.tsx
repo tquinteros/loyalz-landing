@@ -14,12 +14,12 @@ type Props = {
  */
 export default function PageRenderer({ page }: Props) {
   if (isLegalPageSlug(page.slug)) {
-    return <LegalPageRenderer sections={page.sections} />
+    return <LegalPageRenderer sections={page.sections} pageId={page.id} />
   }
 
   if (page.type === "product") {
-    return <ProductRenderer sections={page.sections} />
+    return <ProductRenderer sections={page.sections} pageId={page.id} />
   }
 
-  return <HomeRenderer sections={page.sections} />
+  return <HomeRenderer sections={page.sections} pageId={page.id} />
 }

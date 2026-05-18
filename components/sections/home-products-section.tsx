@@ -1,6 +1,7 @@
 ﻿"use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import type { HomeProductsSectionProps } from "@/lib/types/Pages"
@@ -11,6 +12,12 @@ import { useT } from "@/providers/language-provider"
 type Props = HomeProductsSectionProps & {
   backgroundImage?: string | null
   className?: string | null
+}
+
+function toInternalHref(href?: string | null): string | null {
+  const trimmed = href?.trim()
+  if (!trimmed) return null
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`
 }
 
 export default function HomeProductsSection({
@@ -74,26 +81,26 @@ export default function HomeProductsSection({
               const productTitle = t(product.title)
               const productSubtitle = t(product.subtitle)
               const productDescription = t(product.description)
-              return (
-                <li key={`${productTitle}-${index}`} className="flex min-h-0 flex-col lg:min-h-0 lg:h-full">
-                  <button
-                    type="button"
-                    className={cn(
-                      "group relative flex w-full min-h-28 items-stretch overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
-                      "focus-visible:outline-none",
-                      "lg:h-full lg:min-h-0",
-                      isActive
-                        ? "bg-card shadow-xl shadow-black/10"
-                        : "bg-transparent shadow-none",
-                    )}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onFocus={() => setHoveredIndex(index)}
-                    onBlur={(e) => {
-                      const next = e.relatedTarget as Node | null
-                      if (next && e.currentTarget.closest("ol")?.contains(next)) return
-                      setHoveredIndex(null)
-                    }}
-                  >
+              const productHref = toInternalHref(product.href)
+              const cardClassName = cn(
+                "group relative flex w-full min-h-28 items-stretch overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
+                "focus-visible:outline-none",
+                "lg:h-full lg:min-h-0",
+                isActive
+                  ? "bg-card shadow-xl shadow-black/10"
+                  : "bg-transparent shadow-none",
+              )
+              const cardHandlers = {
+                onMouseEnter: () => setHoveredIndex(index),
+                onFocus: () => setHoveredIndex(index),
+                onBlur: (e: React.FocusEvent<HTMLElement>) => {
+                  const next = e.relatedTarget as Node | null
+                  if (next && e.currentTarget.closest("ol")?.contains(next)) return
+                  setHoveredIndex(null)
+                },
+              }
+              const cardContent = (
+                <>
                     <AnimatePresence initial={false}>
                       {isActive ? (
                         <motion.div
@@ -143,7 +150,23 @@ export default function HomeProductsSection({
                         {productDescription}
                       </p>
                     </div>
-                  </button>
+                </>
+              )
+              return (
+                <li key={`${productTitle}-${index}`} className="flex min-h-0 flex-col lg:min-h-0 lg:h-full">
+                  {productHref ? (
+                    <Link
+                      href={productHref}
+                      className={cardClassName}
+                      {...cardHandlers}
+                    >
+                      {cardContent}
+                    </Link>
+                  ) : (
+                    <button type="button" className={cardClassName} {...cardHandlers}>
+                      {cardContent}
+                    </button>
+                  )}
                 </li>
               )
             })}

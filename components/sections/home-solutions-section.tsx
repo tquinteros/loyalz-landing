@@ -78,7 +78,7 @@ export default function HomeSolutionsSection({
                   ease: [0.22, 1, 0.36, 1],
                   delay: i * 0.08,
                 }}
-                className="group relative aspect-3/4 w-full overflow-hidden rounded-[24px] bg-black/20"
+                className="group relative aspect-3/5 w-full overflow-hidden rounded-[24px] bg-background/20"
               >
                 <Image
                   src={tile.url}
@@ -91,7 +91,7 @@ export default function HomeSolutionsSection({
                   <>
                     <div
                       aria-hidden
-                      className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/70 via-black/40 to-transparent"
+                      className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-background/70 via-background/40 to-transparent"
                     />
                     <p className="absolute inset-x-0 bottom-0 px-5 pb-5 text-left text-lg font-bold leading-snug text-foreground sm:px-6 sm:pb-6 sm:text-xl">
                       {captionText}
