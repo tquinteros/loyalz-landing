@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState, useTransition } from "react"
+import { useCallback, useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { useDebounce } from "use-debounce"
 import {
@@ -78,6 +78,14 @@ export function PageEditor({
   const [selectedId, setSelectedId] = useState<string | null>(
     initialSelectedId ?? initialSections[0]?.id ?? null,
   )
+
+  // Sync selectedId when navigating between sections via the public-page overlay
+  // (soft navigation changes the ?section= search param without remounting this component)
+  useEffect(() => {
+    if (initialSelectedId) {
+      setSelectedId(initialSelectedId)
+    }
+  }, [initialSelectedId])
   const [showPreview, setShowPreview] = useState(true)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
