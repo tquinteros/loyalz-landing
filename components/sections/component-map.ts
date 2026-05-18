@@ -716,7 +716,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
           description: { es: "Conocé quiénes somos y qué nos mueve.", en: "Learn who we are and what drives us." },
           images: [],
         },
-      } as SectionFor<T>
+      } as unknown as SectionFor<T>
     case "about_separator":
       return {
         ...base,
@@ -724,7 +724,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
         props: {
           title: { es: "Nuestra historia", en: "Our story" },
         },
-      } as SectionFor<T>
+      } as unknown as SectionFor<T>
     case "about_us":
       return {
         ...base,
@@ -736,7 +736,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
           bottomLabel: { es: "Pie de sección", en: "Section footer" },
           images: [],
         },
-      } as SectionFor<T>
+      } as unknown as SectionFor<T>
     case "about_stats":
       return {
         ...base,
@@ -751,7 +751,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
             { stat: "+3", statLabel: { es: "Años de experiencia", en: "Years of experience" } },
           ],
         },
-      } as SectionFor<T>
+      } as unknown as SectionFor<T>
     case "about_team":
       return {
         ...base,
@@ -768,7 +768,7 @@ export function createDefaultSection<T extends PageSection["type"]>(
             },
           ],
         },
-      } as SectionFor<T>
+      } as unknown as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)

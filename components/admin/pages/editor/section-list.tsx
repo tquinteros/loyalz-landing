@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
@@ -161,6 +162,9 @@ export const SectionList = memo(function SectionList({
         <DialogContent className="max-w-md p-0 gap-0">
           <DialogHeader className="px-4 pt-4 pb-3 border-b">
             <DialogTitle className="text-base">Añadir sección</DialogTitle>
+            <DialogDescription className="sr-only">
+              Buscá y seleccioná el tipo de sección que querés añadir a la página.
+            </DialogDescription>
           </DialogHeader>
 
           {/* Search */}
