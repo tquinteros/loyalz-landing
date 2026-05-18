@@ -18,15 +18,13 @@ export default function AboutSeparatorSection({
   const titleText = t(title)
 
   return (
-    <SectionWrapper backgroundImage={backgroundImage} className={className}>
-      <div className="flex items-center gap-6">
-        <div className="h-px flex-1 bg-border" />
+    <SectionWrapper backgroundImage={backgroundImage} className={`${className} bg-background`}>
+      <div className="flex items-center justify-center gap-6 bg-foreground py-10 rounded-3xl">
         {titleText && (
-          <p className="shrink-0 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+          <p className="shrink-0 text-lg sm:text-[32px] font-bold text-background">
             {titleText}
           </p>
         )}
-        <div className="h-px flex-1 bg-border" />
       </div>
     </SectionWrapper>
   )

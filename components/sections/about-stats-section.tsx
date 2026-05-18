@@ -28,10 +28,10 @@ export default function AboutStatsSection({
         <div className="space-y-8">
           <div className="space-y-4">
             {titleText && (
-              <h2 className="text-3xl font-bold tracking-tight">{titleText}</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-background">{titleText}</h2>
             )}
             {descriptionText && (
-              <p className="text-muted-foreground">{descriptionText}</p>
+              <p className="text-background">{descriptionText}</p>
             )}
           </div>
 
@@ -39,8 +39,8 @@ export default function AboutStatsSection({
             <div className="grid grid-cols-2 gap-6">
               {stats.map((item, i) => (
                 <div key={i} className="space-y-1">
-                  <p className="text-4xl font-bold">{item.stat}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-4xl font-bold text-background">{item.stat}</p>
+                  <p className="text-sm text-background">
                     {t(item.statLabel)}
                   </p>
                 </div>

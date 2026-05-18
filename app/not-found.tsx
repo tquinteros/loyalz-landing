@@ -6,7 +6,9 @@ import Footer from '@/components/footer'
 const NotFound = () => {
   return (
     <>
+      <Header />
       <NotFoundRedirect />
+      <Footer />
     </>
   )
 }

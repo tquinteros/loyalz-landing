@@ -13,9 +13,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       enableSystem
-      disableTransitionOnChange
     >
       <div className="theme-admin min-h-screen bg-background text-foreground">
         <Suspense fallback={<AdminAccessFallback />}>

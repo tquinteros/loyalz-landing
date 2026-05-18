@@ -116,7 +116,7 @@ export function AdminShell({ children }: AdminShellProps) {
         <SidebarHeader className="h-14 border-b border-sidebar-border">
           <div className="flex h-full items-center justify-between px-2">
             <Link href="/" className="text-sm font-semibold tracking-tight">LoyalZ Admin</Link>
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
           </div>
         </SidebarHeader>
 
