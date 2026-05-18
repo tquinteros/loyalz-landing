@@ -23,6 +23,11 @@ import HomeBusinessSection from "./home-business-section"
 import HomeAutonomySection from "./home-autonomy-section"
 import HomeSupportSection from "./home-support-section"
 import LegalDocumentSection from "./legal-document-section"
+import AboutHeroSection from "./about-hero-section"
+import AboutSeparatorSection from "./about-separator-section"
+import AboutUsSection from "./about-us-section"
+import AboutStatsSection from "./about-stats-section"
+import AboutTeamSection from "./about-team-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -702,6 +707,68 @@ export function createDefaultSection<T extends PageSection["type"]>(
           body: { es: null, en: null },
         },
       } as SectionFor<T>
+    case "about_hero":
+      return {
+        ...base,
+        type: "about_hero",
+        props: {
+          title: { es: "Sobre nosotros", en: "About us" },
+          description: { es: "Conocé quiénes somos y qué nos mueve.", en: "Learn who we are and what drives us." },
+          images: [],
+        },
+      } as SectionFor<T>
+    case "about_separator":
+      return {
+        ...base,
+        type: "about_separator",
+        props: {
+          title: { es: "Nuestra historia", en: "Our story" },
+        },
+      } as SectionFor<T>
+    case "about_us":
+      return {
+        ...base,
+        type: "about_us",
+        props: {
+          title: { es: "¿Quiénes somos?", en: "Who are we?" },
+          description: { es: "Una breve descripción del equipo.", en: "A brief description of the team." },
+          articles: [{ es: "Artículo 1", en: "Article 1" }],
+          bottomLabel: { es: "Pie de sección", en: "Section footer" },
+          images: [],
+        },
+      } as SectionFor<T>
+    case "about_stats":
+      return {
+        ...base,
+        type: "about_stats",
+        props: {
+          title: { es: "Nuestros números", en: "Our numbers" },
+          description: { es: "Lo que hemos logrado juntos.", en: "What we have achieved together." },
+          image: "",
+          stats: [
+            { stat: "+100k", statLabel: { es: "Usuarios", en: "Users" } },
+            { stat: "+13", statLabel: { es: "Países", en: "Countries" } },
+            { stat: "+3", statLabel: { es: "Años de experiencia", en: "Years of experience" } },
+          ],
+        },
+      } as SectionFor<T>
+    case "about_team":
+      return {
+        ...base,
+        type: "about_team",
+        props: {
+          title: { es: "Nuestro equipo", en: "Our team" },
+          description: { es: "Las personas detrás de Loyalz.", en: "The people behind Loyalz." },
+          team: [
+            {
+              avatarImage: "",
+              fullName: "Juan Pérez",
+              role: { es: "CEO", en: "CEO" },
+              description: { es: "Descripción del miembro.", en: "Member description." },
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -871,6 +938,36 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Policy-style page: localized title and description, rich text (TipTap) per language — use on Terms, Privacy, or Cookies pages.",
     component: LegalDocumentSection,
   },
+  about_hero: {
+    type: "about_hero",
+    label: "About — Hero",
+    description: "Hero for the About page — title, description and image grid.",
+    component: AboutHeroSection,
+  },
+  about_separator: {
+    type: "about_separator",
+    label: "About — Separator",
+    description: "Decorative separator with a centred title.",
+    component: AboutSeparatorSection,
+  },
+  about_us: {
+    type: "about_us",
+    label: "About — Us",
+    description: "Title, description, article list, image grid and bottom label.",
+    component: AboutUsSection,
+  },
+  about_stats: {
+    type: "about_stats",
+    label: "About — Stats",
+    description: "Title, description, supporting image and stat grid.",
+    component: AboutStatsSection,
+  },
+  about_team: {
+    type: "about_team",
+    label: "About — Team",
+    description: "Title, description and team member cards with avatar, name, role and bio.",
+    component: AboutTeamSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -878,4 +975,53 @@ export const SECTION_TYPES = Object.keys(SECTION_REGISTRY) as SectionType[]
 
 export function isKnownSectionType(type: string): type is SectionType {
   return type in SECTION_REGISTRY
+}
+
+/**
+ * Sections that are most relevant for a given page slug.
+ * Used by the admin section picker to surface relevant types first.
+ * Keyed by the page `slug`; use `"__product"` as the key for all
+ * pages whose `type === "product"`.
+ */
+export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
+  home: [
+    "hero",
+    "feature_links",
+    "home_products",
+    "home_solutions",
+    "home_business",
+    "home_activation",
+    "home_autonomy",
+    "home_support",
+    "brand_marquee",
+    "stats",
+    "testimonials",
+    "faq",
+    "contact_form",
+    "cta",
+    "pricing",
+    "productpricing",
+    "common_cta",
+    "notification_club",
+  ],
+  about: [
+    "about_hero",
+    "about_separator",
+    "about_us",
+    "about_stats",
+    "about_team",
+  ],
+  __product: [
+    "hero_club",
+    "club_cards",
+    "steps_club",
+    "club_activation",
+    "notification_club",
+    "pricing",
+    "common_cta",
+    "productpricing",
+  ],
+  terms: ["legal_document"],
+  privacy: ["legal_document"],
+  cookies: ["legal_document"],
 }

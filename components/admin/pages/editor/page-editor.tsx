@@ -335,6 +335,8 @@ export function PageEditor({
             onReorder={reorderSections}
             onRemove={removeSection}
             onToggleEnabled={toggleEnabled}
+            pageSlug={pageSlug}
+            pageType={pageType}
           />
         </aside>
 
