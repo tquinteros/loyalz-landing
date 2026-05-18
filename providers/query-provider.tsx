@@ -33,6 +33,7 @@ export function QueryProvider({ children }: Props) {
       {children}
 
       {/* Solo en desarrollo */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
