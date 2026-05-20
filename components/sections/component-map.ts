@@ -28,6 +28,7 @@ import AboutSeparatorSection from "./about-separator-section"
 import AboutUsSection from "./about-us-section"
 import AboutStatsSection from "./about-stats-section"
 import AboutTeamSection from "./about-team-section"
+import AudiencesTabsSection from "./audiences-tabs-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -769,6 +770,85 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as unknown as SectionFor<T>
+    case "audiences_tabs":
+      return {
+        ...base,
+        type: "audiences_tabs",
+        props: {
+          title: { es: "Para cada tipo de negocio", en: "For every type of business" },
+          tabs: [
+            {
+              key: "cafes",
+              tabLabel: { es: "Cafés", en: "Cafés" },
+              images: [],
+              separatorText: { es: "La experiencia que hace volver.", en: "The experience that brings them back." },
+              label: { es: "Cafés", en: "Cafés" },
+              title: { es: "Convertí cada café en un cliente que vuelve.", en: "Turn every coffee into a returning customer." },
+              brandMarqueeTitle: { es: "Marcas que confían en nosotros", en: "Brands that trust us" },
+              brands: [],
+              audienceProblem: {
+                label: { es: "El desafío", en: "The challenge" },
+                title: { es: "¿Cuál es el problema?", en: "What is the problem?" },
+                description: { es: "Descripción del problema para cafés.", en: "Problem description for cafés." },
+                solutions: [
+                  {
+                    label: { es: "Solución 1", en: "Solution 1" },
+                    title: { es: "Título de solución", en: "Solution title" },
+                    description: { es: "Descripción de la solución.", en: "Solution description." },
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+            },
+            {
+              key: "restaurantes",
+              tabLabel: { es: "Restaurantes", en: "Restaurants" },
+              images: [],
+              separatorText: { es: "Más mesas llenas, más noches perfectas.", en: "More full tables, more perfect nights." },
+              label: { es: "Restaurantes", en: "Restaurants" },
+              title: { es: "Fidelizá a los comensales que ya te eligieron.", en: "Retain the diners who already chose you." },
+              brandMarqueeTitle: { es: "Marcas que confían en nosotros", en: "Brands that trust us" },
+              brands: [],
+              audienceProblem: {
+                label: { es: "El desafío", en: "The challenge" },
+                title: { es: "¿Cuál es el problema?", en: "What is the problem?" },
+                description: { es: "Descripción del problema para restaurantes.", en: "Problem description for restaurants." },
+                solutions: [
+                  {
+                    label: { es: "Solución 1", en: "Solution 1" },
+                    title: { es: "Título de solución", en: "Solution title" },
+                    description: { es: "Descripción de la solución.", en: "Solution description." },
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+            },
+            {
+              key: "delivery-first",
+              tabLabel: { es: "Delivery-first", en: "Delivery-first" },
+              images: [],
+              separatorText: { es: "Cada pedido, una oportunidad de fidelizar.", en: "Every order, an opportunity to build loyalty." },
+              label: { es: "Delivery-first", en: "Delivery-first" },
+              title: { es: "Recuperá el control de tu relación con el cliente.", en: "Regain control of your customer relationship." },
+              brandMarqueeTitle: { es: "Marcas que confían en nosotros", en: "Brands that trust us" },
+              brands: [],
+              audienceProblem: {
+                label: { es: "El desafío", en: "The challenge" },
+                title: { es: "¿Cuál es el problema?", en: "What is the problem?" },
+                description: { es: "Descripción del problema para delivery.", en: "Problem description for delivery-first." },
+                solutions: [
+                  {
+                    label: { es: "Solución 1", en: "Solution 1" },
+                    title: { es: "Título de solución", en: "Solution title" },
+                    description: { es: "Descripción de la solución.", en: "Solution description." },
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      } as unknown as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -968,6 +1048,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description: "Title, description and team member cards with avatar, name, role and bio.",
     component: AboutTeamSection,
   },
+  audiences_tabs: {
+    type: "audiences_tabs",
+    label: "Audiences — Tabs",
+    description: "Main title + three audience tabs (cafés, restaurantes, delivery-first), each with carousel, separator, label/title, brand marquee and problem/solutions.",
+    component: AudiencesTabsSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -1024,4 +1110,5 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   terms: ["legal_document"],
   privacy: ["legal_document"],
   cookies: ["legal_document"],
+  audiences: ["audiences_tabs"],
 }

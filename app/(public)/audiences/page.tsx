@@ -4,10 +4,10 @@ import { notFound } from "next/navigation"
 import { fetchPublicPageBySlugCached } from "@/lib/queries/pages.server"
 import PageClient from "@/components/pages/page-client"
 import { PageSkeleton } from "@/components/pages/page-skeleton"
-import { CLUB_SLUG } from "@/lib/utils"
+import { AUDIENCES_SLUG } from "@/lib/utils"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await fetchPublicPageBySlugCached(CLUB_SLUG)
+  const page = await fetchPublicPageBySlugCached(AUDIENCES_SLUG)
   if (!page) return {}
   return {
     title: page.seo_title ?? page.title,
@@ -15,14 +15,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function ClubPage() {
-  const page = await fetchPublicPageBySlugCached(CLUB_SLUG)
+export default async function AudiencesPage() {
+  const page = await fetchPublicPageBySlugCached(AUDIENCES_SLUG)
   if (!page) notFound()
 
   return (
     <main className="min-h-screen">
       <Suspense fallback={<PageSkeleton />}>
-        <PageClient slug={CLUB_SLUG} initialData={page} />
+        <PageClient slug={AUDIENCES_SLUG} initialData={page} />
       </Suspense>
     </main>
   )

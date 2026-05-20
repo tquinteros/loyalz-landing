@@ -10,7 +10,7 @@ export const hasEnvVars =
   process.env.NEXT_PUBLIC_SUPABASE_URL &&
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-
+export const AUDIENCES_SLUG = "audiences" as const
 export const HOME_SLUG = "home" as const
 export const ABOUT_SLUG = "about" as const
 export const BLOGS_SLUG = "blogs" as const

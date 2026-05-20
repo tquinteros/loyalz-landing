@@ -44,6 +44,7 @@ import { AboutSeparatorForm } from "./forms/about-separator-form"
 import { AboutUsForm } from "./forms/about-us-form"
 import { AboutStatsForm } from "./forms/about-stats-form"
 import { AboutTeamForm } from "./forms/about-team-form"
+import { AudiencesTabsForm } from "./forms/audiences-tabs-form"
 
 type Props = {
   section: AnyPageSection
@@ -210,6 +211,8 @@ function TypedSectionBody({
       return <AboutStatsForm value={section.props} onChange={onPropsChange} />
     case "about_team":
       return <AboutTeamForm value={section.props} onChange={onPropsChange} />
+    case "audiences_tabs":
+      return <AudiencesTabsForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

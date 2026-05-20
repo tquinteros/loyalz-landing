@@ -25,6 +25,7 @@ const LANGUAGE_OPTIONS: ReadonlyArray<{ value: Locale; label: string; short: str
 ]
 
 const HEADER_COPY = {
+  audience: { es: "Audiencias", en: "Audiences" },
   about: { es: "About", en: "About" },
   company: { es: "Empresa", en: "Company" },
   products: { es: "Productos", en: "Products" },
@@ -278,6 +279,7 @@ const Header = () => {
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
           </Link>
           <nav className="hidden items-center gap-5 font-semibold md:flex">
+            <Link href="/audiences" className="transition-opacity hover:opacity-70">{t(HEADER_COPY.audience)}</Link>
             <Link href="/about" className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.about)}
             </Link>
