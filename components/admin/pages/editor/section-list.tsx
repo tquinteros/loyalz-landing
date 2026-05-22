@@ -112,7 +112,7 @@ export const SectionList = memo(function SectionList({
     <div className="flex h-full flex-col">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 border-b px-4 py-3">
-        <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Secciones
         </p>
         <Button size="sm" variant="outline" onClick={() => setOpen(true)}>

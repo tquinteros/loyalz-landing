@@ -34,6 +34,7 @@ import type {
 } from "@/lib/types/Pages"
 import { SectionList } from "@/components/admin/pages/editor/section-list"
 import { SectionForm } from "@/components/admin/pages/editor/section-form"
+import { cn } from "@/lib/utils"
 import { LivePreview } from "@/components/admin/pages/editor/live-preview"
 import { toast } from "sonner"
 
@@ -96,6 +97,7 @@ export function PageEditor({
 
   const selectedIndex = sections.findIndex((s) => s.id === selectedId)
   const selected = selectedIndex >= 0 ? sections[selectedIndex] : null
+  const isWideSectionEditor = selected?.type === "audiences_tabs"
 
   const addSection = useCallback((type: SectionType) => {
     const next = createDefaultSection(type)
@@ -333,8 +335,15 @@ export function PageEditor({
       ) : null}
 
       {/* Editor body */}
-      <div className="grid flex-1 min-h-0 grid-cols-1 gap-0 lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)]">
-        <aside className="border-b lg:border-b-0 lg:border-r">
+      <div
+        className={cn(
+          "grid flex-1 min-h-0 grid-cols-1 gap-0",
+          isWideSectionEditor
+            ? "lg:grid-cols-[minmax(300px,380px)_minmax(0,1fr)]"
+            : "lg:grid-cols-[minmax(280px,340px)_minmax(0,1fr)]",
+        )}
+      >
+        <aside className="min-w-0 border-b lg:min-w-[280px] lg:border-b-0 lg:border-r">
           <SectionList
             sections={sections}
             selectedId={selectedId}

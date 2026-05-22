@@ -379,26 +379,98 @@ export type AudienceProblemProps = {
   solutions: AudienceSolutionItem[]
 }
 
-/** Single tab item for the audiences page. */
+/** Single step inside an audiences tab steps block. */
+export type AudienceStepItem = {
+  title: LocalizedString
+  description: LocalizedString
+  /** Image URL for the step. */
+  image: string
+  /** CSS hex color for the step card background, e.g. `#F8F5EF`. */
+  backgroundColor: string
+}
+
+/** Steps block inside an audiences tab (title + colored step cards). */
+export type AudienceStepsProps = {
+  title: LocalizedString
+  steps: AudienceStepItem[]
+}
+
+/** Floating stat card around the mobile mockup. */
+export type AudienceMobileStatItem = {
+  /** Small heading above the value, e.g. "Clientes fidelizados". */
+  title: LocalizedString
+  /** Display value, e.g. "158" or "$ 16". */
+  stat: LocalizedString
+  /** Optional pill below the value, e.g. "109 beneficios activos". */
+  label?: LocalizedString
+}
+
+/** Mobile showcase block — stats around phone + bottom title banner. */
+export type AudienceMobileProps = {
+  title: LocalizedString
+  stats: AudienceMobileStatItem[]
+}
+
+/** Detail card inside the audiences ecosystem block. */
+export type AudienceEcosystemDetailItem = {
+  /** CSS hex color for the card background. */
+  backgroundColor: string
+  label?: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+}
+
+/** Ecosystem block — header, colored detail cards, bottom label + CTA. */
+export type AudienceEcosystemProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  details: AudienceEcosystemDetailItem[]
+  bottomLabel?: LocalizedString
+  bottomCtaLabel: LocalizedString
+  bottomCtaHref: string
+}
+
+/**
+ * Single tab item for the audiences page.
+ *
+ * Logically split into blocks (see `AUDIENCE_TAB_PANELS` in `lib/audiences/tab-blocks.ts`).
+ * Stored as one JSON object per tab — no DB migration when adding blocks.
+ */
 export type AudienceTabItem = {
   /** Non-translated discriminator key, e.g. "cafes". Not shown to end users. */
   key: string
-  /** Translated tab trigger label. */
+
+  /* --- Block: general (tab bar) --- */
   tabLabel: LocalizedString
-  /** Carousel images (URLs). */
+
+  /* --- Block: carousel --- */
   images: string[]
-  /** Centered separator text shown between the carousel and the label/title block. */
+
+  /* --- Block: separator --- */
   separatorText: LocalizedString
   label?: LocalizedString
+  /** Legacy field; kept for alt text on carousel. */
   title: LocalizedString
-  /** Optional title shown above the brand marquee strip. */
+
+  /* --- Block: marquee --- */
   brandMarqueeTitle?: LocalizedString
   brands: Array<{
-    /** Brand display name — not translated; used as alt text. */
     name?: string
     logo: string
   }>
+
+  /* --- Block: problem --- */
   audienceProblem: AudienceProblemProps
+
+  /* --- Block: steps --- */
+  audienceSteps?: AudienceStepsProps
+
+  /* --- Block: mobile --- */
+  audienceMobile?: AudienceMobileProps
+
+  /* --- Block: ecosystem --- */
+  audienceEcosystem?: AudienceEcosystemProps
 }
 
 /** Audiences page — tabbed content for cafes, restaurantes, delivery-first. */

@@ -1,6 +1,7 @@
 "use client"
 
 import { memo } from "react"
+import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -67,9 +68,16 @@ export const SectionForm = memo(function SectionForm({
       ? SECTION_REGISTRY[section.type as PageSection["type"]]
       : null
 
+  const isWideForm = section.type === "audiences_tabs"
+
   return (
     <ScrollArea className="h-full">
-      <div className="mx-auto max-w-2xl space-y-6 p-4 md:p-6">
+      <div
+        className={cn(
+          "space-y-6 p-4 md:p-6",
+          isWideForm ? "w-full max-w-none min-w-0" : "mx-auto max-w-2xl",
+        )}
+      >
         <header className="space-y-1">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             {entry?.label ?? section.type}

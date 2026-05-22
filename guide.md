@@ -389,5 +389,32 @@ itemLabel={(it, i) => translate(it.title) || `Producto ${i + 1}`}
 | Example multi-card form | `components/admin/pages/editor/forms/pricing-form.tsx` |
 | Example custom section | `components/sections/club-cards-section.tsx` + `forms/club-cards-form.tsx` |
 | Example with images + two CTAs | `components/sections/home-solutions-section.tsx` + `forms/home-solutions-form.tsx` |
+| Audiences (nested tab CMS) | `components/sections/audiences-tabs/` + `forms/audiences-tabs/` + `lib/audiences/tab-blocks.ts` |
 
 This document should be updated when new renderers or page types are added so future sections stay consistent end-to-end.
+
+---
+
+## 13. Audiences page — nested blocks without extra section types
+
+The `/audiences` page uses a **single** section type (`audiences_tabs`) in the DB. Each tab stores several **logical blocks** in one `AudienceTabItem` JSON object.
+
+### Why one section type
+
+Splitting into many `PageSection` types (carousel, marquee, problem, etc.) would force editors to manage section order per tab and complicate the public tab UI. Instead:
+
+- **Public**: `components/sections/audiences-tabs/` — one file per block (`tab-carousel.tsx`, `problem-block.tsx`, …) composed in `tab-body.tsx`.
+- **Admin**: two-level sidebar — **audiencia** (cafés / restaurantes / delivery) → **bloque** (Tab, Carrusel, Separador, …). No nested accordions.
+- **Types**: block list and defaults live in `lib/audiences/tab-blocks.ts` (`AUDIENCE_TAB_PANELS`, `normalizeAudienceTab`).
+
+### Adding a new block to audiences tabs
+
+1. Extend `AudienceTabItem` in `lib/types/Pages.ts` (document under a `/* --- Block: … --- */` comment).
+2. Add a panel entry to `AUDIENCE_TAB_PANELS` in `lib/audiences/tab-blocks.ts`.
+3. Create `editors/<block>-editor.tsx` under `forms/audiences-tabs/editors/`.
+4. Wire the panel in `forms/audiences-tabs/tab-editor.tsx`.
+5. Create or update a public component under `components/sections/audiences-tabs/` and render it from `tab-body.tsx`.
+6. Seed defaults for all three tabs in `component-map.ts` → `case "audiences_tabs"`.
+7. Tab-specific assets (e.g. mobile screen by `tab.key`) live in `lib/audiences/mobile-screens.ts`.
+
+Do **not** add a new `PageSection` union member unless the block must be reused on other pages as an independent section.

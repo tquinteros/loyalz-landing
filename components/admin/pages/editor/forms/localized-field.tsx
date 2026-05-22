@@ -14,6 +14,8 @@ type Common = {
   idPrefix?: string
   placeholderEs?: string
   placeholderEn?: string
+  /** `comfortable` — larger labels/inputs for wide editors (e.g. audiences). */
+  variant?: "default" | "comfortable"
 }
 
 type SingleLineProps = Common & {
@@ -42,6 +44,7 @@ export function LocalizedField({
   idPrefix,
   placeholderEs,
   placeholderEn,
+  variant = "default",
   value,
   onChange,
   ...rest
@@ -62,20 +65,33 @@ export function LocalizedField({
     onChange(next)
   }
 
+  const comfortable = variant === "comfortable"
+  const fieldClass = comfortable ? "text-sm" : undefined
+
   return (
     <div className={className ? `space-y-2 ${className}` : "space-y-2"}>
       {label ? (
-        <Label className="text-xs">
+        <Label className={comfortable ? "text-sm font-medium" : "text-xs"}>
           {label}
           {required ? " *" : null}
         </Label>
       ) : null}
 
-      <div className="grid gap-2 sm:grid-cols-2">
-        <div className="space-y-1">
+      <div
+        className={
+          comfortable
+            ? "grid gap-3 md:grid-cols-2"
+            : "grid gap-2 sm:grid-cols-2"
+        }
+      >
+        <div className="space-y-1.5">
           <Label
             htmlFor={`${baseId}-es`}
-            className="text-[10px] uppercase tracking-wider text-muted-foreground"
+            className={
+              comfortable
+                ? "text-xs uppercase tracking-wider text-muted-foreground"
+                : "text-[10px] uppercase tracking-wider text-muted-foreground"
+            }
           >
             ES
           </Label>
@@ -83,6 +99,7 @@ export function LocalizedField({
             <Textarea
               id={`${baseId}-es`}
               rows={rows}
+              className={fieldClass}
               value={value?.es ?? ""}
               onChange={(e) => update({ es: e.target.value })}
               placeholder={placeholderEs}
@@ -90,6 +107,7 @@ export function LocalizedField({
           ) : (
             <Input
               id={`${baseId}-es`}
+              className={comfortable ? "h-10 text-sm" : undefined}
               value={value?.es ?? ""}
               onChange={(e) => update({ es: e.target.value })}
               placeholder={placeholderEs}
@@ -97,10 +115,14 @@ export function LocalizedField({
           )}
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <Label
             htmlFor={`${baseId}-en`}
-            className="text-[10px] uppercase tracking-wider text-muted-foreground"
+            className={
+              comfortable
+                ? "text-xs uppercase tracking-wider text-muted-foreground"
+                : "text-[10px] uppercase tracking-wider text-muted-foreground"
+            }
           >
             EN
           </Label>
@@ -108,6 +130,7 @@ export function LocalizedField({
             <Textarea
               id={`${baseId}-en`}
               rows={rows}
+              className={fieldClass}
               value={value?.en ?? ""}
               onChange={(e) => update({ en: e.target.value })}
               placeholder={placeholderEn}
@@ -115,6 +138,7 @@ export function LocalizedField({
           ) : (
             <Input
               id={`${baseId}-en`}
+              className={comfortable ? "h-10 text-sm" : undefined}
               value={value?.en ?? ""}
               onChange={(e) => update({ en: e.target.value })}
               placeholder={placeholderEn}

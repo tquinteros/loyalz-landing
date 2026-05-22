@@ -799,6 +799,65 @@ export function createDefaultSection<T extends PageSection["type"]>(
                   },
                 ],
               },
+              audienceSteps: {
+                title: { es: "Cómo funciona", en: "How it works" },
+                steps: [
+                  {
+                    title: { es: "Paso 1", en: "Step 1" },
+                    description: { es: "Descripción del paso.", en: "Step description." },
+                    image: "",
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+              audienceMobile: {
+                title: {
+                  es: "Implementación en menos de 15 minutos.\nSin interrupciones en tu operación.",
+                  en: "Setup in under 15 minutes.\nNo disruption to your operations.",
+                },
+                stats: [
+                  {
+                    title: { es: "Clientes fidelizados", en: "Loyal customers" },
+                    stat: { es: "158", en: "158" },
+                    label: { es: "109 beneficios activos", en: "109 active benefits" },
+                  },
+                  {
+                    title: { es: "Ticket Promedio", en: "Average ticket" },
+                    stat: { es: "$ 16", en: "$ 16" },
+                  },
+                ],
+              },
+              audienceEcosystem: {
+                label: { es: "Ecosystem", en: "Ecosystem" },
+                title: { es: "Todo lo que necesitás en un solo lugar", en: "Everything you need in one place" },
+                description: {
+                  es: "Club, marketing y reviews trabajando juntos para tu negocio.",
+                  en: "Club, marketing and reviews working together for your business.",
+                },
+                details: [
+                  {
+                    backgroundColor: "#E8D4F0",
+                    label: { es: "Club", en: "Club" },
+                    title: { es: "Fidelización", en: "Loyalty" },
+                    description: { es: "Puntos, sellos y beneficios en Wallet.", en: "Points, stamps and Wallet benefits." },
+                  },
+                  {
+                    backgroundColor: "#D4E8D4",
+                    label: { es: "Ai", en: "Ai" },
+                    title: { es: "Marketing", en: "Marketing" },
+                    description: { es: "Campañas automáticas para tu audiencia.", en: "Automated campaigns for your audience." },
+                  },
+                  {
+                    backgroundColor: "#D4D8E8",
+                    label: { es: "Reviews", en: "Reviews" },
+                    title: { es: "Reseñas", en: "Reviews" },
+                    description: { es: "Más opiniones positivas en Google.", en: "More positive Google reviews." },
+                  },
+                ],
+                bottomLabel: { es: "Empezá hoy sin fricción.", en: "Start today with zero friction." },
+                bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
+                bottomCtaHref: "/contact",
+              },
             },
             {
               key: "restaurantes",
@@ -822,6 +881,65 @@ export function createDefaultSection<T extends PageSection["type"]>(
                   },
                 ],
               },
+              audienceSteps: {
+                title: { es: "Cómo funciona", en: "How it works" },
+                steps: [
+                  {
+                    title: { es: "Paso 1", en: "Step 1" },
+                    description: { es: "Descripción del paso.", en: "Step description." },
+                    image: "",
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+              audienceMobile: {
+                title: {
+                  es: "Implementación en menos de 15 minutos.\nSin interrupciones en tu operación.",
+                  en: "Setup in under 15 minutes.\nNo disruption to your operations.",
+                },
+                stats: [
+                  {
+                    title: { es: "Clientes fidelizados", en: "Loyal customers" },
+                    stat: { es: "158", en: "158" },
+                    label: { es: "109 beneficios activos", en: "109 active benefits" },
+                  },
+                  {
+                    title: { es: "Ticket Promedio", en: "Average ticket" },
+                    stat: { es: "$ 16", en: "$ 16" },
+                  },
+                ],
+              },
+              audienceEcosystem: {
+                label: { es: "Ecosystem", en: "Ecosystem" },
+                title: { es: "Todo lo que necesitás en un solo lugar", en: "Everything you need in one place" },
+                description: {
+                  es: "Club, marketing y reviews trabajando juntos para tu negocio.",
+                  en: "Club, marketing and reviews working together for your business.",
+                },
+                details: [
+                  {
+                    backgroundColor: "#E8D4F0",
+                    label: { es: "Club", en: "Club" },
+                    title: { es: "Fidelización", en: "Loyalty" },
+                    description: { es: "Puntos, sellos y beneficios en Wallet.", en: "Points, stamps and Wallet benefits." },
+                  },
+                  {
+                    backgroundColor: "#D4E8D4",
+                    label: { es: "Ai", en: "Ai" },
+                    title: { es: "Marketing", en: "Marketing" },
+                    description: { es: "Campañas automáticas para tu audiencia.", en: "Automated campaigns for your audience." },
+                  },
+                  {
+                    backgroundColor: "#D4D8E8",
+                    label: { es: "Reviews", en: "Reviews" },
+                    title: { es: "Reseñas", en: "Reviews" },
+                    description: { es: "Más opiniones positivas en Google.", en: "More positive Google reviews." },
+                  },
+                ],
+                bottomLabel: { es: "Empezá hoy sin fricción.", en: "Start today with zero friction." },
+                bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
+                bottomCtaHref: "/contact",
+              },
             },
             {
               key: "delivery-first",
@@ -844,6 +962,65 @@ export function createDefaultSection<T extends PageSection["type"]>(
                     backgroundColor: "#F8F5EF",
                   },
                 ],
+              },
+              audienceSteps: {
+                title: { es: "Cómo funciona", en: "How it works" },
+                steps: [
+                  {
+                    title: { es: "Paso 1", en: "Step 1" },
+                    description: { es: "Descripción del paso.", en: "Step description." },
+                    image: "",
+                    backgroundColor: "#F8F5EF",
+                  },
+                ],
+              },
+              audienceMobile: {
+                title: {
+                  es: "Implementación en menos de 15 minutos.\nSin interrupciones en tu operación.",
+                  en: "Setup in under 15 minutes.\nNo disruption to your operations.",
+                },
+                stats: [
+                  {
+                    title: { es: "Clientes fidelizados", en: "Loyal customers" },
+                    stat: { es: "158", en: "158" },
+                    label: { es: "109 beneficios activos", en: "109 active benefits" },
+                  },
+                  {
+                    title: { es: "Ticket Promedio", en: "Average ticket" },
+                    stat: { es: "$ 16", en: "$ 16" },
+                  },
+                ],
+              },
+              audienceEcosystem: {
+                label: { es: "Ecosystem", en: "Ecosystem" },
+                title: { es: "Todo lo que necesitás en un solo lugar", en: "Everything you need in one place" },
+                description: {
+                  es: "Club, marketing y reviews trabajando juntos para tu negocio.",
+                  en: "Club, marketing and reviews working together for your business.",
+                },
+                details: [
+                  {
+                    backgroundColor: "#E8D4F0",
+                    label: { es: "Club", en: "Club" },
+                    title: { es: "Fidelización", en: "Loyalty" },
+                    description: { es: "Puntos, sellos y beneficios en Wallet.", en: "Points, stamps and Wallet benefits." },
+                  },
+                  {
+                    backgroundColor: "#D4E8D4",
+                    label: { es: "Ai", en: "Ai" },
+                    title: { es: "Marketing", en: "Marketing" },
+                    description: { es: "Campañas automáticas para tu audiencia.", en: "Automated campaigns for your audience." },
+                  },
+                  {
+                    backgroundColor: "#D4D8E8",
+                    label: { es: "Reviews", en: "Reviews" },
+                    title: { es: "Reseñas", en: "Reviews" },
+                    description: { es: "Más opiniones positivas en Google.", en: "More positive Google reviews." },
+                  },
+                ],
+                bottomLabel: { es: "Empezá hoy sin fricción.", en: "Start today with zero friction." },
+                bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
+                bottomCtaHref: "/contact",
               },
             },
           ],
@@ -1051,7 +1228,8 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
   audiences_tabs: {
     type: "audiences_tabs",
     label: "Audiences — Tabs",
-    description: "Main title + three audience tabs (cafés, restaurantes, delivery-first), each with carousel, separator, label/title, brand marquee and problem/solutions.",
+    description:
+      "Página por audiencias: título, tabs (cafés / restaurantes / delivery). Cada tab: carrusel, separador, marcas, problema + soluciones, pasos. Editor con navegación lateral por bloques.",
     component: AudiencesTabsSection,
   },
 }

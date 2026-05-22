@@ -103,16 +103,16 @@ export function SortableSectionItem({
         >
           {index + 1}
         </span>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div
             className={cn(
-              "truncate text-sm font-medium",
+              "text-sm font-medium leading-snug wrap-break-word",
               !enabled && "text-muted-foreground line-through",
             )}
           >
             {labelFor(section.type)}
           </div>
-          <div className="truncate font-mono text-[10px] text-muted-foreground">
+          <div className="mt-0.5 font-mono text-[10px] text-muted-foreground">
             {section.id.slice(0, 8)}
           </div>
         </div>
