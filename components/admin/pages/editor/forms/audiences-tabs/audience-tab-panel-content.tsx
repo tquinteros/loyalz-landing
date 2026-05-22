@@ -10,6 +10,8 @@ import { AudienceTabProblemEditor } from "./editors/problem-editor"
 import { AudienceTabStepsEditor } from "./editors/steps-editor"
 import { AudienceTabMobileEditor } from "./editors/mobile-editor"
 import { AudienceTabEcosystemEditor } from "./editors/ecosystem-editor"
+import { AudienceTabDemoEditor } from "./editors/demo-editor"
+import { AudienceTabInformationEditor } from "./editors/information-editor"
 
 type Props = {
   panel: AudienceTabPanelId
@@ -37,6 +39,10 @@ export function AudienceTabPanelContent({ panel, tab: rawTab, onChange }: Props)
       return <AudienceTabMobileEditor tab={tab} onChange={onChange} />
     case "ecosystem":
       return <AudienceTabEcosystemEditor tab={tab} onChange={onChange} />
+    case "demo":
+      return <AudienceTabDemoEditor tab={tab} onChange={onChange} />
+    case "information":
+      return <AudienceTabInformationEditor tab={tab} onChange={onChange} />
     default:
       return null
   }

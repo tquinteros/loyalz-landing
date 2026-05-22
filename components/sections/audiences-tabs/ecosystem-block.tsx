@@ -108,7 +108,7 @@ export function AudienceEcosystemBlock({ data }: Props) {
       {hasHeader ? (
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 px-5 text-center lg:px-16">
           {labelText ? (
-            <div className="flex w-fit items-center gap-3 rounded border border-foreground px-3 py-2">
+            <div className="flex w-fit items-center gap-3 rounded border border-foreground/70 px-3 py-2">
               <svg
                 width="10"
                 height="10"
@@ -187,7 +187,7 @@ export function AudienceEcosystemBlock({ data }: Props) {
               <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.26499 22.4004L2.76762 19.1571L5.57848 15.3084L7.78392 12.757L4.49738 12.0218L0 10.5515L1.68652 5.31901L6.27038 6.78931L9.29746 8.08663L8.99475 4.80008V0H14.53V4.75684L14.2273 8.08663L17.2544 6.78931L21.8382 5.31901L23.5247 10.5515L19.0274 12.0218L15.7408 12.757L17.903 15.2651L20.7571 19.1571L16.2597 22.4004L13.4489 18.5517L11.7624 15.6976L10.0759 18.5084L7.26499 22.4004Z" fill="#FFB7A4" />
               </svg>
-              <p className="text-base font-medium leading-snug sm:text-lg">
+              <p className="text-base font-bold leading-snug sm:text-lg">
                 {bottomLabelText}
               </p>
             </div>

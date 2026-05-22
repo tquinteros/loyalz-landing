@@ -11,6 +11,8 @@ import { AudienceProblemBlock } from "./problem-block"
 import { AudienceStepsBlock } from "./steps-block"
 import { AudienceMobileBlock } from "./mobile-block"
 import { AudienceEcosystemBlock } from "./ecosystem-block"
+import { AudienceDemoBlock } from "./demo-block"
+import { AudienceInformationBlock } from "./information-block"
 
 type Props = {
   tab: AudienceTabItem
@@ -46,6 +48,12 @@ export function AudienceTabBody({ tab: rawTab }: Props) {
       </SectionWrapper>
 
       <AudienceEcosystemBlock data={tab.audienceEcosystem} />
+
+      <AudienceDemoBlock data={tab.audienceDemo} />
+
+      <SectionWrapper className="bg-foreground pt-16 pb-16 sm:pt-24 sm:pb-24">
+        <AudienceInformationBlock data={tab.audienceInformation} />
+      </SectionWrapper>
     </>
   )
 }

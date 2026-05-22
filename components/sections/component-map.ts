@@ -858,6 +858,56 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
                 bottomCtaHref: "/contact",
               },
+              audienceDemo: {
+                backgroundColor: "#6B4E9B",
+                label: {
+                  es: "¿Necesitás elegir uno para empezar?",
+                  en: "Need to pick one to get started?",
+                },
+                title: { es: "Loyalz club", en: "Loyalz club" },
+                description: {
+                  es: "El sistema de fidelización para que siempre vuelvan.",
+                  en: "The loyalty system that keeps them coming back.",
+                },
+                ctaLabel: { es: "Demo Gratis", en: "Free demo" },
+                ctaHref: "/contact",
+                image: "/club.png",
+                features: [
+                  {
+                    title: { es: "Estampas", en: "Stamps" },
+                    description: {
+                      es: "Sellos digitales en Apple y Google Wallet.",
+                      en: "Digital stamps on Apple and Google Wallet.",
+                    },
+                  },
+                  {
+                    title: { es: "Notificaciones Push", en: "Push notifications" },
+                    description: {
+                      es: "Mensajes automáticos para traer clientes de vuelta.",
+                      en: "Automated messages to bring customers back.",
+                    },
+                  },
+                  {
+                    title: { es: "Dashboard", en: "Dashboard" },
+                    description: {
+                      es: "Métricas y control de tu programa en un solo lugar.",
+                      en: "Metrics and control of your program in one place.",
+                    },
+                  },
+                ],
+              },
+              audienceInformation: {
+                backgroundColor: "#5C4578",
+                title: {
+                  es: "Pagos directo desde la mesa.",
+                  en: "Pay directly from the table.",
+                },
+                description: {
+                  es: "Recibe pedidos por WhatsApp, cobra con link de pago. Sin comisión de apps de delivery.",
+                  en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
+                },
+                image: "/ipadpro.png",
+              },
             },
             {
               key: "restaurantes",
@@ -940,6 +990,56 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
                 bottomCtaHref: "/contact",
               },
+              audienceDemo: {
+                backgroundColor: "#6B4E9B",
+                label: {
+                  es: "¿Necesitás elegir uno para empezar?",
+                  en: "Need to pick one to get started?",
+                },
+                title: { es: "Loyalz club", en: "Loyalz club" },
+                description: {
+                  es: "El sistema de fidelización para que siempre vuelvan.",
+                  en: "The loyalty system that keeps them coming back.",
+                },
+                ctaLabel: { es: "Demo Gratis", en: "Free demo" },
+                ctaHref: "/contact",
+                image: "/club.png",
+                features: [
+                  {
+                    title: { es: "Estampas", en: "Stamps" },
+                    description: {
+                      es: "Sellos digitales en Apple y Google Wallet.",
+                      en: "Digital stamps on Apple and Google Wallet.",
+                    },
+                  },
+                  {
+                    title: { es: "Notificaciones Push", en: "Push notifications" },
+                    description: {
+                      es: "Mensajes automáticos para traer clientes de vuelta.",
+                      en: "Automated messages to bring customers back.",
+                    },
+                  },
+                  {
+                    title: { es: "Dashboard", en: "Dashboard" },
+                    description: {
+                      es: "Métricas y control de tu programa en un solo lugar.",
+                      en: "Metrics and control of your program in one place.",
+                    },
+                  },
+                ],
+              },
+              audienceInformation: {
+                backgroundColor: "#5C4578",
+                title: {
+                  es: "Pagos directo desde la mesa.",
+                  en: "Pay directly from the table.",
+                },
+                description: {
+                  es: "Recibe pedidos por WhatsApp, cobra con link de pago. Sin comisión de apps de delivery.",
+                  en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
+                },
+                image: "/ipadpro.png",
+              },
             },
             {
               key: "delivery-first",
@@ -1021,6 +1121,56 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 bottomLabel: { es: "Empezá hoy sin fricción.", en: "Start today with zero friction." },
                 bottomCtaLabel: { es: "Empezar ahora", en: "Get started" },
                 bottomCtaHref: "/contact",
+              },
+              audienceDemo: {
+                backgroundColor: "#6B4E9B",
+                label: {
+                  es: "¿Necesitás elegir uno para empezar?",
+                  en: "Need to pick one to get started?",
+                },
+                title: { es: "Loyalz club", en: "Loyalz club" },
+                description: {
+                  es: "El sistema de fidelización para que siempre vuelvan.",
+                  en: "The loyalty system that keeps them coming back.",
+                },
+                ctaLabel: { es: "Demo Gratis", en: "Free demo" },
+                ctaHref: "/contact",
+                image: "/club.png",
+                features: [
+                  {
+                    title: { es: "Estampas", en: "Stamps" },
+                    description: {
+                      es: "Sellos digitales en Apple y Google Wallet.",
+                      en: "Digital stamps on Apple and Google Wallet.",
+                    },
+                  },
+                  {
+                    title: { es: "Notificaciones Push", en: "Push notifications" },
+                    description: {
+                      es: "Mensajes automáticos para traer clientes de vuelta.",
+                      en: "Automated messages to bring customers back.",
+                    },
+                  },
+                  {
+                    title: { es: "Dashboard", en: "Dashboard" },
+                    description: {
+                      es: "Métricas y control de tu programa en un solo lugar.",
+                      en: "Metrics and control of your program in one place.",
+                    },
+                  },
+                ],
+              },
+              audienceInformation: {
+                backgroundColor: "#5C4578",
+                title: {
+                  es: "Pagos directo desde la mesa.",
+                  en: "Pay directly from the table.",
+                },
+                description: {
+                  es: "Recibe pedidos por WhatsApp, cobra con link de pago. Sin comisión de apps de delivery.",
+                  en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
+                },
+                image: "/ipadpro.png",
               },
             },
           ],

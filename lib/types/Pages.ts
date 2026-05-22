@@ -431,6 +431,34 @@ export type AudienceEcosystemProps = {
   bottomCtaHref: string
 }
 
+/** Feature card inside the audiences demo block. */
+export type AudienceDemoFeatureItem = {
+  title: LocalizedString
+  description: LocalizedString
+}
+
+/** Demo block — hero with image + infinite feature carousel on a colored surface. */
+export type AudienceDemoProps = {
+  /** CSS hex color for the full-bleed section background. */
+  backgroundColor: string
+  label?: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  ctaLabel: LocalizedString
+  ctaHref: string
+  image: string
+  features: AudienceDemoFeatureItem[]
+}
+
+/** Information block — 7/5 grid hero with tinted panel + image. */
+export type AudienceInformationProps = {
+  /** Accent / dark tone — text on left panel and right panel surface. */
+  backgroundColor: string
+  title: LocalizedString
+  description: LocalizedString
+  image: string
+}
+
 /**
  * Single tab item for the audiences page.
  *
@@ -471,6 +499,12 @@ export type AudienceTabItem = {
 
   /* --- Block: ecosystem --- */
   audienceEcosystem?: AudienceEcosystemProps
+
+  /* --- Block: demo --- */
+  audienceDemo?: AudienceDemoProps
+
+  /* --- Block: information --- */
+  audienceInformation?: AudienceInformationProps
 }
 
 /** Audiences page — tabbed content for cafes, restaurantes, delivery-first. */
