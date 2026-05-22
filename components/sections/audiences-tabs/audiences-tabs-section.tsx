@@ -33,7 +33,7 @@ export default function AudiencesTabsSection({
     return (
       <SectionWrapper backgroundImage={backgroundImage} className={className}>
         {titleText ? (
-          <motion.div className="mb-12 text-center">
+          <motion.div className="mb-8 text-center sm:mb-12">
             <h1 className="text-balance text-3xl font-bold tracking-tight text-background sm:text-5xl lg:text-[64px] lg:leading-[1.05]">
               {titleText}
             </h1>
@@ -47,7 +47,7 @@ export default function AudiencesTabsSection({
     <Tabs defaultValue={defaultTab} className="w-full">
       <SectionWrapper backgroundImage={backgroundImage} className={className}>
         {titleText ? (
-          <motion.div className="mb-12 text-center">
+          <motion.div className="mb-8 text-center sm:mb-12">
             <h1 className="text-balance text-3xl font-bold tracking-tight text-background sm:text-5xl lg:text-[64px] lg:leading-[1.05]">
               {titleText}
             </h1>
@@ -55,7 +55,7 @@ export default function AudiencesTabsSection({
         ) : null}
 
         <TabsList
-          className="mb-0 grid! h-auto! w-full grid-cols-3 gap-0 rounded-none bg-transparent p-0"
+          className="mb-0 grid! h-auto! w-full gap-0 rounded-none bg-transparent p-0"
           style={{
             gridTemplateColumns: `repeat(${validTabs.length}, minmax(0, 1fr))`,
           }}
@@ -65,18 +65,20 @@ export default function AudiencesTabsSection({
               key={tab.key}
               value={tab.key}
               className={cn(
-                "flex-none! h-auto! max-h-none! w-full min-w-0 cursor-pointer flex-col items-center justify-start gap-[32px] rounded-none border-0 bg-transparent px-4 py-0",
-                "text-center text-[32px] font-medium leading-none text-background shadow-none! transition-none",
+                "flex-none! h-auto! max-h-none! w-full min-w-0 cursor-pointer flex-col items-center justify-between gap-2 rounded-none border-0 bg-transparent px-1 py-3 sm:justify-start sm:gap-4 sm:px-3 sm:py-0 lg:gap-8 lg:px-4",
+                "text-center text-sm font-medium leading-tight text-background shadow-none! transition-none sm:text-lg lg:text-[32px] lg:leading-none",
                 "after:hidden hover:text-background",
                 "data-[state=active]:bg-transparent data-[state=active]:text-background data-[state=active]:shadow-none",
                 "data-[state=active]:**:data-tab-indicator:bg-chart-5",
               )}
             >
-              <span className="w-full text-center">{t(tab.tabLabel)}</span>
+              <span className="w-full min-w-0 text-balance break-words">
+                {t(tab.tabLabel)}
+              </span>
               <span
                 data-tab-indicator
                 aria-hidden
-                className="h-1 w-full shrink-0 bg-transparent"
+                className="mt-auto h-1 w-full shrink-0 bg-transparent sm:mt-0"
               />
             </TabsTrigger>
           ))}

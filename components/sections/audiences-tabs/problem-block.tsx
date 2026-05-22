@@ -60,7 +60,7 @@ export function AudienceProblemBlock({ data }: Props) {
             return (
               <div
                 key={i}
-                className="row-span-3 grid grid-rows-subgrid gap-2 rounded-4xl p-8 text-foreground"
+                className="flex flex-col gap-2 rounded-4xl p-6 text-foreground sm:p-8 lg:row-span-3 lg:grid lg:grid-rows-subgrid"
                 style={{ backgroundColor: cardBg }}
               >
                 <span

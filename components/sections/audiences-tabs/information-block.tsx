@@ -31,7 +31,7 @@ export function AudienceInformationBlock({ data }: Props) {
       >
         <div className="space-y-4" style={{ color: accent }}>
           {titleText ? (
-            <h2 className="max-w-xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[48px] lg:leading-[1.08]">
+            <h2 className="max-w-xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-[48px] lg:leading-[1.08]">
               {titleText}
             </h2>
           ) : null}

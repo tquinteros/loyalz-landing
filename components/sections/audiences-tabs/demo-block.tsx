@@ -94,7 +94,7 @@ export function AudienceDemoBlock({ data }: Props) {
         <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-0">
           <div className="flex min-h-[280px] flex-col justify-between px-5 sm:min-h-[360px] lg:min-h-[520px] lg:px-16 lg:pr-8">
             {labelText ? (
-              <p className="text-xl text-foreground/90 sm:text-[32px] max-w-md">
+              <p className="max-w-md text-base text-foreground/90 sm:text-xl lg:text-[32px]">
                 {labelText}
               </p>
             ) : (
@@ -107,7 +107,7 @@ export function AudienceDemoBlock({ data }: Props) {
                 </h2>
               ) : null}
               {descriptionText ? (
-                <p className="max-w-lg text-lg leading-8 font-bold text-foreground/70 sm:text-[32px]">
+                <p className="max-w-lg text-base leading-relaxed font-bold text-foreground/70 sm:text-lg lg:text-[32px] lg:leading-8">
                   {descriptionText}
                 </p>
               ) : null}
@@ -124,9 +124,9 @@ export function AudienceDemoBlock({ data }: Props) {
           </div>
 
           {imageSrc ? (
-            <div className="relative min-h-[280px] sm:min-h-[360px] lg:min-h-[520px]">
+            <div className="relative min-h-[240px] sm:min-h-[360px] lg:min-h-[520px]">
               <div
-                className="absolute inset-y-0 left-5 right-0 overflow-hidden rounded-[20px] border-20 border-solid sm:left-8 lg:left-auto lg:-right-[20%] lg:w-[calc(100%+20%)]"
+                className="absolute inset-y-0 left-0 right-0 overflow-hidden rounded-2xl border-[12px] border-solid sm:rounded-[20px] sm:border-[16px] lg:left-auto lg:-right-[20%] lg:w-[calc(100%+20%)] lg:border-[20px]"
                 style={{ borderColor: borderMuted(sectionBg, 20) }}
               >
                 <Image
