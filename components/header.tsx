@@ -138,7 +138,7 @@ function LanguageSwitcher({ className }: { className?: string }) {
         <Button
           variant="ghost"
           size="sm"
-          className={`h-9 gap-2 px-2 text-sm font-semibold text-black hover:bg-black/5 focus-visible:ring-black/20 ${className ?? ""}`}
+          className={`h-9 gap-2 px-2 text-sm font-semibold text-background hover:bg-background/5 focus-visible:ring-background/20 ${className ?? ""}`}
           aria-label={t(HEADER_COPY.changeLanguage)}
         >
           <GlobeIcon className="h-4 w-4" />
@@ -272,7 +272,7 @@ const Header = () => {
   useEffect(() => () => clearMegaCloseTimer(), [])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-b-foreground/10 bg-[#F8F5EF] text-black">
+    <header className="sticky top-0 z-50 w-full border-b border-b-foreground/10 bg-foreground text-background">
       <div className="flex h-20 w-full items-center justify-between px-5 py-3 text-sm lg:px-16">
         <div className="flex items-center gap-5">
           <Link href="/">
@@ -334,29 +334,34 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 rounded-lg text-black hover:bg-black/5"
+                className="h-10 w-10 rounded-lg text-background hover:bg-background/5"
                 aria-label={t(HEADER_COPY.openMenu)}
               >
                 <MenuIcon className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[86vw] bg-[#F8F5EF] p-0 text-black">
+            <SheetContent side="right" className="w-[86vw] bg-foreground p-0 text-background">
               <div className="flex h-full flex-col">
-                <div className="border-b border-black/10 px-6 py-5">
-                  <SheetTitle className="text-base text-black">{t(HEADER_COPY.menuTitle)}</SheetTitle>
+                <div className="border-b border-background/10 px-6 py-5">
+                  <SheetTitle className="text-base text-background">{t(HEADER_COPY.menuTitle)}</SheetTitle>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-5">
-                  <nav className="space-y-2 text-base font-semibold text-black">
+                  <nav className="space-y-2 text-base font-semibold text-background">
                     <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/">
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/audiences">
+                        {t(HEADER_COPY.audience)}
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/">
                         {t(HEADER_COPY.company)}
                       </Link>
                     </SheetClose>
 
                     <Accordion type="single" collapsible>
                       <AccordionItem value="productos" className="border-b-0">
-                        <AccordionTrigger className="rounded-md px-2 py-2 text-base font-semibold text-black hover:no-underline">
+                        <AccordionTrigger className="rounded-md px-2 py-2 text-base font-semibold text-background hover:no-underline">
                           {t(HEADER_COPY.products)}
                         </AccordionTrigger>
                         <AccordionContent className="pb-0">
@@ -365,7 +370,7 @@ const Header = () => {
                               <SheetClose asChild key={card.id}>
                                 <Link
                                   href={card.href}
-                                  className="block rounded-md px-2 py-2 text-sm font-medium hover:bg-black/5"
+                                  className="block rounded-md px-2 py-2 text-sm font-medium hover:bg-background/5"
                                 >
                                   {t(card.title)}
                                 </Link>
@@ -377,17 +382,17 @@ const Header = () => {
                     </Accordion>
 
                     <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-black/5" href="/blogs">
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/blogs">
                         {t(HEADER_COPY.businessTypes)}
                       </Link>
                     </SheetClose>
-                    <HeaderAdminLink variant="sheet" className="block rounded-md px-2 py-2 hover:bg-black/5">
+                    <HeaderAdminLink variant="sheet" className="block rounded-md px-2 py-2 hover:bg-background/5">
                       {t(HEADER_COPY.admin)}
                     </HeaderAdminLink>
                   </nav>
                 </div>
 
-                <div className="border-t border-black/10 p-6">
+                <div className="border-t border-background/10 p-6">
                   <SheetClose asChild>
                     <Button className="h-11 w-full">
                       {t(HEADER_COPY.ctaConsult)} <ArrowRightIcon className="h-4 w-4" />

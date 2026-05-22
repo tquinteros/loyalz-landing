@@ -12,6 +12,7 @@ import { AudienceTabMobileEditor } from "./editors/mobile-editor"
 import { AudienceTabEcosystemEditor } from "./editors/ecosystem-editor"
 import { AudienceTabDemoEditor } from "./editors/demo-editor"
 import { AudienceTabInformationEditor } from "./editors/information-editor"
+import { AudienceTabPricingEditor } from "./editors/pricing-editor"
 
 type Props = {
   panel: AudienceTabPanelId
@@ -43,6 +44,8 @@ export function AudienceTabPanelContent({ panel, tab: rawTab, onChange }: Props)
       return <AudienceTabDemoEditor tab={tab} onChange={onChange} />
     case "information":
       return <AudienceTabInformationEditor tab={tab} onChange={onChange} />
+    case "pricing":
+      return <AudienceTabPricingEditor tab={tab} onChange={onChange} />
     default:
       return null
   }

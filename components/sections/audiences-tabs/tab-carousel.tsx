@@ -57,7 +57,7 @@ export function AudienceTabCarousel({ images, alt }: Props) {
                   sizes="80vw"
                   className="h-full w-full object-cover"
                 />
-                <div className="absolute bottom-16 right-16 flex items-center gap-4 rounded-[14px] bg-foreground p-4 px-8 text-background">
+                <div className="absolute bottom-4 right-4 md:bottom-16 md:right-16 flex items-center gap-4 rounded-[14px] bg-foreground p-4 px-8 text-background">
                   <Image src="/qr.svg" alt="Loyalz" width={62} height={62} />
                   <div className="flex flex-col gap-2">
                     <span className="text-[14px]">Powered by</span>

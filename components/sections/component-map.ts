@@ -897,7 +897,8 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 ],
               },
               audienceInformation: {
-                backgroundColor: "#5C4578",
+                backgroundColor: "#E5E0EF",
+                textColor: "#5C4578",
                 title: {
                   es: "Pagos directo desde la mesa.",
                   en: "Pay directly from the table.",
@@ -907,6 +908,69 @@ export function createDefaultSection<T extends PageSection["type"]>(
                   en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
                 },
                 image: "/ipadpro.png",
+              },
+              audiencePricing: {
+                label: { es: "Valores Individuales", en: "Individual pricing" },
+                title: {
+                  es: "Los precios claros. Como todo en Loyalz.",
+                  en: "Clear pricing. Like everything at Loyalz.",
+                },
+                description: {
+                  es: "Empezá con lo que necesitás hoy. Escalá cuando quieras.",
+                  en: "Start with what you need today. Scale when you want.",
+                },
+                pricingCards: [
+                  {
+                    price: "19",
+                    title: { es: "Loyalz club", en: "Loyalz club" },
+                    label: { es: "Fidelización.", en: "Loyalty." },
+                    description: {
+                      es: "Mantené las visitas de tus clientes con su fidelización.",
+                      en: "Keep customers coming back with loyalty.",
+                    },
+                    backgroundColor: "#754390",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz reviews", en: "Loyalz reviews" },
+                    label: { es: "Reputación.", en: "Reputation." },
+                    description: {
+                      es: "Más reseñas positivas en Google sin tener que pedirlas.",
+                      en: "More positive Google reviews without asking.",
+                    },
+                    backgroundColor: "#9A8B4A",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz ai", en: "Loyalz ai" },
+                    label: { es: "Asistente inteligente.", en: "Smart assistant." },
+                    description: {
+                      es: "Tu asistente que responde, reactiva y vende 24/7.",
+                      en: "Your assistant that replies, re-engages and sells 24/7.",
+                    },
+                    backgroundColor: "#2E4A6E",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pos", en: "Loyalz pos" },
+                    label: { es: "Operación y punto de venta.", en: "Operations and POS." },
+                    description: {
+                      es: "Obtené los datos de tus clientes de forma automática.",
+                      en: "Get customer data automatically.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pay", en: "Loyalz pay" },
+                    label: { es: "Pago directo.", en: "Direct payment." },
+                    description: {
+                      es: "Link de pago directo. Cobrás como siempre, sin markup.",
+                      en: "Direct payment link. Charge as always, no markup.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                ],
               },
             },
             {
@@ -1029,7 +1093,8 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 ],
               },
               audienceInformation: {
-                backgroundColor: "#5C4578",
+                backgroundColor: "#E5E0EF",
+                textColor: "#5C4578",
                 title: {
                   es: "Pagos directo desde la mesa.",
                   en: "Pay directly from the table.",
@@ -1039,6 +1104,69 @@ export function createDefaultSection<T extends PageSection["type"]>(
                   en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
                 },
                 image: "/ipadpro.png",
+              },
+              audiencePricing: {
+                label: { es: "Valores Individuales", en: "Individual pricing" },
+                title: {
+                  es: "Los precios claros. Como todo en Loyalz.",
+                  en: "Clear pricing. Like everything at Loyalz.",
+                },
+                description: {
+                  es: "Empezá con lo que necesitás hoy. Escalá cuando quieras.",
+                  en: "Start with what you need today. Scale when you want.",
+                },
+                pricingCards: [
+                  {
+                    price: "19",
+                    title: { es: "Loyalz club", en: "Loyalz club" },
+                    label: { es: "Fidelización.", en: "Loyalty." },
+                    description: {
+                      es: "Mantené las visitas de tus clientes con su fidelización.",
+                      en: "Keep customers coming back with loyalty.",
+                    },
+                    backgroundColor: "#754390",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz reviews", en: "Loyalz reviews" },
+                    label: { es: "Reputación.", en: "Reputation." },
+                    description: {
+                      es: "Más reseñas positivas en Google sin tener que pedirlas.",
+                      en: "More positive Google reviews without asking.",
+                    },
+                    backgroundColor: "#9A8B4A",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz ai", en: "Loyalz ai" },
+                    label: { es: "Asistente inteligente.", en: "Smart assistant." },
+                    description: {
+                      es: "Tu asistente que responde, reactiva y vende 24/7.",
+                      en: "Your assistant that replies, re-engages and sells 24/7.",
+                    },
+                    backgroundColor: "#2E4A6E",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pos", en: "Loyalz pos" },
+                    label: { es: "Operación y punto de venta.", en: "Operations and POS." },
+                    description: {
+                      es: "Obtené los datos de tus clientes de forma automática.",
+                      en: "Get customer data automatically.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pay", en: "Loyalz pay" },
+                    label: { es: "Pago directo.", en: "Direct payment." },
+                    description: {
+                      es: "Link de pago directo. Cobrás como siempre, sin markup.",
+                      en: "Direct payment link. Charge as always, no markup.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                ],
               },
             },
             {
@@ -1161,7 +1289,8 @@ export function createDefaultSection<T extends PageSection["type"]>(
                 ],
               },
               audienceInformation: {
-                backgroundColor: "#5C4578",
+                backgroundColor: "#E5E0EF",
+                textColor: "#5C4578",
                 title: {
                   es: "Pagos directo desde la mesa.",
                   en: "Pay directly from the table.",
@@ -1171,6 +1300,69 @@ export function createDefaultSection<T extends PageSection["type"]>(
                   en: "Receive WhatsApp orders, charge with payment links. No delivery app fees.",
                 },
                 image: "/ipadpro.png",
+              },
+              audiencePricing: {
+                label: { es: "Valores Individuales", en: "Individual pricing" },
+                title: {
+                  es: "Los precios claros. Como todo en Loyalz.",
+                  en: "Clear pricing. Like everything at Loyalz.",
+                },
+                description: {
+                  es: "Empezá con lo que necesitás hoy. Escalá cuando quieras.",
+                  en: "Start with what you need today. Scale when you want.",
+                },
+                pricingCards: [
+                  {
+                    price: "19",
+                    title: { es: "Loyalz club", en: "Loyalz club" },
+                    label: { es: "Fidelización.", en: "Loyalty." },
+                    description: {
+                      es: "Mantené las visitas de tus clientes con su fidelización.",
+                      en: "Keep customers coming back with loyalty.",
+                    },
+                    backgroundColor: "#754390",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz reviews", en: "Loyalz reviews" },
+                    label: { es: "Reputación.", en: "Reputation." },
+                    description: {
+                      es: "Más reseñas positivas en Google sin tener que pedirlas.",
+                      en: "More positive Google reviews without asking.",
+                    },
+                    backgroundColor: "#9A8B4A",
+                  },
+                  {
+                    price: "19",
+                    title: { es: "Loyalz ai", en: "Loyalz ai" },
+                    label: { es: "Asistente inteligente.", en: "Smart assistant." },
+                    description: {
+                      es: "Tu asistente que responde, reactiva y vende 24/7.",
+                      en: "Your assistant that replies, re-engages and sells 24/7.",
+                    },
+                    backgroundColor: "#2E4A6E",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pos", en: "Loyalz pos" },
+                    label: { es: "Operación y punto de venta.", en: "Operations and POS." },
+                    description: {
+                      es: "Obtené los datos de tus clientes de forma automática.",
+                      en: "Get customer data automatically.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                  {
+                    price: "0",
+                    title: { es: "Loyalz pay", en: "Loyalz pay" },
+                    label: { es: "Pago directo.", en: "Direct payment." },
+                    description: {
+                      es: "Link de pago directo. Cobrás como siempre, sin markup.",
+                      en: "Direct payment link. Charge as always, no markup.",
+                    },
+                    backgroundColor: "#E85A4F",
+                  },
+                ],
               },
             },
           ],

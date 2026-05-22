@@ -26,13 +26,18 @@ export function AudienceTabInformationEditor({ tab, onChange }: Props) {
   return (
     <div className="space-y-5">
       <HexColorField
-        label="Color de acento / panel derecho *"
+        label="Color de fondo — panel izquierdo *"
         value={value.backgroundColor}
         onChange={(backgroundColor) => set("backgroundColor", backgroundColor)}
       />
+      <HexColorField
+        label="Color de texto — título y descripción *"
+        value={value.textColor ?? value.backgroundColor}
+        onChange={(textColor) => set("textColor", textColor)}
+      />
       <p className="text-xs text-muted-foreground">
-        El panel izquierdo usa un tinte claro de este color; el texto y el panel
-        de la imagen usan el color directo.
+        El panel izquierdo usa el color de fondo. El título y la descripción usan
+        el color de texto (misma familia, tono más oscuro en el diseño).
       </p>
 
       <LocalizedField

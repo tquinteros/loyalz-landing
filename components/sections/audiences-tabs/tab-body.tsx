@@ -13,6 +13,7 @@ import { AudienceMobileBlock } from "./mobile-block"
 import { AudienceEcosystemBlock } from "./ecosystem-block"
 import { AudienceDemoBlock } from "./demo-block"
 import { AudienceInformationBlock } from "./information-block"
+import { AudiencePricingBlock } from "./pricing-block"
 
 type Props = {
   tab: AudienceTabItem
@@ -52,7 +53,10 @@ export function AudienceTabBody({ tab: rawTab }: Props) {
       <AudienceDemoBlock data={tab.audienceDemo} />
 
       <SectionWrapper className="bg-foreground pt-16 pb-16 sm:pt-24 sm:pb-24">
-        <AudienceInformationBlock data={tab.audienceInformation} />
+        <div className="space-y-16 sm:space-y-24">
+          <AudienceInformationBlock data={tab.audienceInformation} />
+          <AudiencePricingBlock data={tab.audiencePricing} />
+        </div>
       </SectionWrapper>
     </>
   )

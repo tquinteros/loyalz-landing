@@ -3,6 +3,7 @@ import type {
   AudienceEcosystemProps,
   AudienceInformationProps,
   AudienceMobileProps,
+  AudiencePricingProps,
   AudienceProblemProps,
   AudienceStepsProps,
   AudienceTabItem,
@@ -61,6 +62,11 @@ export const AUDIENCE_TAB_PANELS = [
     label: "Information",
     description: "Grid 7/5 con título, descripción e imagen.",
   },
+  {
+    id: "pricing",
+    label: "Pricing",
+    description: "Encabezado y tarjetas de precios.",
+  },
 ] as const
 
 export type AudienceTabPanelId = (typeof AUDIENCE_TAB_PANELS)[number]["id"]
@@ -106,10 +112,18 @@ export const EMPTY_AUDIENCE_DEMO: AudienceDemoProps = {
 }
 
 export const EMPTY_AUDIENCE_INFORMATION: AudienceInformationProps = {
-  backgroundColor: "#5C4578",
+  backgroundColor: "#E5E0EF",
+  textColor: "#5C4578",
   title: EMPTY_LOCALIZED,
   description: EMPTY_LOCALIZED,
   image: "",
+}
+
+export const EMPTY_AUDIENCE_PRICING: AudiencePricingProps = {
+  label: EMPTY_LOCALIZED,
+  title: EMPTY_LOCALIZED,
+  description: EMPTY_LOCALIZED,
+  pricingCards: [],
 }
 
 /** Ensures nested blocks exist when loading legacy CMS JSON. */
@@ -123,7 +137,16 @@ export function normalizeAudienceTab(tab: AudienceTabItem): AudienceTabItem {
     audienceMobile: tab.audienceMobile ?? EMPTY_AUDIENCE_MOBILE,
     audienceEcosystem: tab.audienceEcosystem ?? EMPTY_AUDIENCE_ECOSYSTEM,
     audienceDemo: tab.audienceDemo ?? EMPTY_AUDIENCE_DEMO,
-    audienceInformation:
-      tab.audienceInformation ?? EMPTY_AUDIENCE_INFORMATION,
+    audienceInformation: tab.audienceInformation
+      ? {
+          ...EMPTY_AUDIENCE_INFORMATION,
+          ...tab.audienceInformation,
+          textColor:
+            tab.audienceInformation.textColor ??
+            tab.audienceInformation.backgroundColor ??
+            EMPTY_AUDIENCE_INFORMATION.textColor,
+        }
+      : EMPTY_AUDIENCE_INFORMATION,
+    audiencePricing: tab.audiencePricing ?? EMPTY_AUDIENCE_PRICING,
   }
 }

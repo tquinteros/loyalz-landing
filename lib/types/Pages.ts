@@ -450,13 +450,33 @@ export type AudienceDemoProps = {
   features: AudienceDemoFeatureItem[]
 }
 
-/** Information block — 7/5 grid hero with tinted panel + image. */
+/** Information block — 7/5 grid hero with colored panel + image. */
 export type AudienceInformationProps = {
-  /** Accent / dark tone — text on left panel and right panel surface. */
+  /** Left panel background (hex). */
   backgroundColor: string
+  /** Title and description color (hex); same family as the panel accent. */
+  textColor: string
   title: LocalizedString
   description: LocalizedString
   image: string
+}
+
+/** Pricing card inside the audiences pricing block. */
+export type AudiencePricingCardItem = {
+  /** Display price (e.g. "29" or "0" for free). */
+  price: string
+  title: LocalizedString
+  label: LocalizedString
+  description: LocalizedString
+  backgroundColor: string
+}
+
+/** Pricing block — header + colored pricing cards. */
+export type AudiencePricingProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  pricingCards: AudiencePricingCardItem[]
 }
 
 /**
@@ -505,6 +525,9 @@ export type AudienceTabItem = {
 
   /* --- Block: information --- */
   audienceInformation?: AudienceInformationProps
+
+  /* --- Block: pricing --- */
+  audiencePricing?: AudiencePricingProps
 }
 
 /** Audiences page — tabbed content for cafes, restaurantes, delivery-first. */
