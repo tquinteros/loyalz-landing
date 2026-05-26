@@ -25,11 +25,10 @@ const LANGUAGE_OPTIONS: ReadonlyArray<{ value: Locale; label: string; short: str
 ]
 
 const HEADER_COPY = {
-  audience: { es: "Audiencias", en: "Audiences" },
   about: { es: "About", en: "About" },
-  company: { es: "Empresa", en: "Company" },
-  products: { es: "Productos", en: "Products" },
-  businessTypes: { es: "Tipos de Negocio", en: "Business types" },
+  solutions: { es: "Soluciones", en: "Solutions" },
+  businessTypes: { es: "Tipos de Negocios", en: "Business types" },
+  blogs: { es: "Blogs", en: "Blogs" },
   admin: { es: "Admin", en: "Admin" },
   ctaConsult: {
     es: "Consulta por tu negocio",
@@ -279,12 +278,8 @@ const Header = () => {
             <Image src="/logo.svg" alt="logo" width={36} height={36} />
           </Link>
           <nav className="hidden items-center gap-5 font-semibold md:flex">
-            <Link href="/audiences" className="transition-opacity hover:opacity-70">{t(HEADER_COPY.audience)}</Link>
             <Link href="/about" className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.about)}
-            </Link>
-            <Link href="/" className="transition-opacity hover:opacity-70">
-              {t(HEADER_COPY.company)}
             </Link>
 
             <div
@@ -298,7 +293,7 @@ const Header = () => {
                 aria-expanded={megaOpen}
                 aria-haspopup="true"
               >
-                {t(HEADER_COPY.products)}
+                {t(HEADER_COPY.solutions)}
                 <motion.span
                   animate={{ rotate: megaOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -309,8 +304,11 @@ const Header = () => {
               </button>
             </div>
 
-            <Link href="/blogs" className="transition-opacity hover:opacity-70">
+            <Link href="/audiences" className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.businessTypes)}
+            </Link>
+            <Link href="/blogs" className="transition-opacity hover:opacity-70">
+              {t(HEADER_COPY.blogs)}
             </Link>
             <HeaderAdminLink className="transition-opacity hover:opacity-70">
               {t(HEADER_COPY.admin)}
@@ -349,20 +347,15 @@ const Header = () => {
                 <div className="flex-1 overflow-y-auto px-6 py-5">
                   <nav className="space-y-2 text-base font-semibold text-background">
                     <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/audiences">
-                        {t(HEADER_COPY.audience)}
-                      </Link>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/">
-                        {t(HEADER_COPY.company)}
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/about">
+                        {t(HEADER_COPY.about)}
                       </Link>
                     </SheetClose>
 
                     <Accordion type="single" collapsible>
                       <AccordionItem value="productos" className="border-b-0">
                         <AccordionTrigger className="rounded-md px-2 py-2 text-base font-semibold text-background hover:no-underline">
-                          {t(HEADER_COPY.products)}
+                          {t(HEADER_COPY.solutions)}
                         </AccordionTrigger>
                         <AccordionContent className="pb-0">
                           <div className="space-y-1 pl-2">
@@ -382,8 +375,13 @@ const Header = () => {
                     </Accordion>
 
                     <SheetClose asChild>
-                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/blogs">
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/audiences">
                         {t(HEADER_COPY.businessTypes)}
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link className="block rounded-md px-2 py-2 hover:bg-background/5" href="/blogs">
+                        {t(HEADER_COPY.blogs)}
                       </Link>
                     </SheetClose>
                     <HeaderAdminLink variant="sheet" className="block rounded-md px-2 py-2 hover:bg-background/5">
