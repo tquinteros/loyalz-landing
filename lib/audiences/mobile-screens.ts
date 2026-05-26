@@ -15,7 +15,10 @@ export const MOBILE_CASE_ASPECT = 449 / 495
  * Tuned for `public/mobile-case.png` (449×495).
  */
 export const MOBILE_SCREEN_INSET = {
-  top: "5.5%",
+  top: {
+    mobile: "-3%",
+    desktop: "-10%",
+  },
   left: "6.8%",
   right: "6.8%",
   bottom: "5.5%",

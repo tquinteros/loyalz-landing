@@ -2,15 +2,9 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
 import type { CTA, HeroSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
@@ -32,6 +26,11 @@ function signedDistance(index: number, current: number, total: number) {
   if (delta > half) delta -= total
   if (delta < -half) delta += total
   return delta
+}
+
+function defaultCenterIndex(total: number) {
+  if (total <= 0) return 0
+  return Math.floor((total - 1) / 2)
 }
 
 export default function HeroSection(props: Props) {
@@ -58,22 +57,8 @@ export default function HeroSection(props: Props) {
     return list
   }, [legacy.images])
 
-  const [center, setCenter] = useState(0)
-  const [api, setApi] = useState<CarouselApi>()
-
   const n = urls.length
-
-  useEffect(() => {
-    if (!api) return
-    const onSelect = () => setCenter(api.selectedScrollSnap())
-    onSelect()
-    api.on("select", onSelect)
-    api.on("reInit", onSelect)
-    return () => {
-      api.off("select", onSelect)
-      api.off("reInit", onSelect)
-    }
-  }, [api])
+  const center = defaultCenterIndex(n)
 
   return (
     <SectionWrapper
@@ -84,78 +69,55 @@ export default function HeroSection(props: Props) {
       )}
       innerClassName="flex h-full min-h-0 flex-1 flex-col px-5 lg:px-16"
     >
-      {/* Title */}
-      <header className="shrink-0 pt-8 text-center max-w-7xl mx-auto md:pt-12">
+      <header className="mx-auto max-w-7xl shrink-0 pt-6 text-center md:pt-10 lg:pt-12">
         <h1 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-7xl">
           {titleText}
         </h1>
       </header>
 
-      {/* Carousel */}
-      <div className="relative shrink-0 flex items-center justify-center py-4 md:py-6">
-        <Carousel
-          setApi={setApi}
-          opts={{
-            align: "center",
-            loop: true,
-            containScroll: false,
-            dragFree: false,
-            startIndex: n > 0 ? Math.floor((n - 1) / 2) : 0,
-          }}
-          className="w-full overflow-visible"
-        >
-          <CarouselContent className="ml-0 items-center [&>*]:-ml-8 md:[&>*]:-ml-14 lg:[&>*]:-ml-16">
-            {urls.map((src, i) => {
-              const delta = signedDistance(i, center, n)
-              const absDelta = Math.abs(delta)
-              const isCenter = absDelta === 0
+      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-visible py-2 md:py-4">
+        <div className="flex w-full max-w-6xl items-center justify-center overflow-visible px-2 sm:max-w-7xl">
+          {urls.map((src, i) => {
+            const delta = signedDistance(i, center, n)
+            const absDelta = Math.abs(delta)
+            const isCenter = absDelta === 0
 
-              const scale = isCenter ? 1.08 : absDelta === 1 ? 0.8 : 0.64
-              const rotate = isCenter ? 0 : delta < 0 ? -6 : 6
-              const opacity = isCenter ? 1 : absDelta === 1 ? 0.85 : 0.5
+            const scale = isCenter ? 1 : absDelta === 1 ? 0.82 : 0.68
+            const rotate = isCenter ? 0 : delta < 0 ? -6 : 6
+            const opacity = isCenter ? 1 : absDelta === 1 ? 0.9 : 0.55
 
-              return (
-                <CarouselItem
-                  key={`${src}-${i}`}
-                  className="basis-[38%] md:basis-[26%] lg:basis-[22%] pl-0 flex items-center justify-center"
-                >
-                  <motion.div
-                    onClick={() => api?.scrollTo(i)}
-                    initial={{ opacity: 0, y: 20, scale: 0.78 }}
-                    animate={{ opacity, y: 0, scale, rotate }}
-                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                    className={cn(
-                      "relative w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/6",
-                      // 2:3 ratio via aspect-ratio — height comes from width
-                      "aspect-[2/3]",
-                      isCenter
-                        ? "z-30 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.9)]"
-                        : absDelta === 1
-                          ? "z-20"
-                          : "z-10",
-                    )}
-                  >
-                    <Image
-                      src={src}
-                      alt=""
-                      priority={isCenter}
-                      fill
-                      sizes="(max-width: 768px) 38vw, (max-width: 1024px) 26vw, 22vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </CarouselItem>
-              )
-            })}
-          </CarouselContent>
-        </Carousel>
+            return (
+              <motion.div
+                key={`${src}-${i}`}
+                initial={{ opacity: 0, y: 20, scale: 0.78 }}
+                animate={{ opacity, y: 0, scale, rotate }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className={cn(
+                  "relative shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-white/6 aspect-2/3",
+                  "h-[min(46dvh,520px)] w-auto sm:h-[min(50dvh,560px)] md:h-[min(54dvh,600px)] lg:h-[min(58dvh,640px)]",
+                  "-ml-24 first:ml-0 sm:-ml-28 md:-ml-32 lg:-ml-36 xl:-ml-40",
+                  isCenter
+                    ? "z-30 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.9)]"
+                    : absDelta === 1
+                      ? "z-20"
+                      : "z-10",
+                )}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  priority={isCenter}
+                  fill
+                  sizes="(max-width: 768px) 70vw, (max-width: 1024px) 45vw, 420px"
+                  className="object-cover"
+                />
+              </motion.div>
+            )
+          })}
+        </div>
       </div>
 
-      {/* Spacer */}
-      <div className="flex-1" />
-
-      {/* CTAs */}
-      <footer className="flex shrink-0 flex-wrap items-center justify-center gap-3 pb-10 pt-2 md:gap-4 md:pb-14">
+      <div className="flex shrink-0 flex-wrap items-center justify-center gap-3 pb-8 pt-2 md:gap-4 md:pb-12">
         <Button
           asChild
           variant="secondary"
@@ -172,7 +134,7 @@ export default function HeroSection(props: Props) {
             <Link href={secondaryCtaHref}>{secondaryCtaLabel}</Link>
           </Button>
         ) : null}
-      </footer>
+      </div>
     </SectionWrapper>
   )
 }

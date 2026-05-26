@@ -16,6 +16,7 @@ import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
+import HomeIntegrationsSection from "./home-integrations-section"
 import HomeAutonomySection from "./home-autonomy-section"
 import HomeSupportSection from "./home-support-section"
 import LegalDocumentSection from "./legal-document-section"
@@ -92,6 +93,8 @@ function HomeSectionSwitch({ section }: { section: PageSection }) {
       return <NotificationClubSection {...section.props} {...common} />
     case "home_business":
       return <HomeBusinessSection {...section.props} {...common} />
+    case "home_integrations":
+      return <HomeIntegrationsSection {...section.props} {...common} />
     case "home_autonomy":
       return <HomeAutonomySection {...section.props} {...common} />
     case "home_support":

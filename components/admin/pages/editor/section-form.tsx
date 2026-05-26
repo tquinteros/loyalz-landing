@@ -37,6 +37,7 @@ import { ClubActivationForm } from "./forms/club-activation-form"
 import { HomeActivationForm } from "./forms/home-activation-form"
 import { NotificationClubForm } from "./forms/notification-club-form"
 import { HomeBusinessForm } from "./forms/home-business-form"
+import { HomeIntegrationsForm } from "./forms/home-integrations-form"
 import { HomeAutonomyForm } from "./forms/home-autonomy-form"
 import { HomeSupportForm } from "./forms/home-support-form"
 import { LegalDocumentForm } from "./forms/legal-document-form"
@@ -203,6 +204,8 @@ function TypedSectionBody({
       )
     case "home_business":
       return <HomeBusinessForm value={section.props} onChange={onPropsChange} />
+    case "home_integrations":
+      return <HomeIntegrationsForm value={section.props} onChange={onPropsChange} />
     case "home_autonomy":
       return <HomeAutonomyForm value={section.props} onChange={onPropsChange} />
     case "home_support":

@@ -269,6 +269,21 @@ export type HomeSupportSectionProps = {
   }>
 }
 
+/** Home — integrations showcase: label, copy, hero image, feature grid with brand colors. */
+export type HomeIntegrationsSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description?: LocalizedString
+  image: string
+  infoFeatures: LocalizedString
+  features: Array<{
+    title: LocalizedString
+    /** CSS hex color for icon background, border, and title, e.g. "#754390". */
+    backgroundColor: string
+    description: LocalizedString
+  }>
+}
+
 /** Home — business types showcase: label + title + description, business cards grid, CTAs, stats grid. */
 export type HomeBusinessSectionProps = {
   label?: LocalizedString
@@ -556,6 +571,7 @@ export type CommonCTASection = BaseSection<"common_cta", CommonCTASectionProps>
 export type ClubActivationSection = BaseSection<"club_activation", ClubActivationSectionProps>
 export type HomeActivationSection = BaseSection<"home_activation", HomeActivationSectionProps>
 export type HomeBusinessSection = BaseSection<"home_business", HomeBusinessSectionProps>
+export type HomeIntegrationsSection = BaseSection<"home_integrations", HomeIntegrationsSectionProps>
 export type HomeAutonomySection = BaseSection<"home_autonomy", HomeAutonomySectionProps>
 export type HomeSupportSection = BaseSection<"home_support", HomeSupportSectionProps>
 export type NotificationClubSection = BaseSection<"notification_club", NotificationClubSectionProps>
@@ -589,6 +605,7 @@ export type PageSection =
   | HomeActivationSection
   | NotificationClubSection
   | HomeBusinessSection
+  | HomeIntegrationsSection
   | HomeAutonomySection
   | HomeSupportSection
   | LegalDocumentSection

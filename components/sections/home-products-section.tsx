@@ -14,10 +14,110 @@ type Props = HomeProductsSectionProps & {
   className?: string | null
 }
 
+type Product = HomeProductsSectionProps["products"][number]
+
+/** Copies so `translate(-100/COPIES%)` equals exactly one copy length. */
+const COPIES = 4
+
 function toInternalHref(href?: string | null): string | null {
   const trimmed = href?.trim()
   if (!trimmed) return null
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`
+}
+
+function ProductLoopCard({
+  product,
+  index,
+  isActive,
+  orientation,
+  onActivate,
+  t,
+}: {
+  product: Product
+  index: number
+  isActive: boolean
+  orientation: "vertical" | "horizontal"
+  onActivate: (index: number) => void
+  t: ReturnType<typeof useT>
+}) {
+  const productTitle = t(product.title)
+  const productSubtitle = t(product.subtitle)
+  const productDescription = t(product.description)
+  const productHref = toInternalHref(product.href)
+
+  const cardClassName = cn(
+    "group block w-full overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/40",
+    isActive ? "bg-card shadow-xl shadow-black/10" : "bg-background/10",
+    orientation === "horizontal" && "h-full",
+  )
+
+  const handlers = {
+    onMouseEnter: () => onActivate(index),
+    onFocus: () => onActivate(index),
+  }
+
+  const content = (
+    <div
+      className={cn(
+        "flex gap-4 p-5 sm:p-6",
+        orientation === "vertical" ? "flex-col" : "h-full min-h-36 flex-col sm:min-h-40",
+      )}
+    >
+      <div
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl sm:h-14 sm:w-14"
+        style={{ backgroundColor: product.color }}
+      >
+        <Image
+          src="/logo.svg"
+          alt=""
+          width={28}
+          height={28}
+          className="filter-[brightness(0)_invert(1)]"
+        />
+      </div>
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <h3 className="text-lg font-bold leading-snug text-background sm:text-xl">
+          {(() => {
+            const words = productTitle.split(/\s+/).filter(Boolean)
+            return words.map((word, i) => (
+              <span
+                key={`${word}-${i}`}
+                style={i === 1 ? { color: product.color } : undefined}
+              >
+                {i > 0 ? " " : ""}
+                {word}
+              </span>
+            ))
+          })()}
+        </h3>
+        {productSubtitle ? (
+          <span className="inline-flex font-bold" style={{ color: product.color }}>
+            {productSubtitle}
+          </span>
+        ) : null}
+        {productDescription ? (
+          <p className="text-sm leading-relaxed text-background/90 sm:text-base">
+            {productDescription}
+          </p>
+        ) : null}
+      </div>
+    </div>
+  )
+
+  if (productHref) {
+    return (
+      <Link href={productHref} className={cardClassName} {...handlers}>
+        {content}
+      </Link>
+    )
+  }
+
+  return (
+    <button type="button" className={cardClassName} {...handlers}>
+      {content}
+    </button>
+  )
 }
 
 export default function HomeProductsSection({
@@ -32,7 +132,16 @@ export default function HomeProductsSection({
   const titleText = t(title)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
-  if (!products.length) {
+  const items = products.filter(
+    (p) =>
+      p &&
+      (t(p.title).trim() ||
+        t(p.subtitle).trim() ||
+        t(p.description).trim() ||
+        p.image?.trim()),
+  )
+
+  if (!items.length) {
     return (
       <SectionWrapper backgroundImage={backgroundImage} className={className}>
         {titleText ? <h2 className="text-2xl font-bold sm:text-4xl">{titleText}</h2> : null}
@@ -41,170 +150,142 @@ export default function HomeProductsSection({
   }
 
   const activeIndex = hoveredIndex ?? 0
-  const active = products[Math.min(activeIndex, products.length - 1)]
+  const active = items[Math.min(activeIndex, items.length - 1)]
   const activeTitle = t(active?.title)
+  const loop = Array.from({ length: COPIES }, () => items).flat()
+  const duration = Math.max(28, items.length * 9)
+
+  const activate = (index: number) => setHoveredIndex(index % items.length)
 
   return (
-    <SectionWrapper backgroundImage={backgroundImage} className={cn(className, "")}>
-      {(labelText || titleText) && (
-        <div className="mb-8 space-y-3">
-          {labelText ? (
-            <div className="flex items-center gap-3 border border-black/10  w-fit p-2 px-3 rounded">
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="10" height="10" rx="2" fill="black" />
-              </svg>
-              <p className="text-xs sm:text-[14px] tracking-widest text-muted-foreground">
-                {labelText}
-              </p>
-
+    <SectionWrapper
+      backgroundImage={backgroundImage}
+      className={cn(className, "overflow-hidden")}
+      innerClassName="relative px-0"
+    >
+      {/* Desktop — vertical loop outside padded container, full section height */}
+      <div className="pointer-events-none absolute -top-16 -bottom-16 right-0 hidden w-[min(100%,26rem)] overflow-hidden sm:-top-24 sm:-bottom-24 md:pointer-events-auto md:block lg:w-[42%] xl:w-[38%]">
+        <motion.div
+          className="flex w-full flex-col will-change-transform"
+          animate={{ y: ["0%", `-${100 / COPIES}%`] }}
+          transition={{
+            duration,
+            ease: "linear",
+            repeat: Infinity,
+          }}
+        >
+          {loop.map((product, i) => (
+            <div
+              key={`products-marquee-y-${i}`}
+              className="mb-4 w-full shrink-0 px-4 lg:px-6 xl:pr-16"
+              aria-hidden={i >= items.length ? true : undefined}
+            >
+              <ProductLoopCard
+                product={product}
+                index={i % items.length}
+                isActive={(i % items.length) === activeIndex}
+                orientation="vertical"
+                onActivate={activate}
+                t={t}
+              />
             </div>
-          ) : null}
-          {titleText ? (
-            <h2 className="max-w-5xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-6xl">
-              {titleText}
-            </h2>
-          ) : null}
-        </div>
-      )}
+          ))}
+        </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
-        <div className="flex min-h-0 min-w-0 flex-col lg:h-full">
-          <ol
-            className="flex flex-col space-y-3 lg:h-full lg:min-h-0 lg:grid lg:grid-cols-1 lg:gap-3 lg:space-y-0"
-            style={{
-              gridTemplateRows: `repeat(${products.length}, minmax(0, 1fr))`,
+      <div className="relative">
+        <div className="relative z-10 px-5 lg:max-w-[58%] lg:pl-16 lg:pr-10 xl:max-w-[55%]">
+          {(labelText || titleText) && (
+            <div className="mb-8 space-y-3">
+              {labelText ? (
+                <div className="flex w-fit items-center gap-3 rounded border border-black/10 p-2 px-3">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <rect width="10" height="10" rx="2" fill="black" />
+                  </svg>
+                  <p className="text-xs tracking-widest text-muted-foreground sm:text-[14px]">
+                    {labelText}
+                  </p>
+                </div>
+              ) : null}
+              {titleText ? (
+                <h2 className="max-w-5xl text-2xl font-bold tracking-tight sm:text-3xl lg:text-[56px]">
+                  {titleText}
+                </h2>
+              ) : null}
+            </div>
+          )}
+
+          <div className="relative w-full max-h-[80dvh] overflow-hidden rounded-[24px]">
+            <AnimatePresence mode="sync" initial={false}>
+              {active?.image ? (
+                <motion.div
+                  key={activeIndex}
+                  className="relative w-full"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  <Image
+                    src={active.image}
+                    alt={activeTitle}
+                    width={1024}
+                    height={1024}
+                    className="h-auto max-h-[80dvh] w-full object-cover"
+                    priority={activeIndex === 0}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="placeholder"
+                  className="flex min-h-48 items-center justify-center p-8 text-center text-sm text-muted-foreground"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  {t({ es: "No hay imagen disponible.", en: "No image available." })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Mobile — horizontal loop on x-axis, bleeds past horizontal padding */}
+        <div className="relative -mx-5 mt-8 w-[calc(100%+2.5rem)] overflow-hidden px-5 md:hidden">
+          <motion.div
+            className="flex w-max flex-row will-change-transform"
+            animate={{ x: ["0%", `-${100 / COPIES}%`] }}
+            transition={{
+              duration,
+              ease: "linear",
+              repeat: Infinity,
             }}
-            onMouseLeave={() => setHoveredIndex(null)}
           >
-            {products.map((product, index) => {
-              const isActive = hoveredIndex === index
-              const productTitle = t(product.title)
-              const productSubtitle = t(product.subtitle)
-              const productDescription = t(product.description)
-              const productHref = toInternalHref(product.href)
-              const cardClassName = cn(
-                "group relative flex w-full min-h-28 items-stretch overflow-hidden rounded-2xl text-left transition-all duration-300 ease-out",
-                "focus-visible:outline-none",
-                "lg:h-full lg:min-h-0",
-                isActive
-                  ? "bg-card shadow-xl shadow-black/10"
-                  : "bg-transparent shadow-none",
-              )
-              const cardHandlers = {
-                onMouseEnter: () => setHoveredIndex(index),
-                onFocus: () => setHoveredIndex(index),
-                onBlur: (e: React.FocusEvent<HTMLElement>) => {
-                  const next = e.relatedTarget as Node | null
-                  if (next && e.currentTarget.closest("ol")?.contains(next)) return
-                  setHoveredIndex(null)
-                },
-              }
-              const cardContent = (
-                <>
-                    <AnimatePresence initial={false}>
-                      {isActive ? (
-                        <motion.div
-                          key="icon"
-                          aria-hidden="true"
-                          initial={{ width: 0, opacity: 0 }}
-                          animate={{ width: "7rem", opacity: 1 }}
-                          exit={{ width: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                          className="relative flex h-28 shrink-0 items-center justify-center self-stretch lg:h-full lg:min-h-28"
-                          style={{ backgroundColor: product.color }}
-                        >
-                          <Image
-                            src="/logo.svg"
-                            alt=""
-                            width={48}
-                            height={48}
-                            className="filter-[brightness(0)_invert(1)]"
-                          />
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
-
-                    <div className="flex min-h-28 min-w-0 flex-1 flex-col justify-center gap-1.5 px-5 lg:h-full lg:min-h-0">
-
-                      <h3 className="text-lg font-bold text-background sm:text-3xl">
-                        {(() => {
-                          const words = productTitle.split(/\s+/).filter(Boolean)
-                          return words.map((word, i) => (
-                            <span
-                              key={`${word}-${i}`}
-                              style={i === 1 ? { color: product.color } : undefined}
-                            >
-                              {i > 0 ? " " : ""}
-                              {word}
-                            </span>
-                          ))
-                        })()}
-                      </h3>
-                      <span
-                        className="inline-flex w-fit font-bold"
-                        style={{ color: product.color }}
-                      >
-                        {productSubtitle}
-                      </span>
-                      <p className="text-sm leading-relaxed text-background sm:text-base">
-                        {productDescription}
-                      </p>
-                    </div>
-                </>
-              )
-              return (
-                <li key={`${productTitle}-${index}`} className="flex min-h-0 flex-col lg:min-h-0 lg:h-full">
-                  {productHref ? (
-                    <Link
-                      href={productHref}
-                      className={cardClassName}
-                      {...cardHandlers}
-                    >
-                      {cardContent}
-                    </Link>
-                  ) : (
-                    <button type="button" className={cardClassName} {...cardHandlers}>
-                      {cardContent}
-                    </button>
-                  )}
-                </li>
-              )
-            })}
-          </ol>
-        </div>
-        <div className="relative min-h-[260px] min-w-0 overflow-hidden rounded-[24px] lg:h-full lg:min-h-[568px]">
-          <AnimatePresence mode="sync" initial={false}>
-            {active?.image ? (
-              <motion.div
-                key={activeIndex}
-                className="absolute inset-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+            {loop.map((product, i) => (
+              <div
+                key={`products-marquee-x-${i}`}
+                className="mr-4 w-[min(85vw,20rem)] shrink-0"
+                aria-hidden={i >= items.length ? true : undefined}
               >
-                <Image
-                  src={active.image}
-                  alt={activeTitle}
-                  className="object-cover w-full h-full"
-                  width={1024}
-                  height={1024}
-                  priority={activeIndex === 0}
+                <ProductLoopCard
+                  product={product}
+                  index={i % items.length}
+                  isActive={(i % items.length) === activeIndex}
+                  orientation="horizontal"
+                  onActivate={activate}
+                  t={t}
                 />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="placeholder"
-                className="absolute inset-0 flex items-center justify-center p-8 text-center text-sm text-muted-foreground"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-              >
-                {t({ es: "No hay imagen disponible.", en: "No image available." })}
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </SectionWrapper>

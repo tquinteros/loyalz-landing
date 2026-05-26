@@ -11,7 +11,7 @@ type Props = HomeSupportSectionProps & {
   className?: string | null
 }
 
-/** Copies of the support list so `translateY(-100/COPIES%)` equals exactly one copy height. */
+/** Copies of the support list so one translate step equals exactly one copy. */
 const COPIES = 4
 
 export default function HomeSupportSection({
@@ -33,15 +33,17 @@ export default function HomeSupportSection({
       ? Array.from({ length: COPIES }, () => items).flat()
       : []
   const duration = Math.max(28, items.length * 9)
+  const mobileDuration = Math.max(24, items.length * 7)
 
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
       backgroundOverlayClassName="bg-black/30"
-      className={cn(className, "")}
+      className={cn(className, "overflow-hidden md:h-[80dvh]")}
+      innerClassName="static"
     >
-      <div className="grid items-center lg:px-24 gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-        <div className="flex min-h-[min(60vh,22rem)] flex-col justify-center md:min-h-112">
+      <div className="relative z-10 mx-auto grid w-full items-center gap-10 md:min-h-[calc(80dvh-12rem)] md:w-[80%] md:grid-cols-[minmax(0,1fr)_minmax(18rem,28vw)] md:gap-12 lg:gap-16">
+        <div className="flex min-h-[min(60vh,22rem)] flex-col justify-center md:min-h-0">
           {(titleText || subtitleText) ? (
             <div className="max-w-2xl space-y-0">
               {titleText ? (
@@ -57,48 +59,85 @@ export default function HomeSupportSection({
             </div>
           ) : null}
         </div>
-        
+
         {items.length > 0 ? (
-          <div className="relative mx-auto w-full max-w-md overflow-hidden rounded-[28px] md:max-w-none md:rounded-[32px]">
-            <div className="relative h-[min(70vh,32rem)] sm:h-[min(72vh,36rem)]">
-              <motion.div
-                className="flex w-full flex-col will-change-transform"
-                animate={{ y: ["0%", `-${100 / COPIES}%`] }}
-                transition={{
-                  duration,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-              >
-                {loop.map((item, i) => {
-                  const cardTitle = t(item.title)
-                  const cardDescription = t(item.description)
-                  return (
-                    <div
-                      key={`support-marquee-${i}`}
-                      className="mb-4 w-full lg:w-[450px]  shrink-0"
-                      aria-hidden={i >= items.length ? true : undefined}
-                    >
-                      <div className="rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7 md:min-h-46 md:p-8">
-                        {cardTitle ? (
-                          <h3 className="text-lg font-bold leading-snug sm:text-2xl">
-                            {cardTitle}
-                          </h3>
-                        ) : null}
-                        {cardDescription ? (
-                          <p className="mt-3 text-sm leading-relaxed text-background sm:text-base">
-                            {cardDescription}
-                          </p>
-                        ) : null}
-                      </div>
+          <div className="-mx-5 overflow-hidden py-2 md:hidden">
+            <motion.div
+              className="flex w-max will-change-transform"
+              animate={{ x: ["0%", `-${100 / COPIES}%`] }}
+              transition={{
+                duration: mobileDuration,
+                ease: "linear",
+                repeat: Infinity,
+              }}
+            >
+              {loop.map((item, i) => {
+                const cardTitle = t(item.title)
+                const cardDescription = t(item.description)
+                return (
+                  <div
+                    key={`support-mobile-marquee-${i}`}
+                    className="mr-4 w-[82vw] max-w-sm shrink-0 pl-5 first:pl-5"
+                    aria-hidden={i >= items.length ? true : undefined}
+                  >
+                    <div className="h-full rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7">
+                      {cardTitle ? (
+                        <h3 className="text-lg font-bold leading-snug sm:text-2xl">
+                          {cardTitle}
+                        </h3>
+                      ) : null}
+                      {cardDescription ? (
+                        <p className="mt-3 text-sm leading-relaxed text-background sm:text-base">
+                          {cardDescription}
+                        </p>
+                      ) : null}
                     </div>
-                  )
-                })}
-              </motion.div>
-            </div>
+                  </div>
+                )
+              })}
+            </motion.div>
           </div>
         ) : null}
       </div>
+
+      {items.length > 0 ? (
+        <div className="pointer-events-none absolute inset-y-0 right-[15%] z-10 hidden w-[min(32vw,34rem)] overflow-hidden md:block">
+          <motion.div
+            className="flex w-full flex-col items-end will-change-transform"
+            animate={{ y: ["0%", `-${100 / COPIES}%`] }}
+            transition={{
+              duration,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+          >
+            {loop.map((item, i) => {
+              const cardTitle = t(item.title)
+              const cardDescription = t(item.description)
+              return (
+                <div
+                  key={`support-desktop-marquee-${i}`}
+                  className="mb-4 w-[min(36vw,450px)] shrink-0"
+                  aria-hidden={i >= items.length ? true : undefined}
+                >
+                  <div className="rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7 md:min-h-46 md:p-8">
+                    {cardTitle ? (
+                      <h3 className="text-lg font-bold leading-snug sm:text-2xl">
+                        {cardTitle}
+                      </h3>
+                    ) : null}
+                    {cardDescription ? (
+                      <p className="mt-3 text-sm leading-relaxed text-background sm:text-base">
+                        {cardDescription}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              )
+            })}
+          </motion.div>
+        </div>
+      ) : null}
     </SectionWrapper>
   )
 }

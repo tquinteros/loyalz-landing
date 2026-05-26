@@ -61,19 +61,19 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/club",
     bgColor: "#754390",
-    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557263292-g41wuvp9gvr.png",
+    image: "/header/club.jpg",
   },
   {
     id: "reviews",
     title: { es: "Loyalz reviews", en: "Loyalz reviews" },
     description: {
-      es: "La herramienta que convierte experiencias en resenas.",
+      es: "La herramienta que convierte experiencias en reseñas.",
       en: "The tool that turns experiences into reviews.",
     },
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
-    bgColor: "#EC491E",
-    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557584034-92crq1z7zcs.png",
+    bgColor: "#8C7F1F",
+    image: "/header/reviews.jpg",
   },
   {
     id: "pos",
@@ -84,8 +84,8 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     },
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
-    bgColor: "#8C7F1F",
-    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778558783917-67yl2yx7m1f.png",
+    bgColor: "#EC491E",
+    image: "/header/pos.jpg",
   },
   {
     id: "ai",
@@ -97,7 +97,7 @@ const PRODUCT_CARDS: ReadonlyArray<HeaderProductCard> = [
     cta: { es: "Conoce mas", en: "Learn more" },
     href: "/blogs",
     bgColor: "#013662",
-    image: "https://tkbdqmgjqfwwkrfvwolr.supabase.co/storage/v1/object/public/loyalz-landing/media/1778557551558-1mi70bu528ai.png",
+    image: "/header/ai.png",
   },
 ]
 

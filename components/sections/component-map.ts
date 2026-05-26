@@ -20,6 +20,7 @@ import ClubActivationSection from "./club-activation-section"
 import HomeActivationSection from "./home-activation-section"
 import NotificationClubSection from "./notification-club-section"
 import HomeBusinessSection from "./home-business-section"
+import HomeIntegrationsSection from "./home-integrations-section"
 import HomeAutonomySection from "./home-autonomy-section"
 import HomeSupportSection from "./home-support-section"
 import LegalDocumentSection from "./legal-document-section"
@@ -563,6 +564,61 @@ export function createDefaultSection<T extends PageSection["type"]>(
               message: {
                 es: "Hola 🙌 ¡Estas cerca de Cofi, pasa por el local y recordá que cada 6 te regalamos 1 Café ☕️🫶",
                 en: "Hi 🙌 You're near Cofi — drop by, and remember every 6 visits we treat you to 1 free coffee ☕️🫶",
+              },
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "home_integrations":
+      return {
+        ...base,
+        type: "home_integrations",
+        props: {
+          label: { es: "Integración Loyalz", en: "Loyalz integration" },
+          title: {
+            es: "Un sistema conectado en un único lugar",
+            en: "One connected system in a single place",
+          },
+          description: {
+            es: "El POS es gratis. Pero es la base que hace que todo lo demás funcione mejor.",
+            en: "The POS is free. But it's the foundation that makes everything else work better.",
+          },
+          image: "/header/pos.jpg",
+          infoFeatures: {
+            es: "¿Cómo funcionan en conjunto?",
+            en: "How do they work together?",
+          },
+          features: [
+            {
+              title: { es: "+ Club", en: "+ Club" },
+              backgroundColor: "#754390",
+              description: {
+                es: "Los puntos se acumulan automáticamente al cobrar. Sin fricción para el cliente ni para el mozo.",
+                en: "Points accumulate automatically at checkout. No friction for the customer or the server.",
+              },
+            },
+            {
+              title: { es: "+ Reviews", en: "+ Reviews" },
+              backgroundColor: "#8C7F1F",
+              description: {
+                es: "Después de cada compra se dispara una solicitud automática de reseña.",
+                en: "After every purchase, an automatic review request is triggered.",
+              },
+            },
+            {
+              title: { es: "+ Pos", en: "+ Pos" },
+              backgroundColor: "#EC491E",
+              description: {
+                es: "El panel que unifica todo el sistema. Ticket promedio, frecuencia, datos de clientes, top productos, rating: todo en un único lugar.",
+                en: "The dashboard that unifies the whole system. Average ticket, frequency, customer data, top products, rating — all in one place.",
+              },
+            },
+            {
+              title: { es: "+ AI", en: "+ AI" },
+              backgroundColor: "#013662",
+              description: {
+                es: "Si un cliente deja de venir, AI sabe qué pedía y le escribe con una promo relevante.",
+                en: "If a customer stops coming, AI knows what they ordered and sends them a relevant promo.",
               },
             },
           ],
@@ -1517,6 +1573,13 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description: "Label, title, description, business cards grid and colored stats grid.",
     component: HomeBusinessSection,
   },
+  home_integrations: {
+    type: "home_integrations",
+    label: "Home Integrations",
+    description:
+      "Label, title, description, hero image, info features title and 4-column feature cards.",
+    component: HomeIntegrationsSection,
+  },
   home_autonomy: {
     type: "home_autonomy",
     label: "Home Autonomy",
@@ -1596,6 +1659,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "home_products",
     "home_solutions",
     "home_business",
+    "home_integrations",
     "home_activation",
     "home_autonomy",
     "home_support",

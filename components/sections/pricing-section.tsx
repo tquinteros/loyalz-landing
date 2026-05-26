@@ -52,17 +52,29 @@ export default function PricingSection({
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={`${className} bg-foreground`}>
       {(labelText || titleText || descriptionText) && (
-        <div className="mx-auto mb-12 max-w-3xl text-center">
+        <div className="mx-auto mb-12 max-w-3xl flex flex-col items-center gap-2 text-center">
           {labelText ? (
-            <p className={`mb-3 text-xs ${pricingStyles.cardText} font-semibold uppercase tracking-widest `}>
-              {labelText}
-            </p>
+            <div className="flex w-fit justify-center items-center gap-3 rounded border border-background p-2 px-3">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <rect width="10" height="10" rx="2" fill="currentColor" />
+              </svg>
+              <p className="text-xs tracking-widest text-background sm:text-[14px]">
+                {labelText}
+              </p>
+            </div>
           ) : null}
           {titleText ? (
-            <h2 className={`text-4xl ${pricingStyles.cardText} font-bold tracking-tight sm:text-6xl max-w-2xl mx-auto`}>{titleText}</h2>
+            <h2 className={`text-4xl ${pricingStyles.cardText} font-bold tracking-tight sm:text-[56px] max-w-4xl mx-auto`}>{titleText}</h2>
           ) : null}
           {descriptionText ? (
-            <p className={`mt-3 ${pricingStyles.cardText}`}>{descriptionText}</p>
+            <p className={`mt-3 ${pricingStyles.cardText} text-[18px]`}>{descriptionText}</p>
           ) : null}
         </div>
       )}

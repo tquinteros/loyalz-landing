@@ -9,8 +9,6 @@ import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
 import { useT } from "@/providers/language-provider"
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon } from "lucide-react"
-
 type Props = HomeBusinessSectionProps & {
   backgroundImage?: string | null
   className?: string | null
@@ -88,13 +86,17 @@ export default function HomeBusinessSection({
                 onMouseEnter={() => setHoveredCard(i)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                {/* Image — animates from 62% to 100% on hover */}
-                <motion.div
-                  className="absolute inset-x-0 top-0 overflow-hidden rounded-2xl"
-                  animate={{ height: isHovered ? "100%" : "62%" }}
-                  transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1], delay: isHovered ? 0.15 : 0 }}
-                >
-                  {card.image ? (
+                {card.image ? (
+                  <motion.div
+                    className="absolute inset-0 z-1 overflow-hidden rounded-2xl"
+                    initial={false}
+                    animate={{
+                      clipPath: isHovered
+                        ? "inset(0% 0% 0% 0% round 16px)"
+                        : "inset(0% 0% 38% 0% round 16px)",
+                    }}
+                    transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+                  >
                     <Image
                       src={card.image}
                       alt={cardTitle}
@@ -102,28 +104,25 @@ export default function HomeBusinessSection({
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, 33vw"
                     />
-                  ) : (
-                    <div className="h-full w-full" aria-hidden />
-                  )}
 
-                  {/* Blur + dark gradient overlay — reveals on hover */}
-                  <motion.div
-                    className="absolute inset-x-0 bottom-0 h-3/5 backdrop-blur-xl"
-                    style={{
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.65) 15%, rgba(0,0,0,0.1) 60%, transparent 100%)",
-                      WebkitMaskImage:
-                        "linear-gradient(to top, black 35%, transparent 100%)",
-                      maskImage:
-                        "linear-gradient(to top, black 35%, transparent 100%)",
-                    }}
-                    animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                  />
-                </motion.div>
+                    <motion.div
+                      className="absolute inset-x-0 bottom-0 h-3/5 backdrop-blur-xl"
+                      style={{
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.65) 15%, rgba(0,0,0,0.1) 60%, transparent 100%)",
+                        WebkitMaskImage:
+                          "linear-gradient(to top, black 35%, transparent 100%)",
+                        maskImage:
+                          "linear-gradient(to top, black 35%, transparent 100%)",
+                      }}
+                      initial={false}
+                      animate={{ opacity: isHovered ? 1 : 0 }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                    />
+                  </motion.div>
+                ) : null}
 
-                {/* Text — fixed at bottom, plain on rest, overlaid on hover */}
-                <div className="absolute inset-x-0 bottom-0 p-5">
+                <div className="absolute inset-x-0 bottom-0 z-2 p-5">
                   <h3 className="text-xl font-bold text-foreground sm:text-2xl lg:text-[28px]">
                     {cardTitle}
                   </h3>
@@ -198,9 +197,7 @@ export default function HomeBusinessSection({
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         priority={index < 3}
                       />
-                    ) : (
-                      <div className="h-full w-full bg-muted" aria-hidden />
-                    )}
+                    ) : null}
                   </div>
 
                   <div

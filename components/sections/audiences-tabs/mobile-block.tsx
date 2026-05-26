@@ -84,9 +84,8 @@ export function AudienceMobileBlock({ tabKey, data }: Props) {
             })}
 
             <div
-              className="absolute z-0 overflow-hidden rounded-[1.35rem]"
+              className="absolute z-0 overflow-hidden rounded-[1.35rem] top-[-3%] lg:top-[-10%]"
               style={{
-                top: MOBILE_SCREEN_INSET.top,
                 left: MOBILE_SCREEN_INSET.left,
                 right: MOBILE_SCREEN_INSET.right,
                 bottom: MOBILE_SCREEN_INSET.bottom,

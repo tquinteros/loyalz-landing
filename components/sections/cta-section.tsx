@@ -26,7 +26,7 @@ const CTASection = ({ title, label, backgroundImage, className }: Props) => {
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="10" height="10" rx="2" fill="#F8F5EF" />
                     </svg>
-                    <span className="text-foreground">{labelText}</span>
+                    <span className="text-foreground text-[14px]">{labelText}</span>
                 </div>
                 <h2 className="text-3xl max-w-7xl font-semibold text-foreground tracking-tight sm:text-6xl">
                     {titleText}

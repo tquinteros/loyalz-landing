@@ -40,48 +40,52 @@ export default function BrandMarqueeSection({
   const duration = Math.max(20, items.length * 4)
 
   return (
-    <SectionWrapper
-      backgroundImage={backgroundImage}
-      className={cn("overflow-hidden rounded-full!", className)}
-      innerClassName="px-0! lg:px-0! rounded-full!"
-    >
-      {titleText ? (
-        <div className="mb-10 text-center sm:mb-14">
-          <h2 className="text-2xl font-bold tracking-tight text-background sm:text-3xl lg:text-[32px]">
-            {titleText}
-          </h2>
-        </div>
-      ) : null}
+    <div className="bg-background">
 
-      {items.length > 0 ? (
-        <div className="relative w-full overflow-hidden">
-          <motion.ul
-            className="flex w-max items-center"
-            animate={{ x: ["0%", `-${100 / COPIES}%`] }}
-            transition={{
-              duration,
-              ease: "linear",
-              repeat: Infinity,
-            }}
-          >
-            {loop.map((brand, i) => (
-              <li
-                key={`${brand.logo}-${i}`}
-                className="relative flex h-12 shrink-0 items-center justify-center pr-12 sm:h-24 sm:pr-16 lg:pr-20"
-                aria-hidden={i >= items.length ? true : undefined}
-              >
-                <Image
-                  src={brand.logo}
-                  alt={brand.name ?? ""}
-                  width={256}
-                  height={64}
-                  className="h-full w-auto object-contain"
-                />
-              </li>
-            ))}
-          </motion.ul>
-        </div>
-      ) : null}
-    </SectionWrapper>
+      <SectionWrapper
+        backgroundImage={backgroundImage}
+        className={cn("overflow-hidden rounded-t-[32px]", className)}
+        innerClassName="px-0! lg:px-0! "
+      >
+        {titleText ? (
+          <div className="mb-10 text-center sm:mb-14">
+            <h2 className="text-2xl font-bold tracking-tight text-background sm:text-3xl lg:text-[32px]">
+              {titleText}
+            </h2>
+          </div>
+        ) : null}
+
+        {items.length > 0 ? (
+          <div className="relative w-full overflow-hidden">
+            <motion.ul
+              className="flex w-max items-center"
+              animate={{ x: ["0%", `-${100 / COPIES}%`] }}
+              transition={{
+                duration,
+                ease: "linear",
+                repeat: Infinity,
+              }}
+            >
+              {loop.map((brand, i) => (
+                <li
+                  key={`${brand.logo}-${i}`}
+                  className="relative flex h-12 shrink-0 items-center justify-center pr-12 sm:h-24 sm:pr-16 lg:pr-20"
+                  aria-hidden={i >= items.length ? true : undefined}
+                >
+                  <Image
+                    src={brand.logo}
+                    alt={brand.name ?? ""}
+                    width={256}
+                    height={64}
+                    className="h-full w-auto object-contain"
+                  />
+                </li>
+              ))}
+            </motion.ul>
+          </div>
+        ) : null}
+      </SectionWrapper>
+    </div>
+
   )
 }

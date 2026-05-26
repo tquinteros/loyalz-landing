@@ -45,12 +45,12 @@ export default function ProductPricingSection({
               </div>
             ) : null}
             {titleText ? (
-              <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-[56px]">
                 {titleText}
               </h2>
             ) : null}
             {descriptionText ? (
-              <p className="text-base text-foreground/90 sm:text-xl">{descriptionText}</p>
+              <p className="text-base text-foreground sm:text-lg">{descriptionText}</p>
             ) : null}
           </div>
         )}
@@ -77,19 +77,19 @@ export default function ProductPricingSection({
                 >
                   <p
                     className={cn(
-                      "text-lg font-semibold",
+                      "text-lg font-semibold opacity-70",
                       isFree ? "invisible" : "text-foreground",
                     )}
                     aria-hidden={isFree}
                   >
                     {t({ es: "Desde", en: "From" })}
                   </p>
-                  <p className="mt-2 text-6xl font-bold leading-none">
+                  <p className="mt-2 text-6xl lg:text-[80px] opacity-70 font-bold leading-none">
                     {isFree ? t({ es: "Free", en: "Free" }) : `$${card.price}`}
                   </p>
                   <p
                     className={cn(
-                      "mt-2 text-lg font-medium",
+                      "mt-0 text-lg font-medium",
                       isFree ? "invisible" : "text-foreground/90",
                     )}
                     aria-hidden={isFree}
