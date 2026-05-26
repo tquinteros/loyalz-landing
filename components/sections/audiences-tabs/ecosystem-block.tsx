@@ -52,7 +52,7 @@ function EcosystemDetailCard({
       <div>
         {title ? (
           <h3
-            className="text-[30px] font-bold leading-none tracking-tight"
+            className="text-[30px] font-bold leading-none"
             style={{ color: accent }}
           >
             {title}

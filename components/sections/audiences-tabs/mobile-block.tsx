@@ -25,7 +25,7 @@ const STAT_SLOT_CLASS = [
 ] as const
 
 const STAT_CARD_CLASS =
-  "rounded-2xl border border-white/70 bg-white/70 p-4 shadow-[0_8px_32px_rgba(15,15,15,0.08)] backdrop-blur-[10px] backdrop-saturate-150 sm:p-5"
+  "box-border flex h-[96px] w-full flex-col justify-center rounded-2xl border border-white/70 bg-white/70 p-4 shadow-[0_8px_32px_rgba(15,15,15,0.08)] backdrop-blur-[10px] backdrop-saturate-150 sm:h-[112px]"
 
 export function AudienceMobileBlock({ tabKey, data }: Props) {
   const t = useT()
@@ -57,24 +57,24 @@ export function AudienceMobileBlock({ tabKey, data }: Props) {
                 <div
                   key={`${statTitle}-${statValue}-${index}`}
                   className={cn(
-                    "absolute z-30 w-52 sm:w-64",
+                    "absolute z-30 w-[min(72vw,260px)] sm:w-[304px]",
                     STAT_SLOT_CLASS[index] ??
                     STAT_SLOT_CLASS[index % STAT_SLOT_CLASS.length],
                   )}
                 >
                   <div className={STAT_CARD_CLASS}>
                     {statTitle ? (
-                      <p className="text-xs text-background sm:text-lg">
+                      <p className="text-xs leading-none text-background sm:text-base">
                         {statTitle}
                       </p>
                     ) : null}
                     {statValue ? (
-                      <p className="mt-1 text-3xl text-background sm:text-[54px]">
+                      <p className="mt-1 text-3xl leading-none text-background sm:text-[44px]">
                         {statValue}
                       </p>
                     ) : null}
                     {statLabel ? (
-                      <span className="mt-2 inline-block rounded-full border border-background/10 bg-foreground/55 px-2.5 py-1 text-[11px] text-background sm:text-xs">
+                      <span className="mt-2 inline-block w-fit rounded-full border border-background/10 bg-foreground/55 px-2.5 py-1 text-[11px] leading-none text-background">
                         {statLabel}
                       </span>
                     ) : null}

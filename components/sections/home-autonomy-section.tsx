@@ -92,13 +92,12 @@ export default function HomeAutonomySection({
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={cn(
-        "bg-[#F2EFE8] text-foreground dark:bg-zinc-950",
+        "bg-foreground text-foreground",
         className,
       )}
     >
       <div className="flex w-full flex-col items-center">
         <div className="relative w-full pb-6 pt-4 sm:pb-10 sm:pt-8">
-          {/* Wrapper matches iPad width so corner cards anchor to device edges */}
           <div className="relative mx-auto w-full max-w-[min(100%,min(98vw,1280px))]">
             {cornerStats.map((stat, index) => {
               const pos = CORNER_POSITIONS[index]
