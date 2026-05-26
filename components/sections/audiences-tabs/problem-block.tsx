@@ -38,7 +38,7 @@ export function AudienceProblemBlock({ data }: Props) {
           </div>
         ) : null}
         {titleText ? (
-          <h2 className="mx-auto max-w-4xl text-center text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-[56px]">
+          <h2 className="mx-auto max-w-4xl text-center text-3xl font-bold leading-none tracking-tight text-background sm:text-4xl lg:text-[56px]">
             {titleText}
           </h2>
         ) : null}
@@ -56,7 +56,7 @@ export function AudienceProblemBlock({ data }: Props) {
             const solTitle = t(sol.title)
             const solDesc = t(sol.description)
             const cardBg = sol.backgroundColor?.trim() || "#F8F5EF"
-
+            const isLightBlue = cardBg === "#B2C8D9"
             return (
               <div
                 key={i}
@@ -67,6 +67,7 @@ export function AudienceProblemBlock({ data }: Props) {
                   className={cn(
                     "mb-3 text-xs font-semibold sm:text-2xl text-foreground/60",
                     !solLabel && "invisible",
+                    isLightBlue && "text-[#013662]",
                   )}
                 >
                   {solLabel || "\u00A0"}
@@ -75,6 +76,7 @@ export function AudienceProblemBlock({ data }: Props) {
                   className={cn(
                     "text-base font-bold leading-[1.1] sm:text-[32px]",
                     !solTitle && "invisible",
+                    isLightBlue && "text-[#013662]",
                   )}
                 >
                   {solTitle || "\u00A0"}
@@ -83,6 +85,7 @@ export function AudienceProblemBlock({ data }: Props) {
                   className={cn(
                     "text-sm leading-relaxed text-foreground sm:text-[16px]",
                     !solDesc && "invisible",
+                    isLightBlue && "text-[#013662]",
                   )}
                 >
                   {solDesc || "\u00A0"}

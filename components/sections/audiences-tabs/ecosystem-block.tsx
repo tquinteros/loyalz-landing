@@ -52,7 +52,7 @@ function EcosystemDetailCard({
       <div>
         {title ? (
           <h3
-            className="text-[30px] font-bold leading-[1.1] tracking-tight"
+            className="text-[30px] font-bold leading-none tracking-tight"
             style={{ color: accent }}
           >
             {title}
@@ -60,7 +60,7 @@ function EcosystemDetailCard({
         ) : null}
         {label ? (
           <p
-            className="text-sm font-medium leading-snug text-background/50 -mt-1 sm:text-base"
+            className="text-sm font-medium leading-none text-background/50 -mt-1 sm:text-base"
             style={{ opacity: 0.55 }}
           >
             {label}
@@ -69,7 +69,7 @@ function EcosystemDetailCard({
       </div>
       {description ? (
         <p
-          className="text-lg leading-relaxed"
+          className="text-lg leading-none"
           style={{ color: accent }}
         >
           {description}
@@ -126,12 +126,12 @@ export function AudienceEcosystemBlock({ data }: Props) {
             </div>
           ) : null}
           {titleText ? (
-            <h2 className="max-w-4xl text-balance text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[56px] lg:leading-[1.05]">
+            <h2 className="max-w-4xl text-balance text-3xl font-bold leading-none tracking-tight sm:text-4xl lg:text-[56px]">
               {titleText}
             </h2>
           ) : null}
           {descriptionText ? (
-            <p className="max-w-3xl text-lg leading-relaxed text-foreground/90">
+            <p className="max-w-3xl text-lg leading-none text-foreground">
               {descriptionText}
             </p>
           ) : null}
@@ -187,7 +187,7 @@ export function AudienceEcosystemBlock({ data }: Props) {
               <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7.26499 22.4004L2.76762 19.1571L5.57848 15.3084L7.78392 12.757L4.49738 12.0218L0 10.5515L1.68652 5.31901L6.27038 6.78931L9.29746 8.08663L8.99475 4.80008V0H14.53V4.75684L14.2273 8.08663L17.2544 6.78931L21.8382 5.31901L23.5247 10.5515L19.0274 12.0218L15.7408 12.757L17.903 15.2651L20.7571 19.1571L16.2597 22.4004L13.4489 18.5517L11.7624 15.6976L10.0759 18.5084L7.26499 22.4004Z" fill="#FFB7A4" />
               </svg>
-              <p className="text-base font-bold leading-snug sm:text-lg">
+              <p className="text-base font-bold leading-none sm:text-lg">
                 {bottomLabelText}
               </p>
             </div>

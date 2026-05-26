@@ -115,7 +115,7 @@ export function AudienceMobileBlock({ tabKey, data }: Props) {
       </div>
       {titleText ? (
         <div className="relative bg-background z-30 w-full -mt-6 sm:-mt-10 lg:-mt-24 rounded-[32px] p-15">
-          <p className="text-center whitespace-pre-line text-lg font-semibold leading-snug text-foreground sm:text-2xl lg:text-[56px] lg:leading-[1.2]">
+          <p className="text-center whitespace-pre-line text-lg font-semibold leading-none text-foreground sm:text-2xl lg:text-[56px]">
             {titleText}
           </p>
         </div>

@@ -45,10 +45,10 @@ function DemoFeatureCard({
         </g>
       </svg>
       {title ? (
-        <h3 className="text-xl font-bold leading-tight sm:text-3xl">{title}</h3>
+        <h3 className="text-xl font-bold leading-none sm:text-3xl">{title}</h3>
       ) : null}
       {description ? (
-        <p className="text-base leading-6 opacity-90 sm:text-lg">
+        <p className="text-base leading-none opacity-90 sm:text-lg">
           {description}
         </p>
       ) : null}
@@ -87,14 +87,14 @@ export function AudienceDemoBlock({ data }: Props) {
 
   return (
     <section
-      className="mt-16 w-full overflow-x-hidden py-12 text-foreground sm:py-16 lg:py-20"
+      className="w-full overflow-x-hidden py-12 text-foreground sm:py-16 lg:py-20"
       style={{ backgroundColor: sectionBg }}
     >
       {hasHero ? (
         <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-0">
           <div className="flex min-h-[280px] flex-col justify-between px-5 sm:min-h-[360px] lg:min-h-[520px] lg:px-16 lg:pr-8">
             {labelText ? (
-              <p className="max-w-md text-base text-foreground/90 sm:text-xl lg:text-[32px]">
+              <p className="max-w-md text-base text-foreground font-bold sm:text-xl lg:text-[32px]">
                 {labelText}
               </p>
             ) : (
@@ -102,12 +102,12 @@ export function AudienceDemoBlock({ data }: Props) {
             )}
             <div className="mt-8 space-y-6 lg:mt-0">
               {titleText ? (
-                <h2 className="max-w-xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-[60px] lg:leading-[1.05]">
+                <h2 className="max-w-xl text-3xl font-bold leading-none tracking-tight sm:text-4xl lg:text-[60px]">
                   {titleText}
                 </h2>
               ) : null}
               {descriptionText ? (
-                <p className="max-w-lg text-base leading-relaxed font-bold text-foreground/70 sm:text-lg lg:text-[32px] lg:leading-8">
+                <p className="max-w-lg text-base leading-none font-bold text-foreground/70 sm:text-lg lg:text-[32px]">
                   {descriptionText}
                 </p>
               ) : null}

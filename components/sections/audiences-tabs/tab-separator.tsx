@@ -25,7 +25,7 @@ export function AudienceTabSeparator({ label, separatorText }: Props) {
           <span className="text-foreground">{label}</span>
         </div>
       ) : null}
-      <p className="text-xl font-bold text-foreground sm:text-[60px]">
+      <p className="text-xl font-bold leading-none text-foreground sm:text-[60px]">
         {separatorText}
       </p>
     </div>

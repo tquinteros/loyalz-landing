@@ -73,7 +73,7 @@ export function AudienceStepsBlock({ data }: Props) {
 
         <div className="flex min-w-0 flex-col justify-center">
           {titleText ? (
-            <h2 className="mb-8 max-w-xl text-2xl font-bold leading-tight tracking-tight text-background sm:text-3xl lg:mb-10 lg:text-4xl">
+            <h2 className="mb-8 max-w-xl text-2xl font-bold leading-none tracking-tight text-background sm:text-3xl lg:mb-10 lg:text-4xl">
               {titleText}
             </h2>
           ) : null}
@@ -106,7 +106,7 @@ export function AudienceStepsBlock({ data }: Props) {
                         setHoveredIndex(null)
                       }}
                     >
-                      <div className="flex items-start gap-4 pl-4 sm:gap-5">
+                      <div className="flex items-center gap-4 pl-8 sm:gap-16">
                         <span
                           className="flex size-[50px] shrink-0 items-center justify-center rounded-[10px]"
                           style={{ backgroundColor: stepBg }}
@@ -124,7 +124,7 @@ export function AudienceStepsBlock({ data }: Props) {
                           {stepTitle ? (
                             <h3
                               className={cn(
-                                "text-lg font-bold leading-snug transition-colors sm:text-xl",
+                                "text-lg font-bold leading-none transition-colors sm:text-2xl",
                                 !isActive && "text-background",
                               )}
                               style={isActive ? { color: stepBg } : undefined}
@@ -133,7 +133,7 @@ export function AudienceStepsBlock({ data }: Props) {
                             </h3>
                           ) : null}
                           {stepDesc ? (
-                            <p className="text-sm leading-relaxed text-background sm:text-base">
+                            <p className="text-sm leading-none text-background sm:text-lg">
                               {stepDesc}
                             </p>
                           ) : null}

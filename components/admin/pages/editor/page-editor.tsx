@@ -160,6 +160,26 @@ export function PageEditor({
     [],
   )
 
+  function playSuccessSound() {
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+  
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+  
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(523, ctx.currentTime);       // C5
+    oscillator.frequency.setValueAtTime(659, ctx.currentTime + 0.1); // E5
+    oscillator.frequency.setValueAtTime(784, ctx.currentTime + 0.2); // G5
+  
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+  
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.5);
+  }
+
   /**
    * Replace a section's `props` wholesale. The per-type form owns the
    * shape, so we just trust it and set.
@@ -193,7 +213,7 @@ export function PageEditor({
       setSelectedVersionId(undefined)
       setIsDirty(false)
       toast.success("Secciones guardadas correctamente")
-
+      playSuccessSound()
       const historyResult = await getPageVersions(pageId)
       if (historyResult.data) {
         setVersions(historyResult.data)

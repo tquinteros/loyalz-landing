@@ -30,11 +30,11 @@ export function AudienceTabMobileEditor({ tab, onChange }: Props) {
 
   return (
     <div className="space-y-5">
-      <p className="rounded-md border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
+      {/* <p className="rounded-md border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
         Pantalla del mockup para <strong>{tab.key}</strong>:{" "}
         <code className="text-xs">{screenHint}</code> + case{" "}
         <code className="text-xs">/mobile-case.png</code>
-      </p>
+      </p> */}
 
       <LocalizedField
         variant="comfortable"
