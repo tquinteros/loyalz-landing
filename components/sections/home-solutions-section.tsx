@@ -56,7 +56,7 @@ export default function HomeSolutionsSection({
             </div>
           ) : null}
           {titleText ? (
-            <h2 className="max-w-4xl text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-[56px]">
+            <h2 className="max-w-4xl text-3xl font-bold leading-none tracking-tight text-background sm:text-4xl lg:text-[56px]">
               {titleText}
             </h2>
           ) : null}
@@ -93,7 +93,7 @@ export default function HomeSolutionsSection({
                       aria-hidden
                       className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-background/70 via-background/40 to-transparent"
                     />
-                    <p className="absolute inset-x-0 bottom-0 px-5 pb-5 text-left text-lg font-bold leading-snug text-foreground sm:px-6 sm:pb-6 sm:text-xl">
+                    <p className="absolute inset-x-0 bottom-0 px-5 pb-5 text-left text-lg font-bold leading-none text-foreground sm:px-6 sm:pb-6 sm:text-xl">
                       {captionText}
                     </p>
                   </>

@@ -79,7 +79,7 @@ export default function AboutUsSection({
 
         <div className="flex min-w-0 flex-col justify-end gap-10 lg:min-h-full">
           {descriptionText ? (
-            <p className="text-pretty text-base leading-relaxed text-background sm:text-[18px]">
+            <p className="text-pretty text-base leading-none text-background sm:text-[18px]">
               {descriptionText}
             </p>
           ) : null}
@@ -89,7 +89,7 @@ export default function AboutUsSection({
               {articleItems.map((text, i) => (
                 <li key={i} className="flex flex-col gap-3">
                   <ArticleBullet />
-                  <p className="text-pretty text-base leading-relaxed text-background sm:text-[16px]">
+                  <p className="text-pretty text-base leading-none text-background sm:text-[16px]">
                     {text}
                   </p>
                 </li>
@@ -98,7 +98,7 @@ export default function AboutUsSection({
           ) : null}
 
           {bottomLabelText ? (
-            <p className="text-pretty text-lg font-bold leading-snug text-background sm:text-xl lg:text-[18px]">
+            <p className="text-pretty text-lg font-bold leading-none text-background sm:text-xl lg:text-[18px]">
               {bottomLabelText}
             </p>
           ) : null}

@@ -40,7 +40,7 @@ export default function HeroClubSection({
               {titleText}
             </h1>
             {subtitleText ? (
-              <p className="max-w-2xl text-2xl font-bold leading-tight text-chart-5 sm:text-3xl lg:text-4xl">{subtitleText}</p>
+              <p className="max-w-2xl text-2xl font-bold leading-none text-chart-5 sm:text-3xl lg:text-4xl">{subtitleText}</p>
             ) : null}
           </div>
           <div className="flex flex-col my-4 lg:my-0 gap-4 sm:gap-5">

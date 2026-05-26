@@ -66,12 +66,12 @@ export function AudiencePricingBlock({ data }: Props) {
             </div>
           ) : null}
           {titleText ? (
-            <h2 className="text-3xl font-bold leading-tight tracking-tight text-background sm:text-4xl lg:text-5xl xl:text-[56px] xl:leading-[1.05]">
+            <h2 className="text-3xl font-bold leading-none tracking-tight text-background sm:text-4xl lg:text-5xl xl:text-[56px] xl:leading-[1.05]">
               {titleText}
             </h2>
           ) : null}
           {descriptionText ? (
-            <p className="text-base text-background/80 sm:text-lg sm:leading-relaxed">
+            <p className="text-base text-background/80 sm:text-lg sm:leading-none">
               {descriptionText}
             </p>
           ) : null}
@@ -125,7 +125,7 @@ export function AudiencePricingBlock({ data }: Props) {
                   <div className="flex min-h-[120px] items-center gap-4 px-6 py-6 sm:px-8 lg:col-span-9">
                     <div className="min-w-0 flex-1 space-y-1">
                       {cardTitle ? (
-                        <h3 className="text-2xl font-bold leading-tight sm:text-3xl lg:text-4xl">
+                        <h3 className="text-2xl font-bold leading-none sm:text-3xl lg:text-4xl">
                           {cardTitle}
                         </h3>
                       ) : null}
@@ -135,7 +135,7 @@ export function AudiencePricingBlock({ data }: Props) {
                         </p>
                       ) : null}
                       {cardDesc ? (
-                        <p className="text-sm leading-relaxed opacity-90 sm:text-base">
+                        <p className="text-sm leading-none opacity-90 sm:text-base">
                           {cardDesc}
                         </p>
                       ) : null}

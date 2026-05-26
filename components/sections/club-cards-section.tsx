@@ -64,7 +64,7 @@ export default function ClubCardsSection({
                       {cardTitle}
                     </CardTitle>
                     {cardDescription ? (
-                      <p className="mt-2 text-lg leading-relaxed text-background">
+                      <p className="mt-2 text-lg leading-none text-background">
                         {cardDescription}
                       </p>
                     ) : null}

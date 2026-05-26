@@ -33,7 +33,7 @@ export default function LegalDocumentSection({
           {t(title)}
         </h1>
         {intro ? (
-          <p className="text-balance text-base leading-relaxed text-background/85 sm:text-lg">
+          <p className="text-balance text-base leading-none text-background/85 sm:text-lg">
             {t(description)}
           </p>
         ) : null}

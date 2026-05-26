@@ -256,8 +256,8 @@ function SectionPickerItem({ type, onSelect, highlighted }: SectionPickerItemPro
         highlighted && "hover:bg-primary/8",
       )}
     >
-      <span className="text-sm font-medium leading-snug">{entry.label}</span>
-      <span className="text-xs text-muted-foreground leading-snug line-clamp-1">
+      <span className="text-sm font-medium leading-none">{entry.label}</span>
+      <span className="text-xs text-muted-foreground leading-none line-clamp-1">
         {entry.description}
       </span>
     </button>

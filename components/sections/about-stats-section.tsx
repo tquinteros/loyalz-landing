@@ -37,7 +37,7 @@ export default function AboutStatsSection({
         )}
 
         {descriptionText && (
-          <p className="mt-6 max-w-3xl text-pretty text-base font-normal leading-relaxed text-foreground sm:text-[18px]">
+          <p className="mt-6 max-w-3xl text-pretty text-base font-normal leading-none text-foreground sm:text-[18px]">
             {descriptionText}
           </p>
         )}
@@ -69,7 +69,7 @@ export default function AboutStatsSection({
                     {item.stat}
                   </dd>
                   {labelText && (
-                    <p className="mt-3 text-pretty text-lg font-semibold text-card-foreground sm:text-[24px] sm:leading-snug">
+                    <p className="mt-3 text-pretty text-lg font-semibold text-card-foreground sm:text-[24px] sm:leading-none">
                       {labelText}
                     </p>
                   )}

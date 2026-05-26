@@ -42,9 +42,9 @@ const FOOTER_COLS =
 /** Right column width matches between top nav and bottom meta on large screens. */
 const FOOTER_ASIDE = "w-full xl:w-[min(100%,36rem)] xl:shrink-0"
 
-const linkBold = "text-lg font-bold leading-tight hover:opacity-80 transition-opacity"
-const linkSub = "text-sm leading-snug hover:opacity-80 transition-opacity"
-const colTitle = "text-lg font-bold leading-tight"
+const linkBold = "text-lg font-bold leading-none hover:opacity-80 transition-opacity"
+const linkSub = "text-sm leading-none hover:opacity-80 transition-opacity"
+const colTitle = "text-lg font-bold leading-none"
 
 function SocialIcons() {
     return (
@@ -105,7 +105,7 @@ export default function Footer() {
             {/* Top: newsletter + nav columns (same 3-col grid on the right) */}
             <div className="flex w-full min-w-0 flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
                 <div className="flex w-full min-w-0 max-w-xl flex-col gap-6">
-                    <span className="text-base leading-relaxed">{t(FOOTER.newsletterLead)}</span>
+                    <span className="text-base leading-none">{t(FOOTER.newsletterLead)}</span>
                     <NewsletterSubscribeForm
                         placeholder={t(FOOTER.emailPlaceholder)}
                         buttonLabel={t(FOOTER.subscribe)}

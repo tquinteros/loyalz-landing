@@ -62,7 +62,7 @@ const NotFoundRedirect = () => {
                     <p className="text-balance text-xl font-bold sm:text-2xl md:text-[32px]">
                         {t(NOT_FOUND_COPY.description)}
                     </p>
-                    <p className="text-balance px-1 text-sm leading-relaxed text-background/90 sm:text-base">
+                    <p className="text-balance px-1 text-sm leading-none text-background/90 sm:text-base">
                         {t(NOT_FOUND_COPY.description2)}
                     </p>
                     <Button className="mt-1 w-full max-w-xs py-5 sm:mt-2 sm:w-auto" onClick={() => router.push("/")}>

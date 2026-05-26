@@ -146,7 +146,7 @@ export default function HomeProductsSection({
                       >
                         {productSubtitle}
                       </span>
-                      <p className="text-sm leading-relaxed text-background sm:text-base">
+                      <p className="text-sm leading-none text-background sm:text-base">
                         {productDescription}
                       </p>
                     </div>

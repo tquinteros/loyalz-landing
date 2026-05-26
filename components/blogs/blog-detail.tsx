@@ -50,7 +50,7 @@ const BlogDetail = ({ post }: { post: FullPost }) => {
           {publishedLabel} • Lectura de {post.reading_time} Min
         </span>
         {/* {post.excerpt ? (
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-lg text-muted-foreground leading-none">
             {post.excerpt}
           </p>
         ) : null} */}

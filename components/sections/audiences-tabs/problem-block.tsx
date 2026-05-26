@@ -43,7 +43,7 @@ export function AudienceProblemBlock({ data }: Props) {
           </h2>
         ) : null}
         {descriptionText ? (
-          <p className="mt-3 text-center text-base text-background sm:text-[17px] sm:leading-relaxed">
+          <p className="mt-3 text-center text-base text-background sm:text-[17px] sm:leading-none">
             {descriptionText}
           </p>
         ) : null}
@@ -83,7 +83,7 @@ export function AudienceProblemBlock({ data }: Props) {
                 </h4>
                 <p
                   className={cn(
-                    "text-sm leading-relaxed text-foreground sm:text-[16px]",
+                    "text-sm leading-none text-foreground sm:text-[16px]",
                     !solDesc && "invisible",
                     isLightBlue && "text-[#013662]",
                   )}

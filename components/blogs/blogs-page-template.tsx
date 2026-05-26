@@ -45,11 +45,11 @@ function FeaturedHero({ post }: { post: Post }) {
             category={post.category}
             readingTime={post.reading_time}
           />
-          <h3 className="text-2xl font-bold leading-tight tracking-tight text-background sm:text-3xl sm:leading-tight">
+          <h3 className="text-2xl font-bold leading-none tracking-tight text-background sm:text-3xl sm:leading-none">
             {post.title}
           </h3>
           {post.excerpt ? (
-            <p className="line-clamp-2 max-w-2xl text-base leading-relaxed text-background/70">
+            <p className="line-clamp-2 max-w-2xl text-base leading-none text-background/70">
               {post.excerpt}
             </p>
           ) : null}
@@ -87,7 +87,7 @@ function FeaturedCompact({ post }: { post: Post }) {
           readingTime={post.reading_time}
           className="gap-2"
         />
-        <h4 className="line-clamp-2 text-base font-bold leading-snug text-background sm:text-lg lg:text-xl">
+        <h4 className="line-clamp-2 text-base font-bold leading-none text-background sm:text-lg lg:text-xl">
           {post.title}
         </h4>
         <BlogReadMoreHint className="text-sm sm:text-base" />

@@ -97,8 +97,8 @@ export default function ProductPricingSection({
                     {t({ es: "usd/mes", en: "usd/month" })}
                   </p>
 
-                  <h3 className="mt-5 text-4xl font-bold leading-tight">{cardTitle}</h3>
-                  <p className="mt-3 text-lg leading-snug text-foreground/90">
+                  <h3 className="mt-5 text-4xl font-bold leading-none">{cardTitle}</h3>
+                  <p className="mt-3 text-lg leading-none text-foreground/90">
                     {cardDescription}
                   </p>
 

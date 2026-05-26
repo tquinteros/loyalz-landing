@@ -81,7 +81,7 @@ export function UnsubscribeView({ state }: UnsubscribeViewProps) {
         </div>
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold tracking-tight">{content.title}</h1>
-          <p className="text-sm text-muted-foreground leading-relaxed">{content.body}</p>
+          <p className="text-sm text-muted-foreground leading-none">{content.body}</p>
         </div>
         <Link
           href="/"

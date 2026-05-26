@@ -32,7 +32,7 @@ export default function AboutHeroSection({
           </h1>
         )}
         {descriptionText && (
-          <p className="mt-6 max-w-3xl text-pretty text-base text-background sm:text-[18px] sm:leading-relaxed">
+          <p className="mt-6 max-w-3xl text-pretty text-base text-background sm:text-[18px] sm:leading-none">
             {descriptionText}
           </p>
         )}

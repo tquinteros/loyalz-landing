@@ -58,13 +58,13 @@ export default function HomeBusinessSection({
           ) : null}
 
           {titleText ? (
-            <h2 className="max-w-3xl text-2xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-6xl">
+            <h2 className="max-w-3xl text-2xl font-bold leading-none tracking-tight sm:text-4xl lg:text-6xl">
               {titleText}
             </h2>
           ) : null}
 
           {descriptionText ? (
-            <p className="max-w-xl text-sm leading-relaxed text-foreground sm:text-lg">
+            <p className="max-w-xl text-sm leading-none text-foreground sm:text-lg">
               {descriptionText}
             </p>
           ) : null}
@@ -127,7 +127,7 @@ export default function HomeBusinessSection({
                     {cardTitle}
                   </h3>
                   {cardDescription ? (
-                    <p className="mt-1 text-sm leading-snug text-foreground/80 sm:text-base">
+                    <p className="mt-1 text-sm leading-none text-foreground/80 sm:text-base">
                       {cardDescription}
                     </p>
                   ) : null}
@@ -222,7 +222,7 @@ export default function HomeBusinessSection({
                     </p>
 
                     {statTitle ? (
-                      <p className={`text-[18px] leading-snug text-foreground/80 ${stat.backgroundColorCard === '#F8F5EF' && 'text-background!'}`}>
+                      <p className={`text-[18px] leading-none text-foreground/80 ${stat.backgroundColorCard === '#F8F5EF' && 'text-background!'}`}>
                         {statTitle}
                       </p>
                     ) : null}

@@ -252,7 +252,7 @@ export function PageEditor({
             </Link>
           </Button>
           <div className="min-w-0">
-            <h1 className="truncate text-lg font-semibold leading-tight">
+            <h1 className="truncate text-lg font-semibold leading-none">
               {pageTitle}
             </h1>
             <p className="truncate font-mono text-xs text-muted-foreground">

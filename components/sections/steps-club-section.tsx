@@ -89,7 +89,7 @@ export default function StepsClubSection({
             {/* Right: title + steps — 50% width on lg; border = column divider */}
             <div className="flex min-w-0 flex-col pt-8 lg:pt-0 lg:pl-8 xl:pl-10">
               {titleText ? (
-                <h2 className="mb-8 text-2xl max-w-md font-bold leading-tight tracking-tight whitespace-pre-line sm:text-3xl lg:text-4xl">
+                <h2 className="mb-8 text-2xl max-w-md font-bold leading-none tracking-tight whitespace-pre-line sm:text-3xl lg:text-4xl">
                   {titleText}
                 </h2>
               ) : null}
@@ -144,7 +144,7 @@ export default function StepsClubSection({
                             {stepDescription ? (
                               <p
                                 className={cn(
-                                  "text-sm leading-relaxed transition-colors sm:text-base",
+                                  "text-sm leading-none transition-colors sm:text-base",
                                   isActive
                                     ? "text-chart-5"
                                     : "text-background",

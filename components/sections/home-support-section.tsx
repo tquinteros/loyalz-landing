@@ -47,12 +47,12 @@ export default function HomeSupportSection({
           {(titleText || subtitleText) ? (
             <div className="max-w-2xl space-y-0">
               {titleText ? (
-                <h2 className="text-balance text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-4xl">
+                <h2 className="text-balance text-3xl font-bold leading-none tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-4xl">
                   {titleText}
                 </h2>
               ) : null}
               {subtitleText ? (
-                <p className="text-balance text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-4xl">
+                <p className="text-balance text-3xl font-bold leading-none tracking-tight text-foreground sm:text-4xl lg:text-5xl xl:text-4xl">
                   {subtitleText}
                 </p>
               ) : null}
@@ -82,12 +82,12 @@ export default function HomeSupportSection({
                   >
                     <div className="h-full rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7">
                       {cardTitle ? (
-                        <h3 className="text-lg font-bold leading-snug sm:text-2xl">
+                        <h3 className="text-lg font-bold leading-none sm:text-2xl">
                           {cardTitle}
                         </h3>
                       ) : null}
                       {cardDescription ? (
-                        <p className="mt-3 text-sm leading-relaxed text-background sm:text-base">
+                        <p className="mt-3 text-sm leading-none text-background sm:text-base">
                           {cardDescription}
                         </p>
                       ) : null}
@@ -122,12 +122,12 @@ export default function HomeSupportSection({
                 >
                   <div className="rounded-[24px] bg-foreground p-6 text-background shadow-sm sm:rounded-[28px] sm:p-7 md:min-h-46 md:p-8">
                     {cardTitle ? (
-                      <h3 className="text-lg font-bold leading-snug sm:text-2xl">
+                      <h3 className="text-lg font-bold leading-none sm:text-2xl">
                         {cardTitle}
                       </h3>
                     ) : null}
                     {cardDescription ? (
-                      <p className="mt-3 text-sm leading-relaxed text-background sm:text-base">
+                      <p className="mt-3 text-sm leading-none text-background sm:text-base">
                         {cardDescription}
                       </p>
                     ) : null}

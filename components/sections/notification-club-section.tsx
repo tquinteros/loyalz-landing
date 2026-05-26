@@ -52,7 +52,7 @@ function GlassBadge({
         </div>
         <span className="shrink-0 text-[10px] text-foreground">{nowLabel}</span>
       </div>
-      <p className="mt-2 text-left text-[13px] leading-snug text-foreground sm:text-sm">
+      <p className="mt-2 text-left text-[13px] leading-none text-foreground sm:text-sm">
         {message}
       </p>
     </div>
@@ -84,12 +84,12 @@ export default function NotificationClubSection({
           {/* Left: copy */}
           <div className="min-w-0 space-y-4 self-start lg:space-y-5">
             {titleText ? (
-              <h2 className="text-3xl font-bold leading-tight tracking-tight text-chart-5 sm:text-4xl lg:text-6xl">
+              <h2 className="text-3xl font-bold leading-none tracking-tight text-chart-5 sm:text-4xl lg:text-6xl">
                 {titleText}
               </h2>
             ) : null}
             {descriptionText ? (
-              <p className="max-w-xl text-base leading-relaxed text-chart-5 sm:text-lg">
+              <p className="max-w-xl text-base leading-none text-chart-5 sm:text-lg">
                 {descriptionText}
               </p>
             ) : null}

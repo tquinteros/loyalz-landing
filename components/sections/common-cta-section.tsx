@@ -64,12 +64,12 @@ export default function CommonCTASection({
           )}
         >
           {titleText ? (
-            <h2 className="text-left text-3xl font-bold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-6xl max-w-2xl">
+            <h2 className="text-left text-3xl font-bold leading-none tracking-tight text-foreground sm:text-4xl lg:text-6xl max-w-2xl">
               {titleText}
             </h2>
           ) : null}
           {descriptionText ? (
-            <p className="max-w-2xl text-left text-base leading-relaxed text-foreground/95 sm:text-lg">
+            <p className="max-w-2xl text-left text-base leading-none text-foreground/95 sm:text-lg">
               {descriptionText}
             </p>
           ) : null}

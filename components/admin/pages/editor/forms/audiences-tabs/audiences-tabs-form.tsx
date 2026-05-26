@@ -100,7 +100,7 @@ export function AudiencesTabsForm({ value, onChange }: Props) {
                   {panelMeta?.label ?? activePanel}
                 </p>
                 {panelMeta?.description ? (
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-sm leading-none text-muted-foreground">
                     {panelMeta.description}
                   </p>
                 ) : null}

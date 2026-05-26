@@ -42,11 +42,11 @@ export function BlogPostCard({ post, className }: BlogPostCardProps) {
             category={post.category}
             readingTime={post.reading_time}
           />
-          <h3 className="line-clamp-2 text-xl md:text-2xl font-bold leading-snug tracking-tight text-background">
+          <h3 className="line-clamp-2 text-xl md:text-2xl font-bold leading-none tracking-tight text-background">
             {post.title}
           </h3>
           {post.excerpt ? (
-            <p className="line-clamp-3 text-[16px] leading-relaxed text-background/70">
+            <p className="line-clamp-3 text-[16px] leading-none text-background/70">
               {post.excerpt}
             </p>
           ) : (

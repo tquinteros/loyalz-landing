@@ -43,7 +43,7 @@ function FeatureCard({
 
       {title ? (
         <h3
-          className="text-xl text-left font-bold leading-tight sm:text-[32px]"
+          className="text-xl text-left font-bold leading-none sm:text-[32px]"
           style={{ color: backgroundColor }}
         >
           {title}
@@ -52,7 +52,7 @@ function FeatureCard({
 
       {description ? (
         <p
-          className="text-sm text-left leading-relaxed sm:text-lg"
+          className="text-sm text-left leading-none sm:text-lg"
           style={{ color: backgroundColor }}
         >
           {description}
@@ -110,7 +110,7 @@ export default function HomeIntegrationsSection({
             ) : null}
 
             {descriptionText ? (
-              <p className="max-w-2xl text-sm leading-relaxed text-foreground sm:text-lg">
+              <p className="max-w-2xl text-sm leading-none text-foreground sm:text-lg">
                 {descriptionText}
               </p>
             ) : null}
@@ -134,7 +134,7 @@ export default function HomeIntegrationsSection({
         ) : null}
 
         {infoFeaturesText ? (
-          <h3 className="mt-16 max-w-3xl text-xl font-bold leading-tight tracking-tight sm:text-2xl lg:text-[32px]">
+          <h3 className="mt-16 max-w-3xl text-xl font-bold leading-none tracking-tight sm:text-2xl lg:text-[32px]">
             {infoFeaturesText}
           </h3>
         ) : null}

@@ -66,7 +66,7 @@ export default function AudiencesTabsSection({
               value={tab.key}
               className={cn(
                 "flex-none! h-auto! max-h-none! w-full min-w-0 cursor-pointer flex-col items-center justify-between gap-2 rounded-none border-0 bg-transparent px-1 py-3 sm:justify-start sm:gap-4 sm:px-3 sm:py-0 lg:gap-8 lg:px-4",
-                "text-center text-sm font-medium leading-tight text-background shadow-none! transition-none sm:text-lg lg:text-[32px] lg:leading-none",
+                "text-center text-sm font-medium leading-none text-background shadow-none! transition-none sm:text-lg lg:text-[32px] lg:leading-none",
                 "after:hidden hover:text-background",
                 "data-[state=active]:bg-transparent data-[state=active]:text-background data-[state=active]:shadow-none",
                 "data-[state=active]:**:data-tab-indicator:bg-chart-5",

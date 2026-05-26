@@ -28,14 +28,14 @@ export function AudienceInformationBlock({ data }: Props) {
         <div className="space-y-4">
           {titleText ? (
             <h2
-              className="max-w-xl text-2xl font-bold text-background leading-tight tracking-tight sm:text-3xl lg:text-[56px] lg:leading-[1.08]"
+              className="max-w-xl text-2xl font-bold text-background leading-none tracking-tight sm:text-3xl lg:text-[56px] lg:leading-[1.08]"
             >
               {titleText}
             </h2>
           ) : null}
           {descriptionText ? (
             <p
-              className="max-w-lg text-lg text-background leading-relaxed"
+              className="max-w-lg text-lg text-background leading-none"
             >
               {descriptionText}
             </p>

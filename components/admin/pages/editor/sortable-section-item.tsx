@@ -106,7 +106,7 @@ export function SortableSectionItem({
         <div className="min-w-0 flex-1">
           <div
             className={cn(
-              "text-sm font-medium leading-snug wrap-break-word",
+              "text-sm font-medium leading-none wrap-break-word",
               !enabled && "text-muted-foreground line-through",
             )}
           >

@@ -222,7 +222,7 @@ function MegaMenu({ onClose }: { onClose: () => void }) {
                         <span className="opacity-50"> {secondaryWords.join(" ")}</span>
                       ) : null}
                     </CardTitle>
-                    <CardDescription className="flex-1 text-base leading-snug text-foreground/95">
+                    <CardDescription className="flex-1 text-base leading-none text-foreground/95">
                       {t(card.description)}
                     </CardDescription>
                     <span className="inline-flex h-auto w-fit rounded-lg border border-foreground/60 bg-transparent px-5 py-2 text-sm font-semibold text-foreground">

@@ -29,7 +29,7 @@ export default function ClubActivationSection({
     >
       <div className="w-full space-y-8 sm:space-y-6">
         {titleText ? (
-          <h2 className="text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          <h2 className="text-4xl font-bold leading-none tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {titleText}
           </h2>
         ) : null}
@@ -82,7 +82,7 @@ export default function ClubActivationSection({
                       </p>
                     ) : null}
                     {cardTitle ? (
-                      <p className="text-base leading-snug text-background sm:text-lg">
+                      <p className="text-base leading-none text-background sm:text-lg">
                         <span className="font-bold">{cardTitle}</span>
                         {cardDescription ? (
                           <span className="font-normal">

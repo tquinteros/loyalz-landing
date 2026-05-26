@@ -54,7 +54,7 @@ function StatCard({
       )}
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[10px] leading-tight sm:text-lg">
+        <p className="text-[10px] leading-none sm:text-lg">
           {title}
         </p>
         <span
@@ -150,7 +150,7 @@ export default function HomeAutonomySection({
           {titleText ? (
             <div className="relative z-20 -mt-10 w-full px-2 sm:-mt-32">
               <div className="rounded-2xl bg-background px-4 py-5 text-center shadow-md sm:rounded-3xl sm:px-10 sm:py-8 lg:px-14 lg:py-16">
-                <p className="text-balance max-w-7xl mx-auto font-semibold leading-tight tracking-tight text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[60px] xl:leading-[1.08]">
+                <p className="text-balance max-w-7xl mx-auto font-semibold leading-none tracking-tight text-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[60px] xl:leading-[1.08]">
                   {titleText}
                 </p>
               </div>

@@ -15,7 +15,7 @@ export function FormSectionPanel({ title, description, children }: Props) {
       <header className="space-y-1 border-b pb-4">
         <h3 className="text-base font-semibold">{title}</h3>
         {description ? (
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-none text-muted-foreground">
             {description}
           </p>
         ) : null}
