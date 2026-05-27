@@ -11,9 +11,11 @@ import type { Page } from "@/lib/types/Pages"
 type Props = {
   slug: string
   initialData: Page
+  /** Optional `?tab=` value for `/audiences` (e.g. cafes, restaurantes, delivery-first). */
+  initialAudienceTab?: string
 }
 
-export default function PageClient({ slug, initialData }: Props) {
+export default function PageClient({ slug, initialData, initialAudienceTab }: Props) {
   const { data } = useQuery({
     queryKey: publicPageQueryKey(slug),
     queryFn: () => fetchPublicPageBySlug(slug),
@@ -24,6 +26,8 @@ export default function PageClient({ slug, initialData }: Props) {
 
   const page = data ?? initialData
 
-  return <PageRenderer page={page} />
+  return (
+    <PageRenderer page={page} initialAudienceTab={initialAudienceTab} />
+  )
 }
  

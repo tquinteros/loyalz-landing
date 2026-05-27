@@ -15,14 +15,24 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function AudiencesPage() {
+type Props = {
+  searchParams: Promise<{ tab?: string }>
+}
+
+export default async function AudiencesPage({ searchParams }: Props) {
   const page = await fetchPublicPageBySlugCached(AUDIENCES_SLUG)
   if (!page) notFound()
+
+  const { tab } = await searchParams
 
   return (
     <main className="min-h-screen">
       <Suspense fallback={<PageSkeleton />}>
-        <PageClient slug={AUDIENCES_SLUG} initialData={page} />
+        <PageClient
+          slug={AUDIENCES_SLUG}
+          initialData={page}
+          initialAudienceTab={tab}
+        />
       </Suspense>
     </main>
   )

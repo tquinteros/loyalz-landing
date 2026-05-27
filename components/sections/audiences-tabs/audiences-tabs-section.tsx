@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import type { AudiencesTabsSectionProps } from "@/lib/types/Pages"
-import { cn } from "@/lib/utils"
+import { cn, resolveAudienceTabKey } from "@/lib/utils"
 import { useT } from "@/providers/language-provider"
 import { SectionWrapper } from "../section-wrapper"
 import {
@@ -16,6 +16,8 @@ import { AudienceTabBody } from "./tab-body"
 type Props = AudiencesTabsSectionProps & {
   backgroundImage?: string | null
   className?: string | null
+  /** From `?tab=` — must match a tab `key` in CMS data. */
+  initialTabKey?: string
 }
 
 export default function AudiencesTabsSection({
@@ -23,12 +25,13 @@ export default function AudiencesTabsSection({
   tabs,
   backgroundImage,
   className,
+  initialTabKey,
 }: Props) {
   const t = useT()
   const titleText = t(title)
   const validTabs = (tabs ?? []).filter((tab) => tab.key)
-  const defaultTab = validTabs[0]?.key ?? ""
-
+  const availableKeys = validTabs.map((tab) => tab.key)
+  const defaultTab = resolveAudienceTabKey(initialTabKey, availableKeys)
   if (validTabs.length === 0) {
     return (
       <SectionWrapper backgroundImage={backgroundImage} className={className}>

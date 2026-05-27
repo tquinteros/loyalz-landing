@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useT } from "@/providers/language-provider"
 import type { LocalizedString } from "@/lib/types/Pages"
+import { audiencesHref } from "@/lib/utils"
 import { NewsletterSubscribeForm } from "@/components/newsletter-subscribe-form"
 
 const FOOTER: Record<string, LocalizedString> = {
@@ -114,7 +115,7 @@ export default function Footer() {
                 </div>
 
                 <nav className={`${FOOTER_COLS} ${FOOTER_ASIDE}`} aria-label="Footer">
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4">
                         <Link className={linkBold} href="/">
                             {t(FOOTER.navHome)}
                         </Link>
@@ -125,7 +126,7 @@ export default function Footer() {
                             {t(FOOTER.navBlog)}
                         </Link>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4">
                         <span className={colTitle}>{t(FOOTER.productsTitle)}</span>
                         <Link className={linkSub} href="/club">
                             Club
@@ -140,15 +141,15 @@ export default function Footer() {
                             AI
                         </Link>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-4">
                         <span className={colTitle}>{t(FOOTER.businessesTitle)}</span>
-                        <Link className={linkSub} href="/audiences">
+                        <Link className={linkSub} href={audiencesHref("restaurantes")}>
                             {t(FOOTER.restaurants)}
                         </Link>
-                        <Link className={linkSub} href="/audiences">
+                        <Link className={linkSub} href={audiencesHref("cafes")}>
                             {t(FOOTER.cafes)}
                         </Link>
-                        <Link className={linkSub} href="/audiences">
+                        <Link className={linkSub} href={audiencesHref("delivery-first")}>
                             {t(FOOTER.deliveryFirst)}
                         </Link>
                     </div>

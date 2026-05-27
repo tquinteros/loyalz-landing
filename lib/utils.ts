@@ -11,6 +11,39 @@ export const hasEnvVars =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export const AUDIENCES_SLUG = "audiences" as const
+
+/** Query param for pre-selecting an audiences tab, e.g. `/audiences?tab=cafes`. */
+export const AUDIENCES_TAB_QUERY = "tab" as const
+
+/** Tab keys on the audiences page (must match CMS `AudienceTabItem.key`). */
+export const AUDIENCE_TAB_KEYS = [
+  "cafes",
+  "restaurantes",
+  "delivery-first",
+] as const
+export type AudienceTabKey = (typeof AUDIENCE_TAB_KEYS)[number]
+
+export function isAudienceTabKey(key: string): key is AudienceTabKey {
+  return (AUDIENCE_TAB_KEYS as readonly string[]).includes(key)
+}
+
+export function audiencesHref(tab?: AudienceTabKey | string): string {
+  if (tab && isAudienceTabKey(tab)) {
+    return `/${AUDIENCES_SLUG}?${AUDIENCES_TAB_QUERY}=${tab}`
+  }
+  return `/${AUDIENCES_SLUG}`
+}
+
+/** Pick `requested` when it exists in CMS tabs; otherwise the first tab key. */
+export function resolveAudienceTabKey(
+  requested: string | undefined | null,
+  availableKeys: string[],
+): string {
+  if (requested && availableKeys.includes(requested)) {
+    return requested
+  }
+  return availableKeys[0] ?? ""
+}
 export const HOME_SLUG = "home" as const
 export const ABOUT_SLUG = "about" as const
 export const BLOGS_SLUG = "blogs" as const

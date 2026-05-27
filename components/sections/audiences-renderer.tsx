@@ -6,9 +6,10 @@ import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
 type Props = {
   sections: AnyPageSection[]
   pageId: string
+  initialTab?: string
 }
 
-export default function AudiencesRenderer({ sections, pageId }: Props) {
+export default function AudiencesRenderer({ sections, pageId, initialTab }: Props) {
   return (
     <>
       {sections.map((section) => {
@@ -16,7 +17,10 @@ export default function AudiencesRenderer({ sections, pageId }: Props) {
         if (!isKnownSectionType(section.type)) return null
         return (
           <AdminSectionOverlay key={section.id} pageId={pageId} sectionId={section.id}>
-            <AudiencesSectionSwitch section={section as PageSection} />
+            <AudiencesSectionSwitch
+              section={section as PageSection}
+              initialTab={initialTab}
+            />
           </AdminSectionOverlay>
         )
       })}
@@ -24,7 +28,13 @@ export default function AudiencesRenderer({ sections, pageId }: Props) {
   )
 }
 
-function AudiencesSectionSwitch({ section }: { section: PageSection }) {
+function AudiencesSectionSwitch({
+  section,
+  initialTab,
+}: {
+  section: PageSection
+  initialTab?: string
+}) {
   const common = {
     backgroundImage: section.backgroundImage ?? null,
     className: section.className ?? null,
@@ -32,7 +42,13 @@ function AudiencesSectionSwitch({ section }: { section: PageSection }) {
 
   switch (section.type) {
     case "audiences_tabs":
-      return <AudiencesTabsSection {...section.props} {...common} />
+      return (
+        <AudiencesTabsSection
+          {...section.props}
+          {...common}
+          initialTabKey={initialTab}
+        />
+      )
     default:
       return null
   }

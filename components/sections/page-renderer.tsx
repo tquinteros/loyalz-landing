@@ -7,19 +7,26 @@ import AudiencesRenderer from "./audiences-renderer"
 
 type Props = {
   page: Page
+  initialAudienceTab?: string
 }
 
 /**
  * Chooses the renderer family for the current page.
  * Section-level rendering lives in the page-specific renderers.
  */
-export default function PageRenderer({ page }: Props) {
+export default function PageRenderer({ page, initialAudienceTab }: Props) {
   if (isLegalPageSlug(page.slug)) {
     return <LegalPageRenderer sections={page.sections} pageId={page.id} />
   }
 
   if (page.slug === AUDIENCES_SLUG) {
-    return <AudiencesRenderer sections={page.sections} pageId={page.id} />
+    return (
+      <AudiencesRenderer
+        sections={page.sections}
+        pageId={page.id}
+        initialTab={initialAudienceTab}
+      />
+    )
   }
 
   if (page.type === "product" || isProductPageSlug(page.slug)) {
