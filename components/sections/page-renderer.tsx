@@ -1,5 +1,5 @@
 import type { Page } from "@/lib/types/Pages"
-import { isLegalPageSlug, AUDIENCES_SLUG } from "@/lib/utils"
+import { isLegalPageSlug, isProductPageSlug, AUDIENCES_SLUG } from "@/lib/utils"
 import HomeRenderer from "./home-renderer"
 import ProductRenderer from "./product-renderer"
 import LegalPageRenderer from "./legal-page-renderer"
@@ -22,7 +22,7 @@ export default function PageRenderer({ page }: Props) {
     return <AudiencesRenderer sections={page.sections} pageId={page.id} />
   }
 
-  if (page.type === "product") {
+  if (page.type === "product" || isProductPageSlug(page.slug)) {
     return <ProductRenderer sections={page.sections} pageId={page.id} />
   }
 

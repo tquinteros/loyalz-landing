@@ -118,10 +118,10 @@ export default function Footer() {
                         <Link className={linkBold} href="/">
                             {t(FOOTER.navHome)}
                         </Link>
-                        <Link className={linkBold} href="/about">
+                        <Link className={linkBold} href="/audience">
                             {t(FOOTER.navCompany)}
                         </Link>
-                        <Link className={linkBold} href="/blog">
+                        <Link className={linkBold} href="/blogs">
                             {t(FOOTER.navBlog)}
                         </Link>
                     </div>
@@ -142,13 +142,13 @@ export default function Footer() {
                     </div>
                     <div className="flex flex-col gap-2">
                         <span className={colTitle}>{t(FOOTER.businessesTitle)}</span>
-                        <Link className={linkSub} href="/">
+                        <Link className={linkSub} href="/audiences">
                             {t(FOOTER.restaurants)}
                         </Link>
-                        <Link className={linkSub} href="/">
+                        <Link className={linkSub} href="/audiences">
                             {t(FOOTER.cafes)}
                         </Link>
-                        <Link className={linkSub} href="/about">
+                        <Link className={linkSub} href="/audiences">
                             {t(FOOTER.deliveryFirst)}
                         </Link>
                     </div>

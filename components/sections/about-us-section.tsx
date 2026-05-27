@@ -19,6 +19,78 @@ function ArticleBullet() {
   )
 }
 
+const IMAGE_BORDER_RADIUS = "32px"
+
+/** Back → front: offset + rotation only; shared border radius on every layer. */
+const IMAGE_STACK_LAYERS = [
+  {
+    rotate: -9,
+    inset: { top: "12%", right: "10%", bottom: "4%", left: "0%" },
+    zIndex: 1,
+  },
+  {
+    rotate: 7,
+    inset: { top: "6%", right: "4%", bottom: "10%", left: "10%" },
+    zIndex: 2,
+  },
+  {
+    rotate: -5,
+    inset: { top: "0%", right: "6%", bottom: "8%", left: "4%" },
+    zIndex: 3,
+  },
+] as const
+
+const MAX_STACK_IMAGES = IMAGE_STACK_LAYERS.length
+
+function AboutUsImageStack({
+  images,
+  alt,
+}: {
+  images: string[]
+  alt: string
+}) {
+  const stack = images.slice(0, MAX_STACK_IMAGES)
+  if (stack.length === 0) return null
+
+  const layerConfigs =
+    stack.length === 1
+      ? [IMAGE_STACK_LAYERS[2]]
+      : stack.length === 2
+        ? [IMAGE_STACK_LAYERS[0], IMAGE_STACK_LAYERS[2]]
+        : IMAGE_STACK_LAYERS
+
+  return (
+    <div className="relative aspect-square w-full max-w-[490px] shrink-0 self-start">
+      {stack.map((src, i) => {
+        const layer = layerConfigs[i]
+        return (
+          <div
+            key={`${src}-${i}`}
+            className="absolute overflow-hidden shadow-[0_10px_36px_rgba(0,0,0,0.14)]"
+            style={{
+              top: layer.inset.top,
+              right: layer.inset.right,
+              bottom: layer.inset.bottom,
+              left: layer.inset.left,
+              zIndex: layer.zIndex,
+              borderRadius: IMAGE_BORDER_RADIUS,
+              transform: `rotate(${layer.rotate}deg)`,
+            }}
+          >
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 490px) 100vw, 490px"
+            />
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function AboutUsSection({
   title,
   description,
@@ -39,41 +111,19 @@ export default function AboutUsSection({
 
   return (
     <SectionWrapper backgroundImage={backgroundImage} className={className}>
-      <div className="grid grid-cols-1 items-stretch gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
-        <div className="flex flex-col gap-8 lg:gap-10">
+      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
+        <div className="flex w-full flex-col items-start gap-8 lg:gap-10">
           {titleText ? (
-            <h2 className="text-3xl font-bold tracking-tight text-background sm:text-4xl lg:text-[56px] lg:leading-[1.05]">
+            <h2 className="w-full text-3xl font-bold tracking-tight text-background sm:text-4xl lg:text-[56px] lg:leading-[1.05]">
               {titleText}
             </h2>
           ) : null}
 
           {validImages.length > 0 ? (
-            <div className="w-full max-w-[490px]">
-              {validImages.map((src, i) => (
-                <div key={`${src}-${i}`} className="relative w-full">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute -inset-2 opacity-90"
-                    style={{
-                      borderRadius: "32px 28px 30px 26px",
-                      transform: "rotate(-1.5deg)",
-                    }}
-                  />
-                  <div
-                    className="relative aspect-square overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.1)]"
-                    style={{ borderRadius: "32px 28px 30px 26px" }}
-                  >
-                    <Image
-                      src={src}
-                      alt={titleText || "About us"}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 490px) 100vw, 490px"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <AboutUsImageStack
+              images={validImages}
+              alt={titleText || "About us"}
+            />
           ) : null}
         </div>
 

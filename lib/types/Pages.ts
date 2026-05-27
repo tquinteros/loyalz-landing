@@ -552,6 +552,46 @@ export type AudiencesTabsSectionProps = {
   tabs: AudienceTabItem[]
 }
 
+/**
+ * Shared hero for product pages (AI, POS, Reviews, Club).
+ * Includes an optional embedded brand marquee strip below the CTA area.
+ */
+export type HeroProductSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description?: LocalizedString
+  /** Hero product image URL. */
+  image: string
+  primaryCta: CTA
+  secondaryCta?: CTA
+  /** CSS hex color for the title text, e.g. "#8C7F1F". */
+  titleColor?: string
+  /** Optional heading shown above the brand marquee strip. */
+  brandMarqueeTitle?: LocalizedString
+  brands?: Array<{
+    /** Brand display name — not translated; used as alt text. */
+    name?: string
+    logo: string
+  }>
+}
+
+/**
+ * Shared stats/details block for product pages.
+ * Renders a label, title, and a grid of stat + description pairs.
+ * Background color can be customised per product via a hex string.
+ */
+export type ProductDetailSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  details: Array<{
+    /** Display stat token (e.g. "+4x", "100k"); not translated. */
+    stat: string
+    description: LocalizedString
+  }>
+  /** CSS hex color for the section background, e.g. "#754390". */
+  backgroundColor?: string
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -582,6 +622,8 @@ export type AboutUsSection = BaseSection<"about_us", AboutUsSectionProps>
 export type AboutStatsSection = BaseSection<"about_stats", AboutStatsSectionProps>
 export type AboutTeamSection = BaseSection<"about_team", AboutTeamSectionProps>
 export type AudiencesTabsSection = BaseSection<"audiences_tabs", AudiencesTabsSectionProps>
+export type HeroProductSection = BaseSection<"hero_product", HeroProductSectionProps>
+export type ProductDetailSection = BaseSection<"product_detail", ProductDetailSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -615,6 +657,8 @@ export type PageSection =
   | AboutStatsSection
   | AboutTeamSection
   | AudiencesTabsSection
+  | HeroProductSection
+  | ProductDetailSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

@@ -30,6 +30,8 @@ import AboutUsSection from "./about-us-section"
 import AboutStatsSection from "./about-stats-section"
 import AboutTeamSection from "./about-team-section"
 import AudiencesTabsSection from "./audiences-tabs-section"
+import HeroProductSection from "./hero-product-section"
+import ProductDetailSection from "./product-detail-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -1424,6 +1426,54 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as unknown as SectionFor<T>
+    case "hero_product":
+      return {
+        ...base,
+        type: "hero_product",
+        props: {
+          label: { es: "Producto", en: "Product" },
+          title: { es: "El título del producto", en: "The product headline" },
+          description: {
+            es: "Descripción breve del producto.",
+            en: "Short product description.",
+          },
+          image: "",
+          titleColor: "#8C7F1F",
+          primaryCta: {
+            label: { es: "Empezar gratis", en: "Start for free" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar demo", en: "Book a demo" },
+            href: "/contact",
+          },
+          brandMarqueeTitle: {
+            es: "Marcas que confían en nosotros",
+            en: "Brands that trust us",
+          },
+          brands: [
+            { name: "Marca 1", logo: "" },
+            { name: "Marca 2", logo: "" },
+            { name: "Marca 3", logo: "" },
+          ],
+        },
+      } as SectionFor<T>
+    case "product_detail":
+      return {
+        ...base,
+        type: "product_detail",
+        props: {
+          label: { es: "Resultados", en: "Results" },
+          title: { es: "Por qué elegir este producto", en: "Why choose this product" },
+          details: [
+            { stat: "+4x", description: { es: "Frecuencia de visitas", en: "Visit frequency" } },
+            { stat: "100k", description: { es: "Usuarios registrados", en: "Registered users" } },
+            { stat: "30%", description: { es: "Más retención", en: "More retention" } },
+            { stat: "24/7", description: { es: "Soporte incluido", en: "Support included" } },
+          ],
+          backgroundColor: "#754390",
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -1637,6 +1687,20 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Página por audiencias: título, tabs (cafés / restaurantes / delivery). Cada tab: carrusel, separador, marcas, problema + soluciones, pasos. Editor con navegación lateral por bloques.",
     component: AudiencesTabsSection,
   },
+  hero_product: {
+    type: "hero_product",
+    label: "Hero — Product",
+    description:
+      "Shared hero for product pages — label, headline, description, image, two CTAs and optional brand marquee strip.",
+    component: HeroProductSection,
+  },
+  product_detail: {
+    type: "product_detail",
+    label: "Product — Detail",
+    description:
+      "Shared stats/details grid for product pages — label, title, stat + description pairs, custom background color.",
+    component: ProductDetailSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -1681,15 +1745,72 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "about_stats",
     "about_team",
   ],
-  __product: [
+  /**
+   * Per-slug suggestions for each product page.
+   * `getSuggested()` in SectionList checks slug first, so these take
+   * priority over the generic `__product` fallback below.
+   */
+  club: [
+    "hero_product",
+    "product_detail",
     "hero_club",
     "club_cards",
     "steps_club",
     "club_activation",
     "notification_club",
-    "pricing",
+    "brand_marquee",
     "common_cta",
+    "pricing",
     "productpricing",
+    "testimonials",
+    "faq",
+  ],
+  ai: [
+    "hero_product",
+    "product_detail",
+    "home_autonomy",
+    "steps_club",
+    "brand_marquee",
+    "common_cta",
+    "pricing",
+    "productpricing",
+    "testimonials",
+    "faq",
+  ],
+  pos: [
+    "hero_product",
+    "product_detail",
+    "home_integrations",
+    "steps_club",
+    "brand_marquee",
+    "common_cta",
+    "pricing",
+    "productpricing",
+    "testimonials",
+    "faq",
+  ],
+  reviews: [
+    "hero_product",
+    "product_detail",
+    "steps_club",
+    "brand_marquee",
+    "common_cta",
+    "pricing",
+    "productpricing",
+    "testimonials",
+    "faq",
+  ],
+  /** Fallback for any other page with type === "product" not listed above. */
+  __product: [
+    "hero_product",
+    "product_detail",
+    "steps_club",
+    "brand_marquee",
+    "common_cta",
+    "pricing",
+    "productpricing",
+    "testimonials",
+    "faq",
   ],
   terms: ["legal_document"],
   privacy: ["legal_document"],

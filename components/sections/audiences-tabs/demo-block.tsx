@@ -122,9 +122,8 @@ export function AudienceDemoBlock({ data }: Props) {
               ) : null}
             </div>
           </div>
-
           {imageSrc ? (
-            <div className="relative min-h-[240px] rounded-2xl sm:min-h-[360px] lg:min-h-[720px]">
+            <div className="relative min-h-[240px] sm:min-h-[360px] lg:min-h-[720px]">
               <div
                 className="absolute inset-y-0 left-0 right-0 overflow-hidden rounded-2xl border-12 border-solid sm:rounded-[20px] sm:border-16 lg:left-auto lg:-right-[20%] lg:w-[calc(100%+20%)] lg:border-20"
                 style={{ borderColor: borderMuted(sectionBg, 20) }}
@@ -133,7 +132,7 @@ export function AudienceDemoBlock({ data }: Props) {
                   src={imageSrc}
                   alt={titleText || ""}
                   fill
-                  className="rounded-[inherit] object-cover"
+                  className="object-cover"
                   sizes="(max-width: 1024px) 90vw, 55vw"
                   priority
                 />

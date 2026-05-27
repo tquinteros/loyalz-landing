@@ -15,7 +15,18 @@ export const HOME_SLUG = "home" as const
 export const ABOUT_SLUG = "about" as const
 export const BLOGS_SLUG = "blogs" as const
 export const CLUB_SLUG = "club" as const
+export const AI_SLUG = "ai" as const
+export const POS_SLUG = "pos" as const
+export const REVIEWS_SLUG = "reviews" as const
 export const TERMS_SLUG = "terms" as const
+
+/** All product page slugs — used to route to ProductRenderer when page.type is not set. */
+export const PRODUCT_PAGE_SLUGS = ["club", "ai", "pos", "reviews"] as const
+export type ProductPageSlug = (typeof PRODUCT_PAGE_SLUGS)[number]
+
+export function isProductPageSlug(slug: string): slug is ProductPageSlug {
+  return (PRODUCT_PAGE_SLUGS as readonly string[]).includes(slug)
+}
 export const PRIVACY_SLUG = "privacy" as const
 export const COOKIES_SLUG = "cookies" as const
 

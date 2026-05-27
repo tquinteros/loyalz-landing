@@ -1,4 +1,6 @@
 import HeroClubSection from "./hero-club-section"
+import HeroProductSection from "./hero-product-section"
+import ProductDetailSection from "./product-detail-section"
 import PricingSection from "./pricing-section"
 import ClubCardsSection from "./club-cards-section"
 import StepsClubSection from "./steps-club-section"
@@ -38,6 +40,10 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
   }
 
   switch (section.type) {
+    case "hero_product":
+      return <HeroProductSection {...section.props} {...common} />
+    case "product_detail":
+      return <ProductDetailSection {...section.props} {...common} />
     case "hero_club":
       return <HeroClubSection {...section.props} {...common} />
     case "pricing":
