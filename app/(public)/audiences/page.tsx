@@ -19,10 +19,6 @@ type Props = {
   searchParams: Promise<{ tab?: string }>
 }
 
-/**
- * Keep this synchronous: awaiting `searchParams` (or page data) here counts
- * as uncached access outside `<Suspense>` and blocks the layout shell.
- */
 export default function AudiencesPage({ searchParams }: Props) {
   return (
     <main className="min-h-screen">
