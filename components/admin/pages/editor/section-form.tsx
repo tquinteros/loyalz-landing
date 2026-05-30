@@ -49,6 +49,7 @@ import { AboutTeamForm } from "./forms/about-team-form"
 import { AudiencesTabsForm } from "./forms/audiences-tabs-form"
 import { HeroProductForm } from "./forms/hero-product-form"
 import { ProductDetailForm } from "./forms/product-detail-form"
+import { ProductStepsForm } from "./forms/product-steps-form"
 
 type Props = {
   section: AnyPageSection
@@ -230,6 +231,8 @@ function TypedSectionBody({
       return <HeroProductForm value={section.props} onChange={onPropsChange} />
     case "product_detail":
       return <ProductDetailForm value={section.props} onChange={onPropsChange} />
+    case "product_steps":
+      return <ProductStepsForm value={section.props} onChange={onPropsChange} />
     default: {
       const _exhaustive: never = section
       return _exhaustive

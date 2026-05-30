@@ -19,21 +19,32 @@ type Props = {
   searchParams: Promise<{ tab?: string }>
 }
 
-export default async function AudiencesPage({ searchParams }: Props) {
-  const page = await fetchPublicPageBySlugCached(AUDIENCES_SLUG)
-  if (!page) notFound()
-
-  const { tab } = await searchParams
-
+/**
+ * Keep this synchronous: awaiting `searchParams` (or page data) here counts
+ * as uncached access outside `<Suspense>` and blocks the layout shell.
+ */
+export default function AudiencesPage({ searchParams }: Props) {
   return (
     <main className="min-h-screen">
       <Suspense fallback={<PageSkeleton />}>
-        <PageClient
-          slug={AUDIENCES_SLUG}
-          initialData={page}
-          initialAudienceTab={tab}
-        />
+        <AudiencesPageLoader searchParams={searchParams} />
       </Suspense>
     </main>
+  )
+}
+
+async function AudiencesPageLoader({ searchParams }: Props) {
+  const [page, { tab }] = await Promise.all([
+    fetchPublicPageBySlugCached(AUDIENCES_SLUG),
+    searchParams,
+  ])
+  if (!page) notFound()
+
+  return (
+    <PageClient
+      slug={AUDIENCES_SLUG}
+      initialData={page}
+      initialAudienceTab={tab}
+    />
   )
 }

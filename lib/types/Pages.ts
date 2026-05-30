@@ -592,6 +592,23 @@ export type ProductDetailSectionProps = {
   backgroundColor?: string
 }
 
+/** Shared interactive steps block for product pages (hover image + numbered steps + CTAs). */
+export type ProductStepsStepItem = {
+  title: LocalizedString
+  description: LocalizedString
+  /** Image shown in the left preview when this step is hovered. */
+  image: string
+  /** CSS hex color for hover accent on step copy and left border, e.g. `#754390`. */
+  backgroundColor: string
+}
+
+export type ProductStepsSectionProps = {
+  title: LocalizedString
+  steps: ProductStepsStepItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -624,6 +641,7 @@ export type AboutTeamSection = BaseSection<"about_team", AboutTeamSectionProps>
 export type AudiencesTabsSection = BaseSection<"audiences_tabs", AudiencesTabsSectionProps>
 export type HeroProductSection = BaseSection<"hero_product", HeroProductSectionProps>
 export type ProductDetailSection = BaseSection<"product_detail", ProductDetailSectionProps>
+export type ProductStepsSection = BaseSection<"product_steps", ProductStepsSectionProps>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -659,6 +677,7 @@ export type PageSection =
   | AudiencesTabsSection
   | HeroProductSection
   | ProductDetailSection
+  | ProductStepsSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

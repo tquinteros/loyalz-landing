@@ -129,7 +129,7 @@ export default function HeroProductSection({
           <div className="mt-8 sm:mt-12">
             {marqueeTitle ? (
               <div className="mb-5 text-center">
-                <p className="text-sm font-semibold text-background/70 sm:text-base">
+                <p className="text-lg font-semibold text-foreground sm:text-[32px]">
                   {marqueeTitle}
                 </p>
               </div>

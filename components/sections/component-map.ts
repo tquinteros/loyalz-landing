@@ -32,6 +32,7 @@ import AboutTeamSection from "./about-team-section"
 import AudiencesTabsSection from "./audiences-tabs-section"
 import HeroProductSection from "./hero-product-section"
 import ProductDetailSection from "./product-detail-section"
+import ProductStepsSection from "./product-steps-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -1474,6 +1475,54 @@ export function createDefaultSection<T extends PageSection["type"]>(
           backgroundColor: "#754390",
         },
       } as SectionFor<T>
+    case "product_steps":
+      return {
+        ...base,
+        type: "product_steps",
+        props: {
+          title: {
+            es: "Así lo vive tu cliente.",
+            en: "This is how your customer experiences it.",
+          },
+          steps: [
+            {
+              title: { es: "Escanea un QR.", en: "Scan a QR code." },
+              description: {
+                es: "En la caja, en la mesa o en un flyer.",
+                en: "At the counter, at the table, or on a flyer.",
+              },
+              image: "",
+              backgroundColor: "#754390",
+            },
+            {
+              title: { es: "Se registra en segundos.", en: "Signs up in seconds." },
+              description: {
+                es: "Sin apps. Directo a su Wallet.",
+                en: "No apps. Straight to their Wallet.",
+              },
+              image: "",
+              backgroundColor: "#754390",
+            },
+            {
+              title: { es: "Vuelve por el beneficio.", en: "Comes back for the reward." },
+              description: {
+                es: "Puntos, sellos o promos automáticas.",
+                en: "Points, stamps, or automatic promos.",
+              },
+              image: "",
+              backgroundColor: "#754390",
+            },
+          ],
+          primaryCta: {
+            label: { es: "Prueba GRATIS", en: "Try for FREE" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar DEMO", en: "Book a DEMO" },
+            href: "/contact",
+          },
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -1701,6 +1750,13 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Shared stats/details grid for product pages — label, title, stat + description pairs, custom background color.",
     component: ProductDetailSection,
   },
+  product_steps: {
+    type: "product_steps",
+    label: "Product — Steps",
+    description:
+      "Interactive steps for product pages — hover image preview, numbered steps with accent color, primary + secondary CTAs.",
+    component: ProductStepsSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -1753,6 +1809,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   club: [
     "hero_product",
     "product_detail",
+    "product_steps",
     "hero_club",
     "club_cards",
     "steps_club",
@@ -1768,6 +1825,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   ai: [
     "hero_product",
     "product_detail",
+    "product_steps",
     "home_autonomy",
     "steps_club",
     "brand_marquee",
@@ -1780,6 +1838,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   pos: [
     "hero_product",
     "product_detail",
+    "product_steps",
     "home_integrations",
     "steps_club",
     "brand_marquee",
@@ -1792,6 +1851,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   reviews: [
     "hero_product",
     "product_detail",
+    "product_steps",
     "steps_club",
     "brand_marquee",
     "common_cta",
@@ -1804,6 +1864,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
   __product: [
     "hero_product",
     "product_detail",
+    "product_steps",
     "steps_club",
     "brand_marquee",
     "common_cta",
