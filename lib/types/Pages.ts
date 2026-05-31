@@ -132,6 +132,26 @@ export type PricingSectionProps = {
   }>
 }
 
+/** Which product page this pricing block targets — drives card styling. */
+export type PricingClubAiProduct = "club" | "ai"
+
+export type PricingClubAiCardItem = {
+  title: LocalizedString
+  price: string
+  shops: LocalizedString
+  savings: string
+  features: LocalizedString[]
+}
+
+export type PricingClubAiSectionProps = {
+  product: PricingClubAiProduct
+  label?: LocalizedString
+  title?: LocalizedString
+  description?: LocalizedString
+  bottomMessage?: LocalizedString
+  cards: PricingClubAiCardItem[]
+}
+
 export type ProductPricingSectionProps = {
   label?: LocalizedString
   title?: LocalizedString
@@ -609,6 +629,86 @@ export type ProductStepsSectionProps = {
   secondaryCta?: CTA
 }
 
+/** Product page — phone mockup with floating stats + bottom title banner. */
+export type ProductMechanicsProduct = "club" | "reviews" | "ai"
+
+export type ProductMechanicsStatItem = {
+  title: LocalizedString
+  stat: LocalizedString
+  label?: LocalizedString
+}
+
+export type ProductMechanicsSectionProps = {
+  /** Which product screen to show inside the phone case. */
+  product: ProductMechanicsProduct
+  /** Bottom banner title (supports line breaks). */
+  title: LocalizedString
+  /** CSS hex background for the whole section. */
+  backgroundColor?: string
+  /** CSS hex background for the bottom title banner. */
+  bottomLabelBackground?: string
+  stats: ProductMechanicsStatItem[]
+}
+
+/** Product page — "how it works" block: title, fanned images + floating stat badges. */
+export type ProductHowItWorksStatItem = {
+  /** Display stat value (e.g. "+15", "★★★★★", "50%"). Not translated. */
+  stat: string
+  title: LocalizedString
+}
+
+export type ProductHowItWorksSectionProps = {
+  title: LocalizedString
+  /** CSS hex background color for the whole section, e.g. `#F8F5EF`. */
+  backgroundColor?: string
+  /** Up to 3 image URLs shown in the fanned card layout. */
+  images: string[]
+  /** Up to 4 floating stat badges overlaid on the image fan. */
+  stats: ProductHowItWorksStatItem[]
+}
+
+/** Product page — dashboard showcase: label, title, image, subtitle, feature cards, two CTAs. */
+export type ProductDashboardFeatureItem = {
+  title: LocalizedString
+  description: LocalizedString
+}
+
+export type ProductDashboardSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  /** Product screenshot / dashboard image URL. */
+  image: string
+  subtitle?: LocalizedString
+  features: ProductDashboardFeatureItem[]
+  /** CSS hex color for feature card text, border accent, and icon badge background, e.g. `#754390`. */
+  color: string
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
+/** Product page — full-bleed background image with centered title and a styled label badge. */
+export type ProductCtaImageSectionProps = {
+  title: LocalizedString
+  label?: LocalizedString
+  /** CSS hex color for the label badge background, e.g. `#DBC5E8`. */
+  labelBackgroundColor?: string
+}
+
+/** Product Club page — benefits grid with icon cards and two CTAs on a colored background. */
+export type ProductClubBenefitsItem = {
+  title: LocalizedString
+  description: LocalizedString
+}
+
+export type ProductClubBenefitsSectionProps = {
+  /** CSS hex color for the section background and card copy, e.g. `#754390`. */
+  backgroundColor?: string
+  title: LocalizedString
+  benefits: ProductClubBenefitsItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
 export type HeroSection = BaseSection<"hero", HeroSectionProps>
 export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
@@ -642,6 +742,18 @@ export type AudiencesTabsSection = BaseSection<"audiences_tabs", AudiencesTabsSe
 export type HeroProductSection = BaseSection<"hero_product", HeroProductSectionProps>
 export type ProductDetailSection = BaseSection<"product_detail", ProductDetailSectionProps>
 export type ProductStepsSection = BaseSection<"product_steps", ProductStepsSectionProps>
+export type PricingClubAiSection = BaseSection<
+  "pricing_club_ai",
+  PricingClubAiSectionProps
+>
+export type ProductMechanicsSection = BaseSection<"product_mechanics", ProductMechanicsSectionProps>
+export type ProductHowItWorksSection = BaseSection<"product_how_it_works", ProductHowItWorksSectionProps>
+export type ProductDashboardSection = BaseSection<"product_dashboard", ProductDashboardSectionProps>
+export type ProductCtaImageSection = BaseSection<"product_cta_image", ProductCtaImageSectionProps>
+export type ProductClubBenefitsSection = BaseSection<
+  "product_club_benefits",
+  ProductClubBenefitsSectionProps
+>
 
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
@@ -678,6 +790,12 @@ export type PageSection =
   | HeroProductSection
   | ProductDetailSection
   | ProductStepsSection
+  | PricingClubAiSection
+  | ProductMechanicsSection
+  | ProductHowItWorksSection
+  | ProductDashboardSection
+  | ProductCtaImageSection
+  | ProductClubBenefitsSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

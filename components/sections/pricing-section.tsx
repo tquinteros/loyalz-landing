@@ -154,7 +154,10 @@ export default function PricingSection({
                     </svg>
                   </div>
                   <span className={cn("text-[10px] max-w-5xl transition-colors duration-200", cardTextClass)}>
-                    POS + Pay incluidos gratis en todos los planes.
+                    {t({
+                      es: "POS + Pay incluidos gratis en todos los planes.",
+                      en: "POS + Pay included free with all plans.",
+                    })}
                   </span>
                 </div>
                 {/* {

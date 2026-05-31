@@ -50,6 +50,12 @@ import { AudiencesTabsForm } from "./forms/audiences-tabs-form"
 import { HeroProductForm } from "./forms/hero-product-form"
 import { ProductDetailForm } from "./forms/product-detail-form"
 import { ProductStepsForm } from "./forms/product-steps-form"
+import { PricingClubAiForm } from "./forms/pricing-club-ai-form"
+import { ProductCtaImageForm } from "./forms/product-cta-image-form"
+import { ProductDashboardForm } from "./forms/product-dashboard-form"
+import { ProductHowItWorksForm } from "./forms/product-how-it-works-form"
+import { ProductMechanicsForm } from "./forms/product-mechanics-form"
+import { ProductClubBenefitsForm } from "./forms/product-club-benefits-form"
 
 type Props = {
   section: AnyPageSection
@@ -233,6 +239,30 @@ function TypedSectionBody({
       return <ProductDetailForm value={section.props} onChange={onPropsChange} />
     case "product_steps":
       return <ProductStepsForm value={section.props} onChange={onPropsChange} />
+    case "pricing_club_ai":
+      return (
+        <PricingClubAiForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_mechanics":
+      return (
+        <ProductMechanicsForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_how_it_works":
+      return (
+        <ProductHowItWorksForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_dashboard":
+      return (
+        <ProductDashboardForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_cta_image":
+      return (
+        <ProductCtaImageForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_club_benefits":
+      return (
+        <ProductClubBenefitsForm value={section.props} onChange={onPropsChange} />
+      )
     default: {
       const _exhaustive: never = section
       return _exhaustive

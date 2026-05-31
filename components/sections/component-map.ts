@@ -33,6 +33,12 @@ import AudiencesTabsSection from "./audiences-tabs-section"
 import HeroProductSection from "./hero-product-section"
 import ProductDetailSection from "./product-detail-section"
 import ProductStepsSection from "./product-steps-section"
+import PricingClubAiSection from "./pricing-club-ai-section"
+import ProductCtaImageSection from "./product-cta-image-section"
+import ProductDashboardSection from "./product-dashboard-section"
+import ProductHowItWorksSection from "./product-how-it-works-section"
+import ProductMechanicsSection from "./product-mechanics-section"
+import ProductClubBenefitsSection from "./product-club-benefits-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -1523,6 +1529,237 @@ export function createDefaultSection<T extends PageSection["type"]>(
           },
         },
       } as SectionFor<T>
+    case "pricing_club_ai":
+      return {
+        ...base,
+        type: "pricing_club_ai",
+        props: {
+          product: "club",
+          label: { es: "Precios", en: "Pricing" },
+          title: {
+            es: "Los precios claros. Como todo en Loyalz.",
+            en: "Clear pricing. Just like everything at Loyalz.",
+          },
+          description: {
+            es: "Elegí el plan que mejor se adapta a tu negocio.",
+            en: "Pick the plan that best fits your business.",
+          },
+          bottomMessage: {
+            es: "POS + Pay incluidos gratis en todos los planes.",
+            en: "POS + Pay included free on all plans.",
+          },
+          cards: [
+            {
+              title: { es: "Start", en: "Start" },
+              price: "$39",
+              shops: { es: "Hasta 1 local", en: "Up to 1 location" },
+              savings: "0%",
+              features: [
+                { es: "1 Mecánica Activa", en: "1 Active mechanic" },
+                { es: "0 Managers", en: "0 Managers" },
+                { es: "Tarjetas Digitales", en: "Digital cards" },
+                { es: "Push ilimitados", en: "Unlimited push" },
+              ],
+            },
+            {
+              title: { es: "Growth", en: "Growth" },
+              price: "$89",
+              shops: { es: "Hasta 3 locales", en: "Up to 3 locations" },
+              savings: "0%",
+              features: [
+                { es: "3 Mecánicas activas", en: "3 Active mechanics" },
+                { es: "10 Managers", en: "10 Managers" },
+                { es: "Todo lo incluido en Starter", en: "Everything in Starter" },
+                { es: "Programa de Referidos", en: "Referral program" },
+                { es: "Secuencias push automáticas", en: "Automatic push sequences" },
+              ],
+            },
+            {
+              title: { es: "Business", en: "Business" },
+              price: "$249",
+              shops: { es: "Hasta 10 locales", en: "Up to 10 locations" },
+              savings: "0%",
+              features: [
+                { es: "50 Managers", en: "50 Managers" },
+                {
+                  es: "Todo lo incluido en Starter+Growth",
+                  en: "Everything in Starter + Growth",
+                },
+                { es: "Integraciones API", en: "API integrations" },
+              ],
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "product_mechanics":
+      return {
+        ...base,
+        type: "product_mechanics",
+        props: {
+          product: "club",
+          title: {
+            es: "Implementación en menos de 15 minutos.\nSin interrupciones en tu operación.",
+            en: "Setup in under 15 minutes.\nNo disruption to your operations.",
+          },
+          backgroundColor: "#F8F5EF",
+          bottomLabelBackground: "#FFFFFF",
+          stats: [
+            {
+              title: { es: "Clientes fidelizados", en: "Loyal customers" },
+              stat: { es: "158", en: "158" },
+              label: { es: "109 beneficios activos", en: "109 active benefits" },
+            },
+            {
+              title: { es: "Ticket Promedio", en: "Average ticket" },
+              stat: { es: "$ 16", en: "$ 16" },
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "product_how_it_works":
+      return {
+        ...base,
+        type: "product_how_it_works",
+        props: {
+          title: {
+            es: "¿Cómo funciona? Así de simple.",
+            en: "How does it work? This simple.",
+          },
+          backgroundColor: "#F8F5EF",
+          images: ["", "", ""],
+          stats: [
+            { stat: "+15", title: { es: "Reseñas nuevas", en: "New reviews" } },
+            { stat: "★★★★★", title: { es: "Calificación promedio", en: "Average rating" } },
+            { stat: "50%", title: { es: "Más retención", en: "More retention" } },
+          ],
+        },
+      } as SectionFor<T>
+    case "product_dashboard":
+      return {
+        ...base,
+        type: "product_dashboard",
+        props: {
+          label: { es: "Dashboard", en: "Dashboard" },
+          title: {
+            es: "La mejor forma de hacerlos volver: conociéndolos.",
+            en: "The best way to bring them back: by knowing them.",
+          },
+          image: "",
+          subtitle: {
+            es: "Controlá todo desde un solo dashboard.",
+            en: "Control everything from a single dashboard.",
+          },
+          color: "#754390",
+          features: [
+            {
+              title: { es: "Segmentación", en: "Segmentation" },
+              description: {
+                es: "Sabés quién vuelve, quién no y quién gasta más.",
+                en: "Know who returns, who doesn't, and who spends more.",
+              },
+            },
+            {
+              title: { es: "Automatización", en: "Automation" },
+              description: {
+                es: "Reactivá inactivos con mensaje personalizado por segmento.",
+                en: "Re-engage inactive customers with personalised messages.",
+              },
+            },
+            {
+              title: { es: "Decisión", en: "Decision" },
+              description: {
+                es: "Tenés datos más claros para mejorar tu negocio.",
+                en: "Clearer data to improve your business.",
+              },
+            },
+          ],
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
+        },
+      } as SectionFor<T>
+    case "product_cta_image":
+      return {
+        ...base,
+        type: "product_cta_image",
+        props: {
+          title: {
+            es: "Un ecosistema pensado para que crecer no dependa de la suerte.",
+            en: "An ecosystem designed so growth doesn't depend on luck.",
+          },
+          label: { es: "Loyalz", en: "Loyalz" },
+          labelBackgroundColor: "#DBC5E8",
+        },
+      } as SectionFor<T>
+    case "product_club_benefits":
+      return {
+        ...base,
+        type: "product_club_benefits",
+        props: {
+          backgroundColor: "#754390",
+          title: {
+            es: "Ellos reciben beneficios, vos los recibís de vuelta.",
+            en: "They get benefits, you get them back.",
+          },
+          benefits: [
+            {
+              title: { es: "Estampas", en: "Stamps" },
+              description: {
+                es: "Sellos digitales en Apple y Google Wallet.",
+                en: "Digital stamps on Apple and Google Wallet.",
+              },
+            },
+            {
+              title: { es: "Notificaciones Push", en: "Push notifications" },
+              description: {
+                es: "Mensajes automáticos para traer clientes de vuelta.",
+                en: "Automated messages to bring customers back.",
+              },
+            },
+            {
+              title: { es: "Dashboard", en: "Dashboard" },
+              description: {
+                es: "Métricas y control de tu programa en un solo lugar.",
+                en: "Metrics and control of your program in one place.",
+              },
+            },
+            {
+              title: { es: "Referidos", en: "Referrals" },
+              description: {
+                es: "Tus clientes traen más clientes con recompensas.",
+                en: "Your customers bring more customers with rewards.",
+              },
+            },
+            {
+              title: { es: "Segmentación", en: "Segmentation" },
+              description: {
+                es: "Sabés quién vuelve, quién no y quién gasta más.",
+                en: "Know who returns, who doesn't, and who spends more.",
+              },
+            },
+            {
+              title: { es: "Automatización", en: "Automation" },
+              description: {
+                es: "Reactivá inactivos con mensajes personalizados.",
+                en: "Re-engage inactive customers with personalised messages.",
+              },
+            },
+          ],
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -1757,6 +1994,48 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Interactive steps for product pages — hover image preview, numbered steps with accent color, primary + secondary CTAs.",
     component: ProductStepsSection,
   },
+  pricing_club_ai: {
+    type: "pricing_club_ai",
+    label: "Pricing — Club / AI",
+    description:
+      "Product-page pricing for Club or AI — home-style cards without the POS+Pay icon strip; Club applies per-card border and pill colors.",
+    component: PricingClubAiSection,
+  },
+  product_mechanics: {
+    type: "product_mechanics",
+    label: "Product — Mechanics",
+    description:
+      "Phone mockup with product-specific screen, floating stats, and bottom title banner with configurable colors.",
+    component: ProductMechanicsSection,
+  },
+  product_how_it_works: {
+    type: "product_how_it_works",
+    label: "Product — How it works",
+    description:
+      "Title, up to 3 images in a fanned card layout and up to 4 floating stat badges. Background color is configurable.",
+    component: ProductHowItWorksSection,
+  },
+  product_dashboard: {
+    type: "product_dashboard",
+    label: "Product — Dashboard",
+    description:
+      "Dashboard showcase: label, title, image, subtitle, feature cards (grid ≤3 / infinite carousel >3) and two CTAs.",
+    component: ProductDashboardSection,
+  },
+  product_cta_image: {
+    type: "product_cta_image",
+    label: "Product — CTA Image",
+    description:
+      "Full-bleed background image with a centred title and an optional label badge with a custom background color.",
+    component: ProductCtaImageSection,
+  },
+  product_club_benefits: {
+    type: "product_club_benefits",
+    label: "Product — Club Benefits",
+    description:
+      "Colored background, headline, 3-column benefit cards with icon, and primary + secondary CTAs.",
+    component: ProductClubBenefitsSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -1810,6 +2089,9 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "hero_product",
     "product_detail",
     "product_steps",
+    "product_club_benefits",
+    "product_mechanics",
+    "pricing_club_ai",
     "hero_club",
     "club_cards",
     "steps_club",
@@ -1826,6 +2108,8 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "hero_product",
     "product_detail",
     "product_steps",
+    "product_mechanics",
+    "pricing_club_ai",
     "home_autonomy",
     "steps_club",
     "brand_marquee",
@@ -1852,6 +2136,7 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "hero_product",
     "product_detail",
     "product_steps",
+    "product_mechanics",
     "steps_club",
     "brand_marquee",
     "common_cta",

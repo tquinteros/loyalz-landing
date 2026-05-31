@@ -6,14 +6,19 @@ import {
   fetchPublicPostBySlug,
   publicPostQueryKey,
 } from "@/lib/queries/blog"
-import type { FullPost } from "@/lib/types/Posts"
+import type { FullPost, Post } from "@/lib/types/Posts"
 
 type Props = {
   slug: string
   initialData: FullPost
+  relatedPosts: Post[]
 }
 
-export default function BlogDetailClient({ slug, initialData }: Props) {
+export default function BlogDetailClient({
+  slug,
+  initialData,
+  relatedPosts,
+}: Props) {
   const { data } = useQuery({
     queryKey: publicPostQueryKey(slug),
     queryFn: () => fetchPublicPostBySlug(slug),
@@ -21,5 +26,7 @@ export default function BlogDetailClient({ slug, initialData }: Props) {
     staleTime: 1000 * 60 * 5,
   })
 
-  return <BlogDetail post={data ?? initialData} />
+  return (
+    <BlogDetail post={data ?? initialData} relatedPosts={relatedPosts} />
+  )
 }

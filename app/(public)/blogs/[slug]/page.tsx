@@ -1,7 +1,11 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { fetchPublicPostBySlugCached } from "@/lib/queries/blog.server"
+import {
+  fetchPublicPostBySlugCached,
+  fetchPublicPostsCached,
+} from "@/lib/queries/blog.server"
+import { pickRandomRelatedPosts } from "@/lib/blogs/related-posts"
 import BlogDetailClient from "@/components/blogs/blog-detail-client"
 import { BlogsDetailSkeleton } from "@/components/blogs/blogs-skeleton"
 
@@ -33,9 +37,20 @@ export default function BlogPostPage({ params }: PageProps) {
 
 async function BlogPostContent({ params }: PageProps) {
   const { slug } = await params
-  const post = await fetchPublicPostBySlugCached(slug)
+  const [post, allPosts] = await Promise.all([
+    fetchPublicPostBySlugCached(slug),
+    fetchPublicPostsCached(),
+  ])
 
   if (!post) notFound()
 
-  return <BlogDetailClient slug={slug} initialData={post} />
+  const relatedPosts = pickRandomRelatedPosts(allPosts, slug, 3)
+
+  return (
+    <BlogDetailClient
+      slug={slug}
+      initialData={post}
+      relatedPosts={relatedPosts}
+    />
+  )
 }
