@@ -31,8 +31,8 @@ const HEADER_COPY = {
   blogs: { es: "Blogs", en: "Blogs" },
   admin: { es: "Admin", en: "Admin" },
   ctaConsult: {
-    es: "Consulta por tu negocio",
-    en: "Inquire about your business",
+    es: "Ingresar",
+    en: "Enter",
   },
   openMenu: { es: "Abrir menú", en: "Open menu" },
   menuTitle: { es: "Menú", en: "Menu" },
