@@ -153,7 +153,9 @@ export function PageEditor({
   const patchSection = useCallback(
     (id: string, patch: Partial<AnyPageSection>) => {
       setSections((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, ...patch } : s)),
+        prev.map((s) =>
+          s.id === id ? ({ ...s, ...patch } as AnyPageSection) : s,
+        ),
       )
       setIsDirty(true)
     },
