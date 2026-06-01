@@ -4,6 +4,7 @@ import React from "react"
 import Link from "next/link"
 import { ContentRenderer } from "@/components/blogs/content-renderer"
 import { RelatedBlogs } from "@/components/blogs/related-blogs"
+import { SubscribeBlogs } from "@/components/blogs/subscribe-blogs"
 import type { FullPost, Post } from "@/lib/types/Posts"
 import type { LocalizedString } from "@/lib/types/Pages"
 import Image from "next/image"
@@ -104,6 +105,7 @@ const BlogDetail = ({ post, relatedPosts = [] }: BlogDetailProps) => {
         </footer>
       </SectionWrapper>
 
+      <SubscribeBlogs />
       <RelatedBlogs posts={relatedPosts} />
     </>
   )
