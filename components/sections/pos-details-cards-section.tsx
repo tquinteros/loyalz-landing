@@ -4,34 +4,23 @@ import type { CSSProperties } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import type { BlurredAiPosCardsSectionProps } from "@/lib/types/Pages"
+import type { PosDetailsCardsSectionProps } from "@/lib/types/Pages"
 import { SectionWrapper } from "./section-wrapper"
 import { useT } from "@/providers/language-provider"
 import { cn } from "@/lib/utils"
 
-type Props = BlurredAiPosCardsSectionProps & {
+type Props = PosDetailsCardsSectionProps & {
   backgroundImage?: string | null
   className?: string | null
 }
 
-const DEFAULT_BG = "#B2C8D9"
-const DEFAULT_TEXT = "#013662"
+const DEFAULT_BG = "#F5B8A8"
+const DEFAULT_TEXT = "#E85D33"
 
-const CARD_PROGRESSIVE_BLUR: CSSProperties = {
-  backdropFilter: "blur(50px)",
-  WebkitBackdropFilter: "blur(50px)",
-  maskImage:
-    "linear-gradient(to top, black 0%, rgba(0,0,0,0.92) 18%, rgba(0,0,0,0.45) 52%, transparent 100%)",
-  WebkitMaskImage:
-    "linear-gradient(to top, black 0%, rgba(0,0,0,0.92) 18%, rgba(0,0,0,0.45) 52%, transparent 100%)",
-}
-
-const CARD_READABILITY_GRADIENT =
-  "linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.22) 42%, transparent 100%)"
-
-export default function BlurredAiPosCardsSection({
+export default function PosDetailsCardsSection({
   label,
   title,
+  description,
   cards,
   primaryCta,
   secondaryCta,
@@ -46,6 +35,7 @@ export default function BlurredAiPosCardsSection({
   const fg = textColor?.trim() || DEFAULT_TEXT
   const labelText = t(label)
   const titleText = t(title)
+  const descriptionText = t(description)
   const primaryCtaLabel = t(primaryCta?.label)
   const secondaryCtaLabel = t(secondaryCta?.label)
 
@@ -53,7 +43,9 @@ export default function BlurredAiPosCardsSection({
     (card) => card.image?.trim() || t(card.title) || t(card.description),
   )
 
-  if (!labelText && !titleText && visibleCards.length === 0) return null
+  if (!labelText && !titleText && !descriptionText && visibleCards.length === 0) {
+    return null
+  }
 
   return (
     <SectionWrapper
@@ -92,8 +84,14 @@ export default function BlurredAiPosCardsSection({
           </h2>
         ) : null}
 
+        {descriptionText ? (
+          <p className="mt-4 max-w-3xl text-base leading-snug sm:text-lg lg:text-xl">
+            {descriptionText}
+          </p>
+        ) : null}
+
         {visibleCards.length > 0 ? (
-          <div className="mt-10 grid w-full grid-cols-1 gap-5 sm:mt-12 sm:gap-6 md:grid-cols-3 lg:mt-22">
+          <div className="mt-10 grid w-full grid-cols-1 gap-5 sm:mt-12 sm:gap-6 md:grid-cols-2 lg:mt-14">
             {visibleCards.map((card, i) => {
               const cardTitle = t(card.title)
               const cardDescription = t(card.description)
@@ -102,44 +100,32 @@ export default function BlurredAiPosCardsSection({
               return (
                 <article
                   key={`${cardTitle}-${i}`}
-                  className="relative isolate aspect-4/5 w-full overflow-hidden rounded-[24px] sm:rounded-[32px]"
+                  className="flex flex-col overflow-hidden rounded-[24px] p-5 text-left text-foreground sm:rounded-[32px] sm:p-6"
+                  style={{ backgroundColor: fg }}
                 >
                   {imageSrc ? (
-                    <Image
-                      src={imageSrc}
-                      alt={cardTitle || ""}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-foreground/20" />
-                  )}
+                    <div className="relative mb-5 size-[240px] shrink-0 overflow-hidden rounded-[20px] sm:rounded-[24px]">
+                      <Image
+                        src={imageSrc}
+                        alt={cardTitle || ""}
+                        width={240}
+                        height={240}
+                        className="size-full object-cover"
+                        sizes="240px"
+                      />
+                    </div>
+                  ) : null}
 
-                  <div
-                    className="pointer-events-none absolute inset-x-0 bottom-0 z-1 h-[58%]"
-                    style={CARD_PROGRESSIVE_BLUR}
-                    aria-hidden
-                  />
-
-                  <div
-                    className="pointer-events-none absolute inset-x-0 bottom-0 z-2 h-[52%]"
-                    style={{ background: CARD_READABILITY_GRADIENT }}
-                    aria-hidden
-                  />
-
-                  <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-start p-6 text-left text-foreground sm:p-7">
-                    {cardTitle ? (
-                      <h3 className="text-xl font-bold leading-tight sm:text-2xl">
-                        {cardTitle}
-                      </h3>
-                    ) : null}
-                    {cardDescription ? (
-                      <p className="mt-2 text-sm leading-snug text-foreground/90 sm:text-base">
-                        {cardDescription}
-                      </p>
-                    ) : null}
-                  </div>
+                  {cardTitle ? (
+                    <h3 className="text-xl font-bold leading-tight sm:text-[32px]">
+                      {cardTitle}
+                    </h3>
+                  ) : null}
+                  {cardDescription ? (
+                    <p className="mt-2 text-sm leading-snug text-foreground/90 sm:text-base">
+                      {cardDescription}
+                    </p>
+                  ) : null}
                 </article>
               )
             })}
@@ -148,12 +134,12 @@ export default function BlurredAiPosCardsSection({
 
         {(primaryCta?.href && primaryCtaLabel) ||
         (secondaryCta?.href && secondaryCtaLabel) ? (
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:mt-22 sm:gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:mt-12 sm:gap-4">
             {primaryCta?.href && primaryCtaLabel ? (
               <Button
                 asChild
                 size="lg"
-                className="h-12 rounded-[10px] border-0 bg-foreground px-8 text-base font-semibold text-background shadow-none hover:bg-foreground/90"
+                className="h-12 rounded-[10px] border-0 bg-background px-8 text-base font-semibold text-foreground shadow-none hover:bg-background/90"
               >
                 <Link href={primaryCta.href}>{primaryCtaLabel}</Link>
               </Button>
@@ -163,7 +149,7 @@ export default function BlurredAiPosCardsSection({
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 rounded-[10px] border-2 bg-transparent px-8 text-base font-semibold shadow-none hover:bg-transparent! hover:opacity-80"
+                className="h-12 rounded-[10px] border-2 bg-transparent px-8 text-base font-semibold shadow-none hover:opacity-80"
                 style={{ borderColor: fg, color: fg }}
               >
                 <Link href={secondaryCta.href}>{secondaryCtaLabel}</Link>

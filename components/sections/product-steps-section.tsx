@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -24,6 +25,8 @@ export default function ProductStepsSection({
   className,
 }: Props) {
   const t = useT()
+  const pathname = usePathname()
+  const isPosPage = pathname === "/pos"
   const titleText = t(title)
   const primaryCtaLabel = t(primaryCta?.label)
   const secondaryCtaLabel = t(secondaryCta?.label)
@@ -46,11 +49,16 @@ export default function ProductStepsSection({
   return (
     <SectionWrapper
       backgroundImage={backgroundImage}
-      surfaceColor={sectionSurface}
-      innerClassName="px-5!"
-      className={cn("py-5!", className)}
+      surfaceColor={isPosPage ? null : sectionSurface}
+      innerClassName={cn(isPosPage ? "px-0" : "px-5!")}
+      className={cn(isPosPage ? "bg-foreground py-0!" : "py-5!", className)}
     >
-      <div className="overflow-hidden rounded-[24px] bg-foreground p-6 lg:p-12 sm:rounded-[24px]">
+      <div
+        className={cn(
+          "overflow-hidden bg-foreground p-6 lg:p-12",
+          !isPosPage && "rounded-[24px] sm:rounded-[24px]",
+        )}
+      >
         <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left — step image preview */}
           <div className="relative min-h-[240px] min-w-0 overflow-hidden rounded-[24px] bg-background sm:min-h-[320px] lg:min-h-[720px]">

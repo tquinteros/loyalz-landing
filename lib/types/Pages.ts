@@ -856,6 +856,82 @@ export type BlurredAiPosCardsSection = BaseSection<
   BlurredAiPosCardsSectionProps
 >
 
+/** POS Pay — colored panel (logo + label) + image, 6/6 grid. */
+export type PosSeparatorSectionProps = {
+  label: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  image: string
+  /** Left panel background (hex). Text uses foreground (white). */
+  backgroundColor: string
+}
+
+export type PosSeparatorSection = BaseSection<
+  "pos_separator",
+  PosSeparatorSectionProps
+>
+
+export type PosDetailsCardItem = {
+  image: string
+  title: LocalizedString
+  description: LocalizedString
+}
+
+/** POS — header + 2 image/detail cards + CTAs. */
+export type PosDetailsCardsSectionProps = {
+  backgroundColor: string
+  textColor: string
+  label: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  cards: PosDetailsCardItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
+export type PosDetailsCardsSection = BaseSection<
+  "pos_details_cards",
+  PosDetailsCardsSectionProps
+>
+
+export type PosPricingCardItem = {
+  /** Card top label (e.g. POS, PAY). */
+  title: LocalizedString
+  /** Main headline (e.g. Gratis, Sin markup). */
+  price: string
+  /** Pill / button copy below price. */
+  shops: LocalizedString
+  features: LocalizedString[]
+}
+
+/** POS — pricing block: 2 cards (POS + PAY style) + bottom banner + CTAs. */
+export type PosPricingSectionProps = {
+  label?: LocalizedString
+  title?: LocalizedString
+  bottomMessage?: LocalizedString
+  cards: PosPricingCardItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
+export type PosPricingSection = BaseSection<
+  "pos_pricing",
+  PosPricingSectionProps
+>
+
+/** POS — full-bleed background image (advanced) + label & title on the right. */
+export type PosImageSeparatorSectionProps = {
+  label: LocalizedString
+  title: LocalizedString
+  /** Title and label text/border color (hex). */
+  titleColor: string
+}
+
+export type PosImageSeparatorSection = BaseSection<
+  "pos_image_separator",
+  PosImageSeparatorSectionProps
+>
+
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
   | HeroSection
@@ -903,6 +979,10 @@ export type PageSection =
   | ProductInformationSection
   | ProductAiInformationSection
   | BlurredAiPosCardsSection
+  | PosSeparatorSection
+  | PosDetailsCardsSection
+  | PosPricingSection
+  | PosImageSeparatorSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

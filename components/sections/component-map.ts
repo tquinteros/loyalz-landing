@@ -45,6 +45,10 @@ import ProductClubNotificationsSection from "./product-club-notifications-sectio
 import ProductInformationSection from "./product-information-section"
 import ProductAiInformationSection from "./product-ai-information-section"
 import BlurredAiPosCardsSection from "./blurred-ai-pos-cards-section"
+import PosSeparatorSection from "./pos-separator-section"
+import PosDetailsCardsSection from "./pos-details-cards-section"
+import PosPricingSection from "./pos-pricing-section"
+import PosImageSeparatorSection from "./pos-image-separator-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -1992,6 +1996,131 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "pos_separator":
+      return {
+        ...base,
+        type: "pos_separator",
+        props: {
+          backgroundColor: "#E85D33",
+          label: { es: "Loyalzpay", en: "Loyalzpay" },
+          title: {
+            es: "Pagos directos con Loyalz Pay",
+            en: "Direct payments with Loyalz Pay",
+          },
+          description: {
+            es: "Cobrá con tarjeta, QR o link de pago directo. Procesado por Mercado Pago, sin markup.",
+            en: "Charge by card, QR, or direct payment link. Processed by Mercado Pago, no markup.",
+          },
+          image: "/header/pos.jpg",
+        },
+      } as SectionFor<T>
+    case "pos_details_cards":
+      return {
+        ...base,
+        type: "pos_details_cards",
+        props: {
+          backgroundColor: "#F5B8A8",
+          textColor: "#E85D33",
+          label: { es: "Pay", en: "Pay" },
+          title: {
+            es: "Reducí comisiones y ganá control de datos.",
+            en: "Cut fees and gain control of your data.",
+          },
+          description: {
+            es: "Cobrás como siempre, sin markup de Loyalz. Y según el tipo de pago, Pay hace algo distinto.",
+            en: "You charge as usual, with no Loyalz markup. And depending on payment type, Pay works differently.",
+          },
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
+          cards: [
+            {
+              image: "/coffe-mobile.png",
+              title: { es: "Pagos Presenciales", en: "In-person payments" },
+              description: {
+                es: "Cobrá en el local con QR, tarjeta o link sin comisiones extra de Loyalz.",
+                en: "Charge in-store with QR, card, or link with no extra Loyalz fees.",
+              },
+            },
+            {
+              image: "/mobile-case.png",
+              title: { es: "Pagos Online", en: "Online payments" },
+              description: {
+                es: "Links de pago y cobros remotos integrados a tu flujo de ventas.",
+                en: "Payment links and remote charges integrated into your sales flow.",
+              },
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "pos_pricing":
+      return {
+        ...base,
+        type: "pos_pricing",
+        props: {
+          label: { es: "Precios", en: "Pricing" },
+          title: {
+            es: "Sin letra chica.\nSin costo oculto.",
+            en: "No fine print.\nNo hidden fees.",
+          },
+          bottomMessage: {
+            es: "* POS + Pay incluidos en todos los planes de Loyalz.",
+            en: "* POS + Pay included in all Loyalz plans.",
+          },
+          primaryCta: {
+            label: { es: "Prueba GRATIS", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar DEMO", en: "Book a Demo" },
+            href: "/contact",
+          },
+          cards: [
+            {
+              title: { es: "POS", en: "POS" },
+              price: "Gratis",
+              shops: { es: "Sin integraciones", en: "No integrations" },
+              features: [
+                { es: "Item Placeholder", en: "Item Placeholder" },
+                { es: "Item Placeholder", en: "Item Placeholder" },
+                { es: "Item Placeholder", en: "Item Placeholder" },
+              ],
+            },
+            {
+              title: { es: "PAY", en: "PAY" },
+              price: "Sin markup",
+              shops: {
+                es: "Compatible con Mercado Pago",
+                en: "Mercado Pago compatible",
+              },
+              features: [
+                { es: "Item Placeholder", en: "Item Placeholder" },
+                { es: "Item Placeholder", en: "Item Placeholder" },
+                { es: "Item Placeholder", en: "Item Placeholder" },
+              ],
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "pos_image_separator":
+      return {
+        ...base,
+        backgroundImage: "/header/pos.jpg",
+        type: "pos_image_separator",
+        props: {
+          label: { es: "Pay", en: "Pay" },
+          title: {
+            es: "No es solo cobrar.\nEs vender mejor.",
+            en: "It's not just charging.\nIt's selling better.",
+          },
+          titleColor: "#E9967A",
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -2309,6 +2438,34 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Centered label + title, 3 image cards with bottom blur overlay (text-foreground), primary/secondary CTAs.",
     component: BlurredAiPosCardsSection,
   },
+  pos_separator: {
+    type: "pos_separator",
+    label: "POS — Separator",
+    description:
+      "6/6 grid: orange panel (logo + label, title + description) + image. Panel uses backgroundColor.",
+    component: PosSeparatorSection,
+  },
+  pos_details_cards: {
+    type: "pos_details_cards",
+    label: "POS — Details Cards",
+    description:
+      "Peach section, header in textColor, 2 cards (240×240 image + copy), primary/secondary CTAs.",
+    component: PosDetailsCardsSection,
+  },
+  pos_pricing: {
+    type: "pos_pricing",
+    label: "POS — Pricing",
+    description:
+      "Precios POS/PAY: 2 pricing cards (border + filled), features, bottom banner, CTAs.",
+    component: PosPricingSection,
+  },
+  pos_image_separator: {
+    type: "pos_image_separator",
+    label: "POS — Image Separator",
+    description:
+      "Full-bleed background image (advanced). Label + title on the right; title uses titleColor.",
+    component: PosImageSeparatorSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -2400,6 +2557,10 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "hero_product",
     "product_detail",
     "product_steps",
+    "pos_separator",
+    "pos_details_cards",
+    "pos_pricing",
+    "pos_image_separator",
     "home_integrations",
     "steps_club",
     "brand_marquee",

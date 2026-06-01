@@ -21,9 +21,14 @@ import ProductMechanicsSection from "./product-mechanics-section"
 import ProductInformationSection from "./product-information-section"
 import ProductAiInformationSection from "./product-ai-information-section"
 import BlurredAiPosCardsSection from "./blurred-ai-pos-cards-section"
+import PosSeparatorSection from "./pos-separator-section"
+import PosDetailsCardsSection from "./pos-details-cards-section"
+import PosPricingSection from "./pos-pricing-section"
+import PosImageSeparatorSection from "./pos-image-separator-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
+import HomeIntegrationsSection from "./home-integrations-section"
 
 type Props = {
   sections: AnyPageSection[]
@@ -87,6 +92,16 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
       return <ProductAiInformationSection {...section.props} {...common} />
     case "blurred_ai_pos_cards":
       return <BlurredAiPosCardsSection {...section.props} {...common} />
+    case "pos_separator":
+      return <PosSeparatorSection {...section.props} {...common} />
+    case "pos_details_cards":
+      return <PosDetailsCardsSection {...section.props} {...common} />
+    case "pos_pricing":
+      return <PosPricingSection {...section.props} {...common} />
+    case "pos_image_separator":
+      return <PosImageSeparatorSection {...section.props} {...common} />
+    case "home_integrations":
+      return <HomeIntegrationsSection {...section.props} {...common} />
     default:
       return null
   }
