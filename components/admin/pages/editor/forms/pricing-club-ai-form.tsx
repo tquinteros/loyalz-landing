@@ -122,6 +122,72 @@ export function PricingClubAiForm({ value, onChange }: Props) {
       />
 
       <div className="space-y-2">
+        <Label>CTA Principal</Label>
+        <div className="grid gap-2">
+          <LocalizedField
+            label="Texto del botón *"
+            idPrefix="pricing-club-ai-primary-cta-label"
+            value={local.primaryCta?.label}
+            onChange={(next) =>
+              set("primaryCta", {
+                ...local.primaryCta,
+                label: next ?? EMPTY_LOCALIZED,
+                href: local.primaryCta?.href ?? "/contact",
+              })
+            }
+            placeholderEs="Prueba Gratis"
+            placeholderEn="Free Trial"
+          />
+          <div className="space-y-1">
+            <Label className="text-xs">Enlace</Label>
+            <Input
+              value={local.primaryCta?.href ?? ""}
+              onChange={(e) =>
+                set("primaryCta", {
+                  ...local.primaryCta,
+                  label: local.primaryCta?.label ?? EMPTY_LOCALIZED,
+                  href: e.target.value,
+                })
+              }
+              placeholder="/contact"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>CTA Secundario</Label>
+        <div className="grid gap-2">
+          <LocalizedField
+            label="Texto del botón"
+            idPrefix="pricing-club-ai-secondary-cta-label"
+            value={local.secondaryCta?.label}
+            onChange={(next) =>
+              set("secondaryCta", {
+                label: next ?? EMPTY_LOCALIZED,
+                href: local.secondaryCta?.href ?? "/contact",
+              })
+            }
+            placeholderEs="Agendar Demo"
+            placeholderEn="Book a Demo"
+          />
+          <div className="space-y-1">
+            <Label className="text-xs">Enlace</Label>
+            <Input
+              value={local.secondaryCta?.href ?? ""}
+              onChange={(e) =>
+                set("secondaryCta", {
+                  label: local.secondaryCta?.label ?? EMPTY_LOCALIZED,
+                  href: e.target.value,
+                })
+              }
+              placeholder="/contact"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
         <Label>Pricing cards</Label>
         <ItemsField<PricingCard>
           items={local.cards ?? []}

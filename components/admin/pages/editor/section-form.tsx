@@ -56,6 +56,9 @@ import { ProductDashboardForm } from "./forms/product-dashboard-form"
 import { ProductHowItWorksForm } from "./forms/product-how-it-works-form"
 import { ProductMechanicsForm } from "./forms/product-mechanics-form"
 import { ProductClubBenefitsForm } from "./forms/product-club-benefits-form"
+import { ProductClubNotificationsForm } from "./forms/product-club-notifications-form"
+import { ReviewsPricingForm } from "./forms/reviews-pricing-form"
+import { ProductInformationForm } from "./forms/product-information-form"
 
 type Props = {
   section: AnyPageSection
@@ -169,6 +172,10 @@ function TypedSectionBody({
       return (
         <TestimonialsForm value={section.props} onChange={onPropsChange} />
       )
+    case "testimonials_secondary":
+      return (
+        <TestimonialsForm value={section.props} onChange={onPropsChange} />
+      )
     case "faq":
       return <FAQForm value={section.props} onChange={onPropsChange} />
     case "contact_form":
@@ -243,6 +250,10 @@ function TypedSectionBody({
       return (
         <PricingClubAiForm value={section.props} onChange={onPropsChange} />
       )
+    case "reviews_pricing":
+      return (
+        <ReviewsPricingForm value={section.props} onChange={onPropsChange} />
+      )
     case "product_mechanics":
       return (
         <ProductMechanicsForm value={section.props} onChange={onPropsChange} />
@@ -262,6 +273,14 @@ function TypedSectionBody({
     case "product_club_benefits":
       return (
         <ProductClubBenefitsForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_club_notifications":
+      return (
+        <ProductClubNotificationsForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_information":
+      return (
+        <ProductInformationForm value={section.props} onChange={onPropsChange} />
       )
     default: {
       const _exhaustive: never = section

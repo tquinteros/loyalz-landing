@@ -4,6 +4,7 @@ import HeroClubSection from "./hero-club-section"
 import FeatureLinksSection from "./feature-links-section"
 import StatsSection from "./stats-section"
 import TestimonialsSection from "./testimonials-section"
+import TestimonialsSecondarySection from "./testimonials-secondary-section"
 import FAQSection from "./faq-section"
 import ContactFormSection from "./contact-form-section"
 import type { PageSection } from "@/lib/types/Pages"
@@ -34,11 +35,14 @@ import HeroProductSection from "./hero-product-section"
 import ProductDetailSection from "./product-detail-section"
 import ProductStepsSection from "./product-steps-section"
 import PricingClubAiSection from "./pricing-club-ai-section"
+import ReviewsPricingSection from "./reviews-pricing-section"
 import ProductCtaImageSection from "./product-cta-image-section"
 import ProductDashboardSection from "./product-dashboard-section"
 import ProductHowItWorksSection from "./product-how-it-works-section"
 import ProductMechanicsSection from "./product-mechanics-section"
 import ProductClubBenefitsSection from "./product-club-benefits-section"
+import ProductClubNotificationsSection from "./product-club-notifications-section"
+import ProductInformationSection from "./product-information-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -148,6 +152,56 @@ export function createDefaultSection<T extends PageSection["type"]>(
               },
               author: "Jane Doe",
               place: { es: "Acme", en: "Acme" },
+              avatar: "",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "testimonials_secondary":
+      return {
+        ...base,
+        type: "testimonials_secondary",
+        props: {
+          title: {
+            es: "Lo que dicen nuestros clientes",
+            en: "What people are saying",
+          },
+          subtitle: {
+            es: "Historias reales de negocios que crecen con Loyalz.",
+            en: "Real stories from businesses growing with Loyalz.",
+          },
+          items: [
+            {
+              logo: "",
+              backgroundImage: "",
+              summary: {
+                es: "Loyalz nos ayudó a duplicar la frecuencia de visitas en tres meses.",
+                en: "Loyalz helped us double visit frequency in three months.",
+              },
+              author: "Marley Coffee",
+              place: { es: "Marley Coffee", en: "Marley Coffee" },
+              avatar: "",
+            },
+            {
+              logo: "",
+              backgroundImage: "",
+              summary: {
+                es: "Implementación rápida y resultados visibles desde la primera semana.",
+                en: "Quick setup and visible results from the first week.",
+              },
+              author: "INNAMORATO",
+              place: { es: "INNAMORATO", en: "INNAMORATO" },
+              avatar: "",
+            },
+            {
+              logo: "",
+              backgroundImage: "",
+              summary: {
+                es: "Nuestros clientes vuelven más seguido gracias al programa de fidelización.",
+                en: "Our customers come back more often thanks to the loyalty program.",
+              },
+              author: "COFI JAUS",
+              place: { es: "COFI JAUS", en: "COFI JAUS" },
               avatar: "",
             },
           ],
@@ -1548,6 +1602,14 @@ export function createDefaultSection<T extends PageSection["type"]>(
             es: "POS + Pay incluidos gratis en todos los planes.",
             en: "POS + Pay included free on all plans.",
           },
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
           cards: [
             {
               title: { es: "Start", en: "Start" },
@@ -1591,12 +1653,65 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
+    case "reviews_pricing":
+      return {
+        ...base,
+        type: "reviews_pricing",
+        props: {
+          label: { es: "Precios", en: "Pricing" },
+          title: {
+            es: "Los precios claros. Como todo en Loyalz.",
+            en: "Clear pricing. Just like everything at Loyalz.",
+          },
+          accentColor: "#8C7F1F",
+          backgroundColor: "#8C7F1F",
+          card: {
+            title: { es: "Reviews", en: "Reviews" },
+            price: "$10",
+            shops: {
+              es: "Precio por unidad de negocio",
+              en: "Price per business unit",
+            },
+            savings: "0%",
+            features: [
+              { es: "Bifurcación Inteligente", en: "Smart Routing" },
+              {
+                es: "Integración Google Reviews",
+                en: "Google Reviews integration",
+              },
+              { es: "AI Insights", en: "AI Insights" },
+            ],
+          },
+          image: "",
+          pricingLabel: {
+            es: "Se activa en minutos con resultados en la primera semana.",
+            en: "Live in minutes with results in the first week.",
+          },
+          bottomMessage: {
+            es: "POS + Pay incluidos gratis en todos los planes.",
+            en: "POS + Pay included free on all plans.",
+          },
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
+        },
+      } as SectionFor<T>
     case "product_mechanics":
       return {
         ...base,
         type: "product_mechanics",
         props: {
           product: "club",
+          label: { es: "Mecánicas", en: "Mechanics" },
+          mainTitle: {
+            es: "No es solo una tarjeta con puntos.\nSon 6 formas de hacer que vuelvan.",
+            en: "It's not just a points card.\n6 ways to make them come back.",
+          },
           title: {
             es: "Implementación en menos de 15 minutos.\nSin interrupciones en tu operación.",
             en: "Setup in under 15 minutes.\nNo disruption to your operations.",
@@ -1760,6 +1875,50 @@ export function createDefaultSection<T extends PageSection["type"]>(
           },
         },
       } as SectionFor<T>
+    case "product_club_notifications":
+      return {
+        ...base,
+        type: "product_club_notifications",
+        props: {
+          label: { es: "Gratis", en: "Free" },
+          title: { es: "Notificaciones Push", en: "Push Notifications" },
+          description: {
+            es: "Reactivá clientes sin costo. Mandales promociones, recordatorios o mensajes de cumpleaños directo al celular.",
+            en: "Re-engage customers for free. Send promos, reminders or birthday messages straight to their phone.",
+          },
+          notifications: [
+            {
+              es: "¡Disfrutá un 50% de descuento en nuestro local hoy! ☕️",
+              en: "Enjoy 50% off at our shop today! ☕️",
+            },
+            {
+              es: "¡Bienvenido a INNsaciables! Un club de beneficios para los incomprendidos 🍦😍",
+              en: "Welcome to INNsaciables! A perks club for the unique ones 🍦😍",
+            },
+            {
+              es: "Hola 🙌 ¡Estás cerca de Cofi, pasá por el local y recordá que cada 6 te regalamos 1 Café ☕️🫶",
+              en: "Hi 🙌 You're near Cofi — drop by, every 6 visits we give you 1 free coffee ☕️🫶",
+            },
+          ],
+        },
+      } as SectionFor<T>
+    case "product_information":
+      return {
+        ...base,
+        type: "product_information",
+        props: {
+          backgroundColor: "#E5E0EF",
+          title: {
+            es: "Información clara para tu equipo.",
+            en: "Clear information for your team.",
+          },
+          description: {
+            es: "Todo lo que necesitás saber, en un solo lugar.",
+            en: "Everything you need to know, in one place.",
+          },
+          image: "",
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -1818,6 +1977,12 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     label: "Testimonials",
     description: "Customer quotes with author + role.",
     component: TestimonialsSection,
+  },
+  testimonials_secondary: {
+    type: "testimonials_secondary",
+    label: "Testimonials (secondary)",
+    description: "Carousel with image on top, quote, and author.",
+    component: TestimonialsSecondarySection,
   },
   faq: {
     type: "faq",
@@ -2001,6 +2166,13 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Product-page pricing for Club or AI — home-style cards without the POS+Pay icon strip; Club applies per-card border and pill colors.",
     component: PricingClubAiSection,
   },
+  reviews_pricing: {
+    type: "reviews_pricing",
+    label: "Pricing — Reviews",
+    description:
+      "Reviews product pricing — single card (5 cols) with side image and pricing label banner (7 cols), bottom POS+Pay message, and CTAs.",
+    component: ReviewsPricingSection,
+  },
   product_mechanics: {
     type: "product_mechanics",
     label: "Product — Mechanics",
@@ -2035,6 +2207,20 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
     description:
       "Colored background, headline, 3-column benefit cards with icon, and primary + secondary CTAs.",
     component: ProductClubBenefitsSection,
+  },
+  product_club_notifications: {
+    type: "product_club_notifications",
+    label: "Product — Club Notifications",
+    description:
+      "Label, title, description on the left; phone mockup with floating notification badges on the right.",
+    component: ProductClubNotificationsSection,
+  },
+  product_information: {
+    type: "product_information",
+    label: "Product — Information",
+    description:
+      "Colored text panel (7 cols) + image (5 cols). Same layout as the audiences information block.",
+    component: ProductInformationSection,
   },
 }
 
@@ -2090,8 +2276,10 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "product_detail",
     "product_steps",
     "product_club_benefits",
+    "product_club_notifications",
     "product_mechanics",
     "pricing_club_ai",
+    "testimonials_secondary",
     "hero_club",
     "club_cards",
     "steps_club",
@@ -2137,6 +2325,8 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "product_detail",
     "product_steps",
     "product_mechanics",
+    "reviews_pricing",
+    "product_information",
     "steps_club",
     "brand_marquee",
     "common_cta",
@@ -2156,6 +2346,8 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "pricing",
     "productpricing",
     "testimonials",
+    "testimonials_secondary",
+    "product_information",
     "faq",
   ],
   terms: ["legal_document"],

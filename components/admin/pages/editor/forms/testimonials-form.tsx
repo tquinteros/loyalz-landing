@@ -93,8 +93,8 @@ export function TestimonialsForm({ value, onChange }: Props) {
                   onChange={(url) => update({ backgroundImage: url ?? "" })}
                 />
                 <p className="text-[11px] text-muted-foreground">
-                  Se muestra detrás del contenido de la tarjeta con una capa
-                  oscura para que el texto siga siendo legible.
+                  En testimonios clásicos se usa como fondo de la tarjeta; en
+                  testimonios secundarios aparece arriba (544×282 aprox.).
                 </p>
               </div>
 

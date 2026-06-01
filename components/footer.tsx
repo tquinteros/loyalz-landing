@@ -106,7 +106,7 @@ export default function Footer() {
             {/* Top: newsletter + nav columns (same 3-col grid on the right) */}
             <div className="flex w-full min-w-0 flex-col gap-10 xl:flex-row xl:items-start xl:justify-between xl:gap-12">
                 <div className="flex w-full min-w-0 max-w-xl flex-col gap-6">
-                    <span className="text-base leading-none">{t(FOOTER.newsletterLead)}</span>
+                    <span className="text-base">{t(FOOTER.newsletterLead)}</span>
                     <NewsletterSubscribeForm
                         placeholder={t(FOOTER.emailPlaceholder)}
                         buttonLabel={t(FOOTER.subscribe)}

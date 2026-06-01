@@ -81,6 +81,26 @@ export function ProductMechanicsForm({ value, onChange }: Props) {
         </p>
       </div>
 
+      <LocalizedField
+        label="Label (badge superior)"
+        idPrefix="product-mechanics-label"
+        value={local.label}
+        onChange={(next) => set("label", next)}
+        placeholderEs="Mecánicas"
+        placeholderEn="Mechanics"
+      />
+
+      <LocalizedField
+        label="Título principal"
+        idPrefix="product-mechanics-main-title"
+        value={local.mainTitle}
+        onChange={(next) => set("mainTitle", next)}
+        multiline
+        rows={2}
+        placeholderEs="No es solo una tarjeta con puntos. Son 6 formas de hacer que vuelvan."
+        placeholderEn="It's not just a points card. It's 6 ways to make them come back."
+      />
+
       <HexColorField
         label="Color de fondo (sección)"
         value={local.backgroundColor ?? ""}

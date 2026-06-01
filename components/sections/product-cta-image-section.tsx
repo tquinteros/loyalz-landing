@@ -21,7 +21,9 @@ export default function ProductCtaImageSection({
   const labelText = t(label)
 
   return (
-    <div className="p-4 bg-[#DBC5E8] rounded-[32px]">
+    <div
+    style={{ backgroundColor: labelBackgroundColor ?? "#DBC5E8" }}
+    className="p-4 rounded-[32px]">
       <SectionWrapper
         backgroundImage={backgroundImage}
         className={`min-h-[480px] sm:min-h-[640px] rounded-xl overflow-hidden${className ? ` ${className}` : ""}`}

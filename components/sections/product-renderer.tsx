@@ -12,9 +12,13 @@ import NotificationClubSection from "./notification-club-section"
 import LegalDocumentSection from "./legal-document-section"
 import ProductCtaImageSection from "./product-cta-image-section"
 import ProductClubBenefitsSection from "./product-club-benefits-section"
+import ProductClubNotificationsSection from "./product-club-notifications-section"
+import TestimonialsSecondarySection from "./testimonials-secondary-section"
+import ReviewsPricingSection from "./reviews-pricing-section"
 import ProductDashboardSection from "./product-dashboard-section"
 import ProductHowItWorksSection from "./product-how-it-works-section"
 import ProductMechanicsSection from "./product-mechanics-section"
+import ProductInformationSection from "./product-information-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
@@ -55,6 +59,8 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
       return <ProductStepsSection {...section.props} {...common} />
     case "pricing_club_ai":
       return <PricingClubAiSection {...section.props} {...common} />
+    case "reviews_pricing":
+      return <ReviewsPricingSection {...section.props} {...common} />
     case "common_cta":
       return <CommonCTASection {...section.props} {...common} />
     case "legal_document":
@@ -69,6 +75,12 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
       return <ProductCtaImageSection {...section.props} {...common} />
     case "product_club_benefits":
       return <ProductClubBenefitsSection {...section.props} {...common} />
+    case "product_club_notifications":
+      return <ProductClubNotificationsSection {...section.props} {...common} />
+    case "testimonials_secondary":
+      return <TestimonialsSecondarySection {...section.props} {...common} />
+    case "product_information":
+      return <ProductInformationSection {...section.props} {...common} />
     default:
       return null
   }

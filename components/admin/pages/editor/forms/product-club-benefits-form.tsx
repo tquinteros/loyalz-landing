@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type {
@@ -66,13 +67,14 @@ export function ProductClubBenefitsForm({
       <div className="space-y-2">
         <Label>Beneficios</Label>
         <p className="text-xs text-muted-foreground">
-          Cada tarjeta muestra el icono `/icon.svg`, título y descripción en el
-          color de fondo de la sección.
+          Cada tarjeta muestra un icono personalizable (SVG o PNG), título y
+          descripción en el color de fondo de la sección.
         </p>
         <ItemsField<BenefitItem>
           items={local.benefits ?? []}
           onChange={(benefits) => set("benefits", benefits)}
           createItem={() => ({
+            icon: "",
             title: { es: "Título del beneficio", en: "Benefit title" },
             description: {
               es: "Descripción del beneficio.",
@@ -84,6 +86,17 @@ export function ProductClubBenefitsForm({
           itemLabel={(it, i) => translate(it.title) || `Beneficio ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs">Icono</Label>
+                <ImagePicker
+                  aspect="square"
+                  value={item.icon?.trim() ? item.icon : null}
+                  onChange={(url) => update({ icon: url ?? "" })}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Sube o elige un SVG/PNG del diseño (biblioteca de medios).
+                </p>
+              </div>
               <LocalizedField
                 label="Título *"
                 idPrefix={`product-club-benefits-item-title-${translate(item.title)}`}

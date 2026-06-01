@@ -57,7 +57,7 @@ function FeatureCard({
 
       {description ? (
         <p
-          className="text-sm leading-none text-background sm:text-lg"
+          className="text-sm leading-tight text-background sm:text-lg"
           style={{ color }}
         >
           {description}
@@ -115,7 +115,7 @@ export default function ProductDashboardSection({
         ) : null}
 
         {titleText ? (
-          <h2 className="max-w-3xl text-balance text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="max-w-3xl text-balance text-3xl font-bold leading-none sm:text-4xl lg:text-[56px]">
             {titleText}
           </h2>
         ) : null}
@@ -123,7 +123,7 @@ export default function ProductDashboardSection({
 
       {/* Image */}
       {image ? (
-        <div className="relative mx-auto mt-10 w-full max-w-4xl px-5 lg:px-16">
+        <div className="relative mx-auto mt-10 w-full max-w-7xl px-5 lg:px-16">
           <Image
             src={image}
             alt={titleText || "Dashboard"}
@@ -197,7 +197,7 @@ export default function ProductDashboardSection({
 
       {/* CTAs */}
       {(primaryCtaLabel && primaryCta?.href) || (secondaryCtaLabel && secondaryCta?.href) ? (
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-4 px-5 lg:px-16">
+        <div className="mt-12 lg:mt-20 flex flex-wrap items-center justify-center gap-4 px-5 lg:px-16">
           {primaryCtaLabel && primaryCta?.href ? (
             <Button
               asChild

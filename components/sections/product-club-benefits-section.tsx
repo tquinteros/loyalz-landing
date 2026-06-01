@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import type { ProductClubBenefitsSectionProps } from "@/lib/types/Pages"
@@ -68,6 +69,7 @@ export default function ProductClubBenefitsSection({
             {validBenefits.map((item, index) => {
               const itemTitle = t(item.title)
               const itemDescription = t(item.description)
+              const iconSrc = item.icon?.trim()
               return (
                 <li key={`${itemTitle}-${index}`} className="min-w-0">
                   <article className="flex h-full flex-col  gap-4 rounded-[24px] bg-foreground p-6 sm:rounded-[28px] sm:p-8 sm:pb-20">
@@ -75,7 +77,19 @@ export default function ProductClubBenefitsSection({
                       className="flex size-12 shrink-0 items-center justify-center rounded-xl border sm:size-14"
                       style={{ borderColor: `${accent}40` }}
                     >
-                      <BenefitIcon color={accent} />
+                      {iconSrc ? (
+                        <div className="relative size-7 sm:size-8">
+                          <Image
+                            src={iconSrc}
+                            alt={itemTitle || ""}
+                            fill
+                            sizes="32px"
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <BenefitIcon color={accent} />
+                      )}
                     </div>
                     {itemTitle ? (
                       <h3

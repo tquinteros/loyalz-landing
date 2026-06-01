@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import type { HeroProductSectionProps } from "@/lib/types/Pages"
 import { cn } from "@/lib/utils"
 import { useT } from "@/providers/language-provider"
+import { usePathname } from "next/navigation"
 
 type Props = HeroProductSectionProps & {
   backgroundImage?: string | null
@@ -14,6 +15,27 @@ type Props = HeroProductSectionProps & {
 }
 
 const COPIES = 4
+
+function renderHeroProductLabel(labelText: string, titleColor?: string | null) {
+  const words = labelText.trim().split(/\s+/)
+  const accent = titleColor?.trim()
+  const startsWithLoyalz = words[0]?.toLowerCase() === "loyalz"
+
+  if (!startsWithLoyalz || words.length < 2 || !accent) {
+    return labelText
+  }
+
+  const [, secondWord, ...restWords] = words
+  const rest = restWords.join(" ")
+
+  return (
+    <>
+      {words[0]}{" "}
+      <span style={{ color: accent }}>{secondWord}</span>
+      {rest ? ` ${rest}` : null}
+    </>
+  )
+}
 
 export default function HeroProductSection({
   label,
@@ -35,7 +57,7 @@ export default function HeroProductSection({
   const primaryCtaLabel = t(primaryCta?.label)
   const secondaryCtaLabel = t(secondaryCta?.label)
   const marqueeTitle = t(brandMarqueeTitle)
-
+  const pathname = usePathname()
   const items = (brands ?? []).filter((b) => b && b.logo?.trim())
   const loop =
     items.length > 0
@@ -49,10 +71,10 @@ export default function HeroProductSection({
       style={
         backgroundImage
           ? {
-              backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }
           : undefined
       }
     >
@@ -66,7 +88,7 @@ export default function HeroProductSection({
             <div className="flex flex-col gap-4">
               {labelText ? (
                 <p className="text-[28px] font-bold leading-none text-background lg:text-[40px]">
-                  {labelText}
+                  {renderHeroProductLabel(labelText, titleColor)}
                 </p>
               ) : null}
 
@@ -81,6 +103,17 @@ export default function HeroProductSection({
             </div>
 
             <div className="flex flex-col gap-6">
+              {
+                pathname === "/club" && (
+                  <div className="flex flex-col gap-2">
+                    <span className="font-bold text-lg">Integrado con</span>
+                    <div className="flex gap-2">
+                      <Image src="/products/applewalletsvg.svg" alt="Apple Wallet" width={126} height={126} />
+                      <Image src="/products/googlewalletsvg.svg" alt="Google Wallet" width={126} height={126} />
+                    </div>
+                  </div>
+                )
+              }
               {descriptionText ? (
                 <p
                   className="text-[20px] max-w-4xl leading-none lg:text-[32px]"
@@ -126,9 +159,9 @@ export default function HeroProductSection({
         </div>
 
         {items.length > 0 ? (
-          <div className="mt-8 sm:mt-12">
+          <div className="mt-8 sm:my-16">
             {marqueeTitle ? (
-              <div className="mb-5 text-center">
+              <div className="mb-16 text-center">
                 <p className="text-lg font-semibold text-foreground sm:text-[32px]">
                   {marqueeTitle}
                 </p>
@@ -153,7 +186,7 @@ export default function HeroProductSection({
                     <Image
                       src={brand.logo}
                       alt={brand.name ?? ""}
-                      width={200}
+                      width={216}
                       height={48}
                       className="h-full w-auto object-contain"
                     />

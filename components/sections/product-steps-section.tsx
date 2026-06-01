@@ -35,15 +35,21 @@ export default function ProductStepsSection({
     (step) => t(step.title) || t(step.description) || step.image?.trim(),
   )
 
+  const accent = validSteps[0]?.backgroundColor?.trim() || "#754390"
+  const sectionSurface = `${accent}33`
+
   const previewIndex = hoveredIndex ?? 0
   const previewStep = validSteps[Math.min(previewIndex, Math.max(validSteps.length - 1, 0))]
   const previewSrc = previewStep?.image?.trim()
   const previewAlt = previewStep ? t(previewStep.title) : fallbackAlt
 
   return (
-    <SectionWrapper backgroundImage={backgroundImage} 
-    innerClassName="px-5! !"
-    className={`${className} bg-[#DBC5E8] py-5!`}>
+    <SectionWrapper
+      backgroundImage={backgroundImage}
+      surfaceColor={sectionSurface}
+      innerClassName="px-5!"
+      className={cn("py-5!", className)}
+    >
       <div className="overflow-hidden rounded-[24px] bg-foreground p-6 lg:p-12 sm:rounded-[24px]">
         <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Left — step image preview */}
@@ -88,13 +94,13 @@ export default function ProductStepsSection({
           {/* Right — title + steps */}
           <div className="flex min-w-0 flex-col justify-center">
             {titleText ? (
-              <h2 className="mb-8 max-w-xl text-2xl font-bold leading-none tracking-tight text-background sm:text-3xl lg:mb-10 lg:text-4xl">
+              <h2 className="mb-8 lg:pl-12 max-w-xl text-2xl font-bold leading-none tracking-tight text-background sm:text-3xl lg:mb-16 lg:text-4xl">
                 {titleText}
               </h2>
             ) : null}
 
             {validSteps.length > 0 ? (
-              <ol className="space-y-0" onMouseLeave={() => setHoveredIndex(null)}>
+              <ol className="space-y-4 lg:space-y-6" onMouseLeave={() => setHoveredIndex(null)}>
                 {validSteps.map((step, index) => {
                   const isActive = hoveredIndex === index
                   const stepTitle = t(step.title)
@@ -106,7 +112,7 @@ export default function ProductStepsSection({
                       <button
                         type="button"
                         className={cn(
-                          "group w-full border-l-4 py-5 pr-2 text-left transition-colors",
+                          "group w-full border-l-4 py-5 lg:pl-6 pr-2 text-left transition-colors",
                           "border-transparent focus-visible:outline-none",
                         )}
                         style={{
@@ -172,7 +178,7 @@ export default function ProductStepsSection({
 
         {(primaryCta?.href && primaryCtaLabel) ||
         (secondaryCta?.href && secondaryCtaLabel) ? (
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 sm:gap-4">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-16 sm:mb-8 sm:gap-4">
             {primaryCta?.href && primaryCtaLabel ? (
               <Button
                 asChild

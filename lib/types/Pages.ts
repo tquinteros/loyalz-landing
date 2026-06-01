@@ -150,6 +150,26 @@ export type PricingClubAiSectionProps = {
   description?: LocalizedString
   bottomMessage?: LocalizedString
   cards: PricingClubAiCardItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
+/** Product Reviews page — single pricing card + side image and pricing label banner. */
+export type ReviewsPricingSectionProps = {
+  label?: LocalizedString
+  title?: LocalizedString
+  card: PricingClubAiCardItem
+  /** Side image URL (right column, above pricing label). */
+  image: string
+  /** Text shown in the accent banner below the side image. */
+  pricingLabel: LocalizedString
+  /** CSS hex accent — card border, pill, pricing label box, and star icon. Default `#8C7F1F`. */
+  backgroundColor?: string
+  /** @deprecated Use `backgroundColor`. Kept for existing CMS data. */
+  accentColor?: string
+  bottomMessage?: LocalizedString
+  primaryCta: CTA
+  secondaryCta?: CTA
 }
 
 export type ProductPricingSectionProps = {
@@ -641,6 +661,10 @@ export type ProductMechanicsStatItem = {
 export type ProductMechanicsSectionProps = {
   /** Which product screen to show inside the phone case. */
   product: ProductMechanicsProduct
+  /** Optional label badge shown at the very top of the section. */
+  label?: LocalizedString
+  /** Optional main headline shown below the label badge. */
+  mainTitle?: LocalizedString
   /** Bottom banner title (supports line breaks). */
   title: LocalizedString
   /** CSS hex background for the whole section. */
@@ -696,6 +720,8 @@ export type ProductCtaImageSectionProps = {
 
 /** Product Club page — benefits grid with icon cards and two CTAs on a colored background. */
 export type ProductClubBenefitsItem = {
+  /** Public URL for the card icon (SVG/PNG from media library). */
+  icon?: string
   title: LocalizedString
   description: LocalizedString
 }
@@ -714,6 +740,10 @@ export type HeroClubSection = BaseSection<"hero_club", HeroClubSectionProps>
 export type FeatureLinksSection = BaseSection<"feature_links", FeatureLinksSectionProps>
 export type StatsSection = BaseSection<"stats", StatsSectionProps>
 export type TestimonialsSection = BaseSection<"testimonials", TestimonialsSectionProps>
+export type TestimonialsSecondarySection = BaseSection<
+  "testimonials_secondary",
+  TestimonialsSectionProps
+>
 export type FAQSection = BaseSection<"faq", FAQSectionProps>
 export type ContactFormSection = BaseSection<"contact_form", ContactFormSectionProps>
 export type CTASection = BaseSection<"cta", CTASectionProps>
@@ -746,6 +776,10 @@ export type PricingClubAiSection = BaseSection<
   "pricing_club_ai",
   PricingClubAiSectionProps
 >
+export type ReviewsPricingSection = BaseSection<
+  "reviews_pricing",
+  ReviewsPricingSectionProps
+>
 export type ProductMechanicsSection = BaseSection<"product_mechanics", ProductMechanicsSectionProps>
 export type ProductHowItWorksSection = BaseSection<"product_how_it_works", ProductHowItWorksSectionProps>
 export type ProductDashboardSection = BaseSection<"product_dashboard", ProductDashboardSectionProps>
@@ -755,6 +789,33 @@ export type ProductClubBenefitsSection = BaseSection<
   ProductClubBenefitsSectionProps
 >
 
+/** Product Club — push notifications showcase: label, title, description, floating notification badges around phone. */
+export type ProductClubNotificationsSectionProps = {
+  label?: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  notifications: LocalizedString[]
+}
+
+export type ProductClubNotificationsSection = BaseSection<
+  "product_club_notifications",
+  ProductClubNotificationsSectionProps
+>
+
+/** Product page — colored text panel (7 cols) + image (5 cols), same layout as audiences information block. */
+export type ProductInformationSectionProps = {
+  title: LocalizedString
+  description: LocalizedString
+  image: string
+  /** Left panel background (hex). */
+  backgroundColor?: string
+}
+
+export type ProductInformationSection = BaseSection<
+  "product_information",
+  ProductInformationSectionProps
+>
+
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
   | HeroSection
@@ -762,6 +823,7 @@ export type PageSection =
   | FeatureLinksSection
   | StatsSection
   | TestimonialsSection
+  | TestimonialsSecondarySection
   | FAQSection
   | ContactFormSection
   | CTASection
@@ -791,11 +853,14 @@ export type PageSection =
   | ProductDetailSection
   | ProductStepsSection
   | PricingClubAiSection
+  | ReviewsPricingSection
   | ProductMechanicsSection
   | ProductHowItWorksSection
   | ProductDashboardSection
   | ProductCtaImageSection
   | ProductClubBenefitsSection
+  | ProductClubNotificationsSection
+  | ProductInformationSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not
