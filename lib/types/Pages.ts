@@ -871,44 +871,19 @@ export type PosSeparatorSection = BaseSection<
   PosSeparatorSectionProps
 >
 
-export type PosDetailsCardItem = {
+export type PosPricingCardItem = {
   image: string
   title: LocalizedString
   description: LocalizedString
 }
 
-/** POS — header + 2 image/detail cards + CTAs. */
-export type PosDetailsCardsSectionProps = {
+/** POS — peach section: header + 2 image/detail cards + CTAs. */
+export type PosPricingSectionProps = {
   backgroundColor: string
   textColor: string
   label: LocalizedString
   title: LocalizedString
   description: LocalizedString
-  cards: PosDetailsCardItem[]
-  primaryCta: CTA
-  secondaryCta?: CTA
-}
-
-export type PosDetailsCardsSection = BaseSection<
-  "pos_details_cards",
-  PosDetailsCardsSectionProps
->
-
-export type PosPricingCardItem = {
-  /** Card top label (e.g. POS, PAY). */
-  title: LocalizedString
-  /** Main headline (e.g. Gratis, Sin markup). */
-  price: string
-  /** Pill / button copy below price. */
-  shops: LocalizedString
-  features: LocalizedString[]
-}
-
-/** POS — pricing block: 2 cards (POS + PAY style) + bottom banner + CTAs. */
-export type PosPricingSectionProps = {
-  label?: LocalizedString
-  title?: LocalizedString
-  bottomMessage?: LocalizedString
   cards: PosPricingCardItem[]
   primaryCta: CTA
   secondaryCta?: CTA
@@ -917,6 +892,28 @@ export type PosPricingSectionProps = {
 export type PosPricingSection = BaseSection<
   "pos_pricing",
   PosPricingSectionProps
+>
+
+export type PosPlansCardItem = {
+  title: LocalizedString
+  price: string
+  shops: LocalizedString
+  features: LocalizedString[]
+}
+
+/** POS — Precios: 2 plan cards (POS + PAY) + bottom banner + CTAs on dark section. */
+export type PosPlansSectionProps = {
+  label?: LocalizedString
+  title?: LocalizedString
+  bottomMessage?: LocalizedString
+  cards: PosPlansCardItem[]
+  primaryCta: CTA
+  secondaryCta?: CTA
+}
+
+export type PosPlansSection = BaseSection<
+  "pos_plans",
+  PosPlansSectionProps
 >
 
 /** POS — full-bleed background image (advanced) + label & title on the right. */
@@ -980,8 +977,8 @@ export type PageSection =
   | ProductAiInformationSection
   | BlurredAiPosCardsSection
   | PosSeparatorSection
-  | PosDetailsCardsSection
   | PosPricingSection
+  | PosPlansSection
   | PosImageSeparatorSection
 
 /**

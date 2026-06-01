@@ -62,8 +62,8 @@ import { ProductInformationForm } from "./forms/product-information-form"
 import { ProductAiInformationForm } from "./forms/product-ai-information-form"
 import { BlurredAiPosCardsForm } from "./forms/blurred-ai-pos-cards-form"
 import { PosSeparatorForm } from "./forms/pos-separator-form"
-import { PosDetailsCardsForm } from "./forms/pos-details-cards-form"
 import { PosPricingForm } from "./forms/pos-pricing-form"
+import { PosPlansForm } from "./forms/pos-plans-form"
 import { PosImageSeparatorForm } from "./forms/pos-image-separator-form"
 
 type Props = {
@@ -306,12 +306,10 @@ function TypedSectionBody({
       return (
         <PosSeparatorForm value={section.props} onChange={onPropsChange} />
       )
-    case "pos_details_cards":
-      return (
-        <PosDetailsCardsForm value={section.props} onChange={onPropsChange} />
-      )
     case "pos_pricing":
       return <PosPricingForm value={section.props} onChange={onPropsChange} />
+    case "pos_plans":
+      return <PosPlansForm value={section.props} onChange={onPropsChange} />
     case "pos_image_separator":
       return (
         <PosImageSeparatorForm

@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { ImagePicker } from "@/components/admin/media-library/image-picker"
 import { ItemsField } from "../items-field"
 import { LocalizedField } from "./localized-field"
+import { HexColorField } from "./audiences-tabs/hex-color-field"
 import type {
   LocalizedString,
   PosPricingCardItem,
@@ -19,27 +20,7 @@ type Props = {
   onChange: (next: PosPricingSectionProps) => void
 }
 
-type PricingCard = PosPricingCardItem
-
 const EMPTY_LOCALIZED: LocalizedString = { es: "", en: "" }
-
-function featuresToText(features: LocalizedString[] | undefined, locale: "es" | "en") {
-  return (features ?? []).map((f) => f[locale] ?? "").join("\n")
-}
-
-function featuresFromText(
-  raw: string,
-  locale: "es" | "en",
-  existing: LocalizedString[] | undefined,
-): LocalizedString[] {
-  return raw.split("\n").map((line, i) => {
-    const prev = existing?.[i]
-    if (locale === "es") {
-      return { es: line, en: prev?.en ?? "" }
-    }
-    return { es: prev?.es ?? "", en: line }
-  })
-}
 
 export function PosPricingForm({ value, onChange }: Props) {
   const [local, setLocal] = useState<PosPricingSectionProps>(value)
@@ -61,33 +42,47 @@ export function PosPricingForm({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
+      <HexColorField
+        label="Color de fondo de la sección"
+        value={local.backgroundColor ?? ""}
+        onChange={(hex) => set("backgroundColor", hex)}
+        placeholder="#F5B8A8"
+      />
+
+      <HexColorField
+        label="Color de texto (header + fondo de tarjetas)"
+        value={local.textColor ?? ""}
+        onChange={(hex) => set("textColor", hex)}
+        placeholder="#E85D33"
+      />
+
       <LocalizedField
         label="Label"
         idPrefix="pos-pricing-label"
         value={local.label}
-        onChange={(next) => set("label", next)}
-        placeholderEs="Precios"
-        placeholderEn="Pricing"
+        onChange={(next) => set("label", next ?? EMPTY_LOCALIZED)}
+        placeholderEs="Pay"
+        placeholderEn="Pay"
       />
 
       <LocalizedField
         label="Título *"
         idPrefix="pos-pricing-title"
         value={local.title}
-        onChange={(next) => set("title", next)}
+        onChange={(next) => set("title", next ?? EMPTY_LOCALIZED)}
         multiline
         rows={2}
-        placeholderEs={"Sin letra chica.\nSin costo oculto."}
-        placeholderEn={"No fine print.\nNo hidden fees."}
+        placeholderEs="Reducí comisiones y ganá control de datos."
+        placeholderEn="Cut fees and gain control of your data."
       />
 
       <LocalizedField
-        label="Mensaje inferior (banner)"
-        idPrefix="pos-pricing-bottom-message"
-        value={local.bottomMessage}
-        onChange={(next) => set("bottomMessage", next)}
-        placeholderEs="* POS + Pay incluidos en todos los planes de Loyalz."
-        placeholderEn="* POS + Pay included in all Loyalz plans."
+        label="Descripción"
+        idPrefix="pos-pricing-description"
+        value={local.description}
+        onChange={(next) => set("description", next ?? EMPTY_LOCALIZED)}
+        multiline
+        rows={2}
       />
 
       <div className="space-y-2">
@@ -104,7 +99,7 @@ export function PosPricingForm({ value, onChange }: Props) {
                 href: local.primaryCta?.href ?? "/contact",
               })
             }
-            placeholderEs="Prueba GRATIS"
+            placeholderEs="Prueba Gratis"
             placeholderEn="Free Trial"
           />
           <div className="space-y-1">
@@ -137,7 +132,7 @@ export function PosPricingForm({ value, onChange }: Props) {
                 href: local.secondaryCta?.href ?? "/contact",
               })
             }
-            placeholderEs="Agendar DEMO"
+            placeholderEs="Agendar Demo"
             placeholderEn="Book a Demo"
           />
           <div className="space-y-1">
@@ -157,81 +152,44 @@ export function PosPricingForm({ value, onChange }: Props) {
       </div>
 
       <div className="space-y-2">
-        <Label>Tarjetas de precios (2 por fila)</Label>
-        <ItemsField<PricingCard>
+        <Label>Tarjetas (2 por fila en desktop)</Label>
+        <ItemsField<PosPricingCardItem>
           items={local.cards ?? []}
           onChange={(cards) => set("cards", cards)}
           createItem={() => ({
-            title: { es: "POS", en: "POS" },
-            price: "Gratis",
-            shops: { es: "Sin integraciones", en: "No integrations" },
-            features: [{ es: "Funcionalidad", en: "Feature" }],
+            image: "",
+            title: { es: "Pagos Presenciales", en: "In-person payments" },
+            description: {
+              es: "Descripción de la tarjeta.",
+              en: "Card description.",
+            },
           })}
           addLabel="Añadir tarjeta"
-          itemLabel={(it, i) => translate(it.title) || `Card ${i + 1}`}
+          itemLabel={(it, i) => translate(it.title) || `Tarjeta ${i + 1}`}
           renderItem={(item, update) => (
             <div className="grid gap-3">
-              <LocalizedField
-                label="Label de tarjeta (ej. POS, PAY)"
-                required
-                value={item.title}
-                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
-                placeholderEs="POS"
-                placeholderEn="POS"
-              />
-
               <div className="space-y-1">
-                <Label className="text-xs">Título / precio *</Label>
-                <Input
-                  value={item.price}
-                  onChange={(e) => update({ price: e.target.value })}
-                  placeholder="Gratis"
+                <Label className="text-xs">Imagen *</Label>
+                <ImagePicker
+                  value={item.image?.trim() ? item.image : null}
+                  onChange={(url) => update({ image: url ?? "" })}
                 />
               </div>
 
               <LocalizedField
-                label="Botón (pill)"
+                label="Título"
                 required
-                value={item.shops}
-                onChange={(next) => update({ shops: next ?? EMPTY_LOCALIZED })}
-                placeholderEs="Sin integraciones"
-                placeholderEn="No integrations"
+                value={item.title}
+                onChange={(next) => update({ title: next ?? EMPTY_LOCALIZED })}
               />
 
-              <div className="grid gap-2 sm:grid-cols-2">
-                <div className="space-y-1">
-                  <Label className="text-xs">Features ES (una por línea)</Label>
-                  <Textarea
-                    rows={4}
-                    value={featuresToText(item.features, "es")}
-                    onChange={(e) =>
-                      update({
-                        features: featuresFromText(
-                          e.target.value,
-                          "es",
-                          item.features,
-                        ),
-                      })
-                    }
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label className="text-xs">Features EN (one per line)</Label>
-                  <Textarea
-                    rows={4}
-                    value={featuresToText(item.features, "en")}
-                    onChange={(e) =>
-                      update({
-                        features: featuresFromText(
-                          e.target.value,
-                          "en",
-                          item.features,
-                        ),
-                      })
-                    }
-                  />
-                </div>
-              </div>
+              <LocalizedField
+                label="Descripción"
+                multiline
+                rows={2}
+                value={item.description}
+                onChange={(next) => update({ description: next ?? EMPTY_LOCALIZED })}
+              />
             </div>
           )}
         />

@@ -46,8 +46,8 @@ import ProductInformationSection from "./product-information-section"
 import ProductAiInformationSection from "./product-ai-information-section"
 import BlurredAiPosCardsSection from "./blurred-ai-pos-cards-section"
 import PosSeparatorSection from "./pos-separator-section"
-import PosDetailsCardsSection from "./pos-details-cards-section"
 import PosPricingSection from "./pos-pricing-section"
+import PosPlansSection from "./pos-plans-section"
 import PosImageSeparatorSection from "./pos-image-separator-section"
 
 /**
@@ -2014,10 +2014,10 @@ export function createDefaultSection<T extends PageSection["type"]>(
           image: "/header/pos.jpg",
         },
       } as SectionFor<T>
-    case "pos_details_cards":
+    case "pos_pricing":
       return {
         ...base,
-        type: "pos_details_cards",
+        type: "pos_pricing",
         props: {
           backgroundColor: "#F5B8A8",
           textColor: "#E85D33",
@@ -2058,10 +2058,10 @@ export function createDefaultSection<T extends PageSection["type"]>(
           ],
         },
       } as SectionFor<T>
-    case "pos_pricing":
+    case "pos_plans":
       return {
         ...base,
-        type: "pos_pricing",
+        type: "pos_plans",
         props: {
           label: { es: "Precios", en: "Pricing" },
           title: {
@@ -2445,19 +2445,19 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "6/6 grid: orange panel (logo + label, title + description) + image. Panel uses backgroundColor.",
     component: PosSeparatorSection,
   },
-  pos_details_cards: {
-    type: "pos_details_cards",
-    label: "POS — Details Cards",
-    description:
-      "Peach section, header in textColor, 2 cards (240×240 image + copy), primary/secondary CTAs.",
-    component: PosDetailsCardsSection,
-  },
   pos_pricing: {
     type: "pos_pricing",
-    label: "POS — Pricing",
+    label: "POS — Pay details",
     description:
-      "Precios POS/PAY: 2 pricing cards (border + filled), features, bottom banner, CTAs.",
+      "Peach section, header in textColor, 2 cards (240×240 image + copy), primary/secondary CTAs.",
     component: PosPricingSection,
+  },
+  pos_plans: {
+    type: "pos_plans",
+    label: "POS — Precios",
+    description:
+      "Dark section (foreground): 2 plan cards (POS + PAY), features, bottom banner on background, CTAs.",
+    component: PosPlansSection,
   },
   pos_image_separator: {
     type: "pos_image_separator",
@@ -2558,8 +2558,8 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "product_detail",
     "product_steps",
     "pos_separator",
-    "pos_details_cards",
     "pos_pricing",
+    "pos_plans",
     "pos_image_separator",
     "home_integrations",
     "steps_club",
