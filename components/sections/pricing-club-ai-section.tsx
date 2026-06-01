@@ -20,8 +20,16 @@ const CLUB_BUSINESS_ACCENT = "#754390"
 const CLUB_START_PILL = "#9CA3AF"
 
 function getClubCardStyles(index: number) {
+  const base = {
+    textClass: "text-background",
+    featureBorderClass: "border-background/20",
+    checkClass: "text-background",
+    pillClassName: undefined as string | undefined,
+  }
+
   if (index === 0) {
     return {
+      ...base,
       cardClass: "border-0 shadow-lg",
       borderStyle: undefined as CSSProperties | undefined,
       pillStyle: {
@@ -33,6 +41,7 @@ function getClubCardStyles(index: number) {
 
   if (index === 1) {
     return {
+      ...base,
       cardClass: "border-[10px] border-solid shadow-lg",
       borderStyle: { borderColor: CLUB_GROWTH_ACCENT },
       pillStyle: {
@@ -43,6 +52,7 @@ function getClubCardStyles(index: number) {
   }
 
   return {
+    ...base,
     cardClass: "border-[10px] border-solid shadow-lg",
     borderStyle: { borderColor: CLUB_BUSINESS_ACCENT },
     pillStyle: {
@@ -52,14 +62,46 @@ function getClubCardStyles(index: number) {
   }
 }
 
-function getAiCardStyles() {
+const AI_CARD_1_ACCENT = "#B2C8D9"
+const AI_CARD_2_ACCENT = "#013662"
+
+function getAiCardStyles(index: number) {
+  if (index === 0) {
+    return {
+      cardClass: "border-[10px] border-solid shadow-lg",
+      borderStyle: { borderColor: AI_CARD_1_ACCENT } as CSSProperties,
+      pillStyle: {
+        backgroundColor: AI_CARD_1_ACCENT,
+        color: "#013662",
+      },
+      textClass: "text-background",
+      featureBorderClass: "border-background/20",
+      checkClass: "text-background",
+    }
+  }
+
+  if (index === 1) {
+    return {
+      cardClass: "border-[10px] border-solid shadow-lg",
+      borderStyle: { borderColor: AI_CARD_2_ACCENT } as CSSProperties,
+      pillStyle: {
+        backgroundColor: AI_CARD_2_ACCENT,
+        color: "#ffffff",
+      },
+      textClass: "text-background",
+      featureBorderClass: "border-background/20",
+      checkClass: "text-background",
+    }
+  }
+
   return {
-    cardClass: "border-0 shadow-lg",
+    cardClass: "border-0 bg-[#013662] shadow-lg text-foreground",
     borderStyle: undefined as CSSProperties | undefined,
-    pillStyle: {
-      backgroundColor: "rgba(255,255,255,0.15)",
-      color: "inherit",
-    },
+    pillStyle: undefined as CSSProperties | undefined,
+    pillClassName: "bg-background text-foreground",
+    textClass: "text-foreground",
+    featureBorderClass: "border-foreground/20",
+    checkClass: "text-foreground",
   }
 }
 
@@ -128,38 +170,58 @@ export default function PricingClubAiSection({
         {cards.map((card, i) => {
           const cardTitle = t(card.title)
           const cardShops = t(card.shops)
-          const styles = isClub ? getClubCardStyles(i) : getAiCardStyles()
+          const styles = isClub ? getClubCardStyles(i) : getAiCardStyles(i)
           const features = (card.features ?? []).filter((f) => t(f))
 
           return (
             <Card
               key={`${cardTitle}-${i}`}
               className={cn(
-                "rounded-[24px] bg-black/5 text-background transition-colors duration-200",
+                "rounded-[24px] transition-colors duration-200",
+                isClub || i < 2 ? "bg-black/5" : "",
                 styles.cardClass,
+                styles.textClass,
               )}
               style={styles.borderStyle}
             >
               <CardContent className="p-6 sm:p-8">
                 {cardTitle ? (
-                  <CardTitle className="text-left text-3xl font-bold leading-none text-background sm:text-4xl">
+                  <CardTitle
+                    className={cn(
+                      "text-left text-3xl font-bold leading-none sm:text-4xl",
+                      styles.textClass,
+                    )}
+                  >
                     {cardTitle}
                   </CardTitle>
                 ) : null}
 
                 {card.price ? (
-                  <p className="mt-4 text-5xl font-bold leading-none tracking-tight text-background sm:text-6xl lg:text-7xl">
+                  <p
+                    className={cn(
+                      "mt-4 text-5xl font-bold leading-none tracking-tight sm:text-6xl lg:text-7xl",
+                      styles.textClass,
+                    )}
+                  >
                     {card.price}
                   </p>
                 ) : null}
 
-                <p className="mt-2 text-sm font-bold text-background sm:text-base">
+                <p
+                  className={cn(
+                    "mt-2 text-sm font-bold sm:text-base",
+                    styles.textClass,
+                  )}
+                >
                   {perMonthLabel}
                 </p>
 
                 {cardShops ? (
                   <p
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-[14px] px-3 py-3 text-center text-sm font-semibold sm:text-base"
+                    className={cn(
+                      "mt-4 inline-flex w-full items-center justify-center rounded-[14px] px-3 py-3 text-center text-sm font-semibold sm:text-base",
+                      styles.pillClassName,
+                    )}
                     style={styles.pillStyle}
                   >
                     {cardShops}
@@ -173,9 +235,15 @@ export default function PricingClubAiSection({
                       return (
                         <li
                           key={`${featureText}-${index}`}
-                          className="flex items-center gap-2 border-b border-background/20 py-3 text-base text-background sm:text-lg"
+                          className={cn(
+                            "flex items-center gap-2 border-b py-3 text-base sm:text-lg",
+                            styles.featureBorderClass,
+                            styles.textClass,
+                          )}
                         >
-                          <CircleCheck className="size-4 shrink-0 text-background" />
+                          <CircleCheck
+                            className={cn("size-4 shrink-0", styles.checkClass)}
+                          />
                           <span>{featureText}</span>
                         </li>
                       )

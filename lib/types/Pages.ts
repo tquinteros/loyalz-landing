@@ -816,6 +816,46 @@ export type ProductInformationSection = BaseSection<
   ProductInformationSectionProps
 >
 
+/** Product (AI) — section background + text colors, copy column + image (~620×576). */
+export type ProductAiInformationSectionProps = {
+  /** Section background (hex). */
+  backgroundColor: string
+  /** All text and label border (hex). */
+  textColor: string
+  label: LocalizedString
+  title: LocalizedString
+  description: LocalizedString
+  bottomDescription: LocalizedString
+  image: string
+}
+
+export type ProductAiInformationSection = BaseSection<
+  "product_ai_information",
+  ProductAiInformationSectionProps
+>
+
+export type BlurredAiPosCardItem = {
+  image: string
+  title: LocalizedString
+  description: LocalizedString
+}
+
+/** AI/POS — label, title, blurred image cards (3-up), CTAs. */
+export type BlurredAiPosCardsSectionProps = {
+  backgroundColor: string
+  textColor: string
+  label: LocalizedString
+  title: LocalizedString
+  primaryCta: CTA
+  secondaryCta?: CTA
+  cards: BlurredAiPosCardItem[]
+}
+
+export type BlurredAiPosCardsSection = BaseSection<
+  "blurred_ai_pos_cards",
+  BlurredAiPosCardsSectionProps
+>
+
 /** Union of every supported section type. Extend this to add new section kinds. */
 export type PageSection =
   | HeroSection
@@ -861,6 +901,8 @@ export type PageSection =
   | ProductClubBenefitsSection
   | ProductClubNotificationsSection
   | ProductInformationSection
+  | ProductAiInformationSection
+  | BlurredAiPosCardsSection
 
 /**
  * Fallback type for sections that come from the DB but whose `type` is not

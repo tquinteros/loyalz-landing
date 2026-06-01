@@ -43,6 +43,8 @@ import ProductMechanicsSection from "./product-mechanics-section"
 import ProductClubBenefitsSection from "./product-club-benefits-section"
 import ProductClubNotificationsSection from "./product-club-notifications-section"
 import ProductInformationSection from "./product-information-section"
+import ProductAiInformationSection from "./product-ai-information-section"
+import BlurredAiPosCardsSection from "./blurred-ai-pos-cards-section"
 
 /**
  * Deterministic factory for a new section of a given type. Used by the admin
@@ -1919,6 +1921,77 @@ export function createDefaultSection<T extends PageSection["type"]>(
           image: "",
         },
       } as SectionFor<T>
+    case "product_ai_information":
+      return {
+        ...base,
+        type: "product_ai_information",
+        props: {
+          backgroundColor: "#B2C8D9",
+          textColor: "#013662",
+          label: { es: "Encargado 24/7", en: "On call 24/7" },
+          title: {
+            es: "Un agente que suena real.",
+            en: "An agent that sounds real.",
+          },
+          description: {
+            es: "Le ponés el nombre que quieras. Elegís la voz, el tono y cómo se presenta. Y desde ese momento atiende sola, como si fuera parte de tu equipo.",
+            en: "Give it any name you want. Choose the voice, tone, and how it introduces itself. From that moment on it handles calls on its own, like part of your team.",
+          },
+          bottomDescription: {
+            es: "Tu cliente llama y la AI atiende con voz natural. A cualquier hora. En cualquier idioma.",
+            en: "Your customer calls and AI answers with a natural voice. Any time. In any language.",
+          },
+          image: "/products/ai.png",
+        },
+      } as SectionFor<T>
+    case "blurred_ai_pos_cards":
+      return {
+        ...base,
+        type: "blurred_ai_pos_cards",
+        props: {
+          backgroundColor: "#B2C8D9",
+          textColor: "#013662",
+          label: { es: "Negocios", en: "Businesses" },
+          title: {
+            es: "Una AI que se adapta a tu negocio, no al revés.",
+            en: "AI that adapts to your business, not the other way around.",
+          },
+          primaryCta: {
+            label: { es: "Prueba Gratis", en: "Free Trial" },
+            href: "/contact",
+          },
+          secondaryCta: {
+            label: { es: "Agendar Demo", en: "Book a Demo" },
+            href: "/contact",
+          },
+          cards: [
+            {
+              image: "/restaurant-mobile.png",
+              title: { es: "Restaurantes", en: "Restaurants" },
+              description: {
+                es: "Reservas, pedidos y consultas atendidas al instante.",
+                en: "Reservations, orders, and inquiries handled instantly.",
+              },
+            },
+            {
+              image: "/coffe-mobile.png",
+              title: { es: "Cafés", en: "Cafés" },
+              description: {
+                es: "Menú, horarios y promos sin esperar en línea.",
+                en: "Menu, hours, and promos without waiting on hold.",
+              },
+            },
+            {
+              image: "/mobile-case.png",
+              title: { es: "Delivery-first", en: "Delivery-first" },
+              description: {
+                es: "Seguimiento de pedidos y soporte 24/7 para tu app.",
+                en: "Order tracking and 24/7 support for your app.",
+              },
+            },
+          ],
+        },
+      } as SectionFor<T>
     default: {
       const _exhaustive: never = type
       throw new Error(`Unknown section type: ${String(_exhaustive)}`)
@@ -2222,6 +2295,20 @@ export const SECTION_REGISTRY: Record<SectionType, SectionRegistryEntry> = {
       "Colored text panel (7 cols) + image (5 cols). Same layout as the audiences information block.",
     component: ProductInformationSection,
   },
+  product_ai_information: {
+    type: "product_ai_information",
+    label: "Product — AI Information",
+    description:
+      "AI product block: hex background + text colors, label/title/copy column and image (~620×576). 12-col responsive grid.",
+    component: ProductAiInformationSection,
+  },
+  blurred_ai_pos_cards: {
+    type: "blurred_ai_pos_cards",
+    label: "Blurred AI POS Cards",
+    description:
+      "Centered label + title, 3 image cards with bottom blur overlay (text-foreground), primary/secondary CTAs.",
+    component: BlurredAiPosCardsSection,
+  },
 }
 
 /** Ordered list — handy for populating the admin UI. */
@@ -2297,6 +2384,8 @@ export const PAGE_SECTION_SUGGESTIONS: Record<string, SectionType[]> = {
     "product_detail",
     "product_steps",
     "product_mechanics",
+    "product_ai_information",
+    "blurred_ai_pos_cards",
     "pricing_club_ai",
     "home_autonomy",
     "steps_club",

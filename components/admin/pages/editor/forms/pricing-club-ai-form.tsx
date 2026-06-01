@@ -36,10 +36,21 @@ const PRODUCT_OPTIONS: Array<{ value: PricingClubAiProduct; label: string }> = [
 ]
 
 function featuresToText(features: LocalizedString[] | undefined, locale: "es" | "en") {
-  return (features ?? [])
-    .map((f) => f[locale] ?? "")
-    .filter(Boolean)
-    .join("\n")
+  return (features ?? []).map((f) => f[locale] ?? "").join("\n")
+}
+
+function featuresFromText(
+  raw: string,
+  locale: "es" | "en",
+  existing: LocalizedString[] | undefined,
+): LocalizedString[] {
+  return raw.split("\n").map((line, i) => {
+    const prev = existing?.[i]
+    if (locale === "es") {
+      return { es: line, en: prev?.en ?? "" }
+    }
+    return { es: prev?.es ?? "", en: line }
+  })
 }
 
 export function PricingClubAiForm({ value, onChange }: Props) {
@@ -248,19 +259,15 @@ export function PricingClubAiForm({ value, onChange }: Props) {
                   <Textarea
                     rows={4}
                     value={featuresToText(item.features, "es")}
-                    onChange={(e) => {
-                      const lines = e.target.value
-                        .split("\n")
-                        .map((l) => l.trim())
+                    onChange={(e) =>
                       update({
-                        features: lines
-                          .filter(Boolean)
-                          .map((es, i) => ({
-                            es,
-                            en: item.features?.[i]?.en ?? es,
-                          })),
+                        features: featuresFromText(
+                          e.target.value,
+                          "es",
+                          item.features,
+                        ),
                       })
-                    }}
+                    }
                     placeholder={"1 Mecánica Activa\n0 Managers"}
                   />
                 </div>
@@ -271,19 +278,15 @@ export function PricingClubAiForm({ value, onChange }: Props) {
                   <Textarea
                     rows={4}
                     value={featuresToText(item.features, "en")}
-                    onChange={(e) => {
-                      const lines = e.target.value
-                        .split("\n")
-                        .map((l) => l.trim())
+                    onChange={(e) =>
                       update({
-                        features: lines
-                          .filter(Boolean)
-                          .map((en, i) => ({
-                            es: item.features?.[i]?.es ?? en,
-                            en,
-                          })),
+                        features: featuresFromText(
+                          e.target.value,
+                          "en",
+                          item.features,
+                        ),
                       })
-                    }}
+                    }
                     placeholder={"1 Active mechanic\n0 Managers"}
                   />
                 </div>

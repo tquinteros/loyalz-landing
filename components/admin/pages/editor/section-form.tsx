@@ -59,6 +59,8 @@ import { ProductClubBenefitsForm } from "./forms/product-club-benefits-form"
 import { ProductClubNotificationsForm } from "./forms/product-club-notifications-form"
 import { ReviewsPricingForm } from "./forms/reviews-pricing-form"
 import { ProductInformationForm } from "./forms/product-information-form"
+import { ProductAiInformationForm } from "./forms/product-ai-information-form"
+import { BlurredAiPosCardsForm } from "./forms/blurred-ai-pos-cards-form"
 
 type Props = {
   section: AnyPageSection
@@ -281,6 +283,20 @@ function TypedSectionBody({
     case "product_information":
       return (
         <ProductInformationForm value={section.props} onChange={onPropsChange} />
+      )
+    case "product_ai_information":
+      return (
+        <ProductAiInformationForm
+          value={section.props}
+          onChange={onPropsChange}
+        />
+      )
+    case "blurred_ai_pos_cards":
+      return (
+        <BlurredAiPosCardsForm
+          value={section.props}
+          onChange={onPropsChange}
+        />
       )
     default: {
       const _exhaustive: never = section

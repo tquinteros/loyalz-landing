@@ -45,6 +45,26 @@ type FloatingBadge = {
   className: string
 }
 
+const NOTIFICATION_BADGE_COLORS = ["#8C7F1F", "#EC491E", "#754390"] as const
+
+const NOTIFICATION_BADGE_TOP =
+  "left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+const NOTIFICATION_BADGE_BOTTOM =
+  "left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2"
+
+/** Stable pseudo-random badge slot per carousel item (SSR-safe). */
+function notificationBadgeAt(loopIndex: number): FloatingBadge {
+  const top = (loopIndex * 7 + 3) % 2 === 0
+  const color =
+    NOTIFICATION_BADGE_COLORS[
+      (loopIndex * 5 + 1) % NOTIFICATION_BADGE_COLORS.length
+    ]
+  return {
+    color,
+    className: top ? NOTIFICATION_BADGE_TOP : NOTIFICATION_BADGE_BOTTOM,
+  }
+}
+
 const HERO_TAGS: HeroTagCard[] = [
   {
     kind: "stat",
@@ -53,10 +73,6 @@ const HERO_TAGS: HeroTagCard[] = [
     detail: { es: "56 reseñas", en: "56 reviews" },
     className: "bg-[#F8F5EF33] text-foreground backdrop-blur-md",
     sizeClassName: "w-fit min-w-[230px]",
-    badge: {
-      color: "#8C7F1F",
-      className: "left-full top-1/2 -translate-x-1/2 -translate-y-1/2",
-    },
   },
   {
     kind: "stat",
@@ -64,10 +80,6 @@ const HERO_TAGS: HeroTagCard[] = [
     value: { es: "10.000US$", en: "US$10,000" },
     className: "bg-foreground text-background",
     sizeClassName: "w-fit min-w-[310px]",
-    badge: {
-      color: "#EC491E",
-      className: "right-0 top-1/2 translate-x-1/2 -translate-y-1/2",
-    },
   },
   {
     kind: "notification",
@@ -76,7 +88,7 @@ const HERO_TAGS: HeroTagCard[] = [
       es: "👀 ¡Disfrutá un 50% de descuento en nuestro local hoy! ☕️",
       en: "👀 Enjoy 50% off at our store today! ☕️",
     },
-    className: "bg-[#F8F5EF33] text-foreground backdrop-blur-md",
+    className: "bg-[#F8F5EF47] text-foreground backdrop-blur-md",
     sizeClassName: "w-[360px]",
   },
   {
@@ -85,10 +97,6 @@ const HERO_TAGS: HeroTagCard[] = [
     value: { es: "$ 16", en: "$16" },
     className: "bg-foreground text-background",
     sizeClassName: "w-fit min-w-[230px]",
-    badge: {
-      color: "#754390",
-      className: "left-0 top-1/2 -translate-x-1/2 -translate-y-1/2",
-    },
   },
 ]
 
@@ -104,6 +112,14 @@ function signedDistance(index: number, current: number, total: number) {
 function defaultCenterIndex(total: number) {
   if (total <= 0) return 0
   return Math.floor((total - 1) / 2)
+}
+
+/** Keeps floating badges above neighbor cards, but under the first card in each set. */
+function tagCardZIndex(loopIndex: number, hasBadge: boolean) {
+  const slot = loopIndex % HERO_TAGS.length
+  if (slot === 0) return 40
+  if (hasBadge) return 35
+  return 10 + slot
 }
 
 export default function HeroSection(props: Props) {
@@ -140,7 +156,7 @@ export default function HeroSection(props: Props) {
     <SectionWrapper
       backgroundImage={backgroundImage}
       className={cn(
-        "flex h-[calc(113dvh-5rem)] min-h-[calc(113dvh-5rem)] max-h-[calc(113dvh-5rem)] flex-col overflow-hidden bg-background py-0 text-foreground sm:py-0",
+        "flex h-[calc(113dvh-5rem)] min-h-[calc(113dvh-5rem)] max-h-[calc(113dvh-5rem)] flex-col overflow-x-clip overflow-y-visible bg-background py-0 text-foreground sm:py-0",
         className,
       )}
       innerClassName="flex h-full min-h-0 flex-1 flex-col px-5 lg:px-16"
@@ -153,9 +169,9 @@ export default function HeroSection(props: Props) {
 
       <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-visible py-2 md:py-4">
         <div className="flex w-full max-w-6xl items-center justify-center overflow-visible px-2 sm:max-w-7xl">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 z-25 w-screen -translate-x-1/2 -translate-y-1/2 overflow-hidden">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 z-25 w-screen -translate-x-1/2 -translate-y-1/2 overflow-x-clip overflow-y-visible py-8">
             <motion.ul
-              className="flex w-max items-center gap-3 px-3 sm:gap-4 sm:px-4"
+              className="isolate flex w-max items-center gap-3 px-3 py-2 sm:gap-4 sm:px-4"
               animate={{ x: [`-${100 / TAG_COPIES}%`, "0%"] }}
               transition={{
                 duration: tagDuration,
@@ -163,34 +179,27 @@ export default function HeroSection(props: Props) {
                 repeat: Infinity,
               }}
             >
-              {tagLoop.map((tag, i) => (
+              {tagLoop.map((tag, i) => {
+                const badge =
+                  tag.kind === "notification"
+                    ? notificationBadgeAt(i)
+                    : tag.badge
+
+                return (
                 <li
                   key={`${tag.kind}-${i}`}
-                  className={cn(
-                    "relative flex h-[108px] shrink-0 items-center overflow-visible rounded-[8px] border border-foreground/10 px-5 py-3 shadow-[0_18px_50px_rgba(0,0,0,0.28)]",
-                    tag.sizeClassName,
-                    tag.className,
-                  )}
+                  style={{ zIndex: tagCardZIndex(i, Boolean(badge)) }}
+                  className="relative shrink-0 overflow-visible py-[30px]"
                   aria-hidden={i >= HERO_TAGS.length ? true : undefined}
                 >
-                  {tag.badge ? (
-                    <span
-                      className={cn(
-                        "absolute z-10 flex size-[60px] items-center justify-center rounded-[8px]",
-                        tag.badge.className,
-                      )}
-                      style={{ backgroundColor: tag.badge.color }}
-                    >
-                      <Image
-                        src="/logo.svg"
-                        alt=""
-                        width={32}
-                        height={32}
-                        className="size-8 invert"
-                      />
-                    </span>
-                  ) : null}
-
+                  <div
+                    className={cn(
+                      "relative flex h-[108px] items-center overflow-visible rounded-[8px] border border-foreground/10 px-5 py-3 shadow-[0_18px_50px_rgba(0,0,0,0.28)]",
+                      tag.sizeClassName,
+                      tag.className,
+                    )}
+                  >
+                  <div className="relative z-0 min-w-0">
                   {tag.kind === "stat" ? (
                     <span className="grid gap-1">
                       <span className="whitespace-nowrap text-[14px] font-medium leading-none">
@@ -207,7 +216,7 @@ export default function HeroSection(props: Props) {
                     </span>
                   ) : (
                     <span className="grid gap-2">
-                      <span className="text-[11px] font-semibold uppercase leading-none">
+                      <span className="w-fit rounded-[6px] bg-[#F8F5EF47] px-2 py-1 text-[11px] font-semibold uppercase leading-none backdrop-blur-md">
                         {t(tag.sender)}
                       </span>
                       <span className="text-[14px] font-medium leading-tight">
@@ -215,8 +224,29 @@ export default function HeroSection(props: Props) {
                       </span>
                     </span>
                   )}
+                  </div>
+
+                  {badge ? (
+                    <span
+                      className={cn(
+                        "absolute z-50 flex size-[60px] items-center justify-center rounded-[8px]",
+                        badge.className,
+                      )}
+                      style={{ backgroundColor: badge.color }}
+                    >
+                      <Image
+                        src="/logo.svg"
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="size-8 invert"
+                      />
+                    </span>
+                  ) : null}
+                  </div>
                 </li>
-              ))}
+                )
+              })}
             </motion.ul>
           </div>
 

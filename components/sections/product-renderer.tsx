@@ -19,6 +19,8 @@ import ProductDashboardSection from "./product-dashboard-section"
 import ProductHowItWorksSection from "./product-how-it-works-section"
 import ProductMechanicsSection from "./product-mechanics-section"
 import ProductInformationSection from "./product-information-section"
+import ProductAiInformationSection from "./product-ai-information-section"
+import BlurredAiPosCardsSection from "./blurred-ai-pos-cards-section"
 import type { AnyPageSection, PageSection } from "@/lib/types/Pages"
 import { isKnownSectionType } from "./component-map"
 import { AdminSectionOverlay } from "@/components/admin/admin-section-overlay"
@@ -81,6 +83,10 @@ function ProductSectionSwitch({ section }: { section: PageSection }) {
       return <TestimonialsSecondarySection {...section.props} {...common} />
     case "product_information":
       return <ProductInformationSection {...section.props} {...common} />
+    case "product_ai_information":
+      return <ProductAiInformationSection {...section.props} {...common} />
+    case "blurred_ai_pos_cards":
+      return <BlurredAiPosCardsSection {...section.props} {...common} />
     default:
       return null
   }
