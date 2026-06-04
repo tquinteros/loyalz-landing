@@ -5,6 +5,7 @@ import { fetchPublicPageBySlugCached } from "@/lib/queries/pages.server"
 import PageClient from "@/components/pages/page-client"
 import { PageSkeleton } from "@/components/pages/page-skeleton"
 import { HOME_SLUG } from "@/lib/utils"
+import { HomePageView } from "@/components/analytics/home-page-view"
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await fetchPublicPageBySlugCached(HOME_SLUG)
@@ -21,6 +22,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
+      <HomePageView />
       <Suspense fallback={<PageSkeleton />}>
         <PageClient slug={HOME_SLUG} initialData={page} />
       </Suspense>
